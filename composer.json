@@ -1,0 +1,39 @@
+{
+	"name": "mjphaynes/php-resque",
+	"type": "library",
+	"description": "Redis backed library for creating background jobs and processing them later.",
+	"keywords": ["job", "background", "redis", "resque", "php", "php-resque", "queue", "worker"],
+	"homepage": "https://github.com/mjphaynes/php-resque/",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Michael Haynes",
+			"email": "mike@mjphaynes.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0",
+		"ext-pcntl": "*",
+		"predis/predis": "0.8.*",
+		"monolog/monolog": "1.6.*",
+		"symfony/console": "2.3.*",
+		"symfony/yaml": "2.3.*"
+	},
+	"suggest": {
+		"ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker.",
+		"ext-redis": "Native PHP extension for Redis connectivity. Predis will automatically utilize when available."
+	},
+	"require-dev": {
+		"sami/sami": "1.*",
+		"phpunit/phpunit": "3.7.*",
+		"symfony/process": "2.3.*"
+	},
+	"bin": [
+		"bin/resque"
+	],
+	"autoload": {
+		"psr-0": {
+			"Resque": "src"
+		}
+	}
+}

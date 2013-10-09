@@ -1,0 +1,19 @@
+# Resque config file for speed test (empty jobs per second)
+
+include: test/speed/autoload.php
+
+redis:
+    scheme: tcp
+    host: 127.0.0.1
+    port: 6379
+    namespace: "resque:speedtest"
+
+default:
+    expiry_time: 1
+    verbose: 2
+    workers:
+        blocking: true
+        interval: 1
+
+log:
+    stream: test/speed/output.log
