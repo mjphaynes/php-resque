@@ -15,9 +15,9 @@
 		"php": ">=5.3.0",
 		"ext-pcntl": "*",
 		"predis/predis": "0.8.*",
-		"monolog/monolog": "1.6.*",
-		"symfony/console": "2.3.*",
-		"symfony/yaml": "2.3.*"
+		"monolog/monolog": "1.7.*",
+		"symfony/console": "2.4.*",
+		"symfony/yaml": "2.4.*"
 	},
 	"suggest": {
 		"ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker.",
@@ -26,7 +26,7 @@
 	"require-dev": {
 		"sami/sami": "1.*",
 		"phpunit/phpunit": "3.7.*",
-		"symfony/process": "2.3.*"
+		"symfony/process": "2.4.*"
 	},
 	"bin": [
 		"bin/resque"
