@@ -331,7 +331,10 @@ class Job {
 		}
 		
 		$output = ob_get_contents();
-		ob_end_clean();
+
+		while (ob_get_length()) {
+			ob_end_clean();
+		}
 
 		$this->redis->hset(self::redisKey($this), 'output', $output);
 
