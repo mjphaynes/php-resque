@@ -117,6 +117,10 @@ class Resque {
 			throw new InvalidArgumentException('The config file "'.$file.'" cannot be found or read.');
 		}
 
+		if (!$configFile) {
+			return static::$config;
+		}
+
 		// Try to parse the contents
 		try {
 			$yaml = Yaml\Yaml::parse(file_get_contents($configFile));
