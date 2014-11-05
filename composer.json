@@ -26,8 +26,7 @@
 	},
 	"require-dev": {
 		"sami/sami": "1.*",
-		"phpunit/phpunit": "3.7.*",
-		"symfony/process": "2.4.*"
+		"phpunit/phpunit": "3.7.*"
 	},
 	"bin": [
 		"bin/resque"
