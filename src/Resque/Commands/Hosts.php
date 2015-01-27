@@ -28,8 +28,8 @@ class Hosts extends Command {
 		$this->setName('hosts')
 			->setDefinition($this->mergeDefinitions(array(
 			)))
-			->setDescription('List hosts with running workers.')
-			->setHelp('List hosts with running workers.')
+			->setDescription('List hosts with running workers')
+			->setHelp('List hosts with running workers')
 		;
 	}
 
