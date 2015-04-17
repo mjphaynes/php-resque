@@ -123,7 +123,11 @@ class ConsoleHandler extends AbstractProcessingHandler {
 	 * {@inheritdoc}
 	 */
 	protected function getDefaultFormatter() {
-		return new Logger\Formatter\ConsoleFormatter;
+		$formatter = new Logger\Formatter\ConsoleFormatter;
+		if (method_exists($formatter, 'allowInlineLineBreaks')) {
+			$formatter->allowInlineLineBreaks(true);
+		}
+		return $formatter;
 	}
 
 	/**
