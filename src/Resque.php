@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -69,7 +69,7 @@ class Resque {
 
 		return call_user_func_array($callable, $parameters);
 	}
-	
+
 	/**
 	 * Reads and loads data from a config file
 	 *
@@ -83,7 +83,8 @@ class Resque {
 			'scheme'    => static::getConfig('redis.scheme', Redis::DEFAULT_SCHEME),
 			'host'      => static::getConfig('redis.host', Redis::DEFAULT_HOST),
 			'port'      => static::getConfig('redis.port', Redis::DEFAULT_PORT),
-			'namespace' => static::getConfig('redis.namespace', Redis::DEFAULT_NS)
+			'namespace' => static::getConfig('redis.namespace', Redis::DEFAULT_NS),
+			'password'  => static::getConfig('redis.password', Redis::DEFAULT_PASSWORD)
 		));
 
 		return true;
@@ -131,7 +132,7 @@ class Resque {
 
 		return static::$config = $yaml;
 	}
-	
+
 	/**
 	 * Gets Resque config variable
 	 *
