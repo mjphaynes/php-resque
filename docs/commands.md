@@ -1,7 +1,7 @@
 [php-resque](https://github.com/mjphaynes/php-resque)
 ===========================================
 
-php-resque (pronounced like "rescue") is a Redis-backed library for creating 
+php-resque (pronounced like "rescue") is a Redis-backed library for creating
 background jobs, placing those jobs on multiple queues, and processing them later.
 
 [← Go back to main documentation](https://github.com/mjphaynes/php-resque)
@@ -56,6 +56,7 @@ There are some options that can be used for any command:
 * `port`      - The Redis port.
 * `scheme`    - The Redis scheme to use.
 * `namespace` - The Redis namespace to use. This is prefixed to all keys.
+* `password`  - The Redis AUTH password
 * `log`       - Specify the handler(s) to use for logging.
 * `events`    - Outputs all events to the console, for debugging.
 
@@ -83,18 +84,18 @@ And here are the command specific options:
 	* `args`           - The arguments to send with the job.
 	* `queue`          - The queue to add the job to.
 	* `delay`          - The amount of time or a unix time to delay execution of job till.
-* `clear`          
+* `clear`
 	* `force`          - Force without asking.
-* `socket:connect` 
+* `socket:connect`
 	* `connecthost`    - The host to connect to.
 	* `connectport`    - The port to connect to.
 	* `connecttimeout` - The connection timeout time (seconds).
-* `socket:receive` 
+* `socket:receive`
 	* `listenhost`     - The host to listen on.
 	* `listenport`     - The port to listen on.
 	* `listenretry`    - If can't bind address or port then retry every <timeout> seconds until it can.
 	* `listentimeout`  - The retry timeout time (seconds).
-* `socket:send`    
+* `socket:send`
 	* `cmd`            - The command to send to the receiver.
 	* `id`             - The id of the worker (optional; required for worker: commands).
 	* `connecthost`    - The host to send to.

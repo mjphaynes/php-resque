@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -23,12 +23,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RedisConnector extends AbstractConnector {
 
 	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		$redis = new \Predis\Client(array(
+		$options = array(
 			'scheme' => 'tcp',
 			'host'   => $args['host'],
 			'port'   => $args['port']
-		));
-		
+		);
+
+		$password = Resque::getConfig('redis.password', Resque\Redis::DEFAULT_PASSWORD);
+		if ($password !== null && $password !== false && trim($password) !== '') {
+			$options['password'] = $password;
+		}
+
+		$redis = new \Predis\Client($options);
+
 		$namespace = Resque::getConfig('redis.namespace', Resque\Redis::DEFAULT_NS);
 		if (substr($namespace, -1) !== ':') {
 			$namespace .= ':';

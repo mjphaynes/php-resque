@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -18,7 +18,7 @@ use Resque\Helpers\Stats;
  * @author Michael Haynes <mike@mjphaynes.com>
  */
 class Redis {
-	
+
 	/**
 	 * Default Redis connection scheme
 	 */
@@ -40,13 +40,19 @@ class Redis {
 	const DEFAULT_NS = 'resque';
 
 	/**
+	* Default Redis AUTH password
+	*/
+	const DEFAULT_PASSWORD = null;
+
+	/**
 	 * @var array Default configuration
 	 */
 	protected static $config = array(
 		'scheme'    => self::DEFAULT_SCHEME,
 		'host'      => self::DEFAULT_HOST,
 		'port'      => self::DEFAULT_PORT,
-		'namespace' => self::DEFAULT_NS
+		'namespace' => self::DEFAULT_NS,
+		'password'  => self::DEFAULT_PASSWORD
 	);
 
 	/**
@@ -63,7 +69,7 @@ class Redis {
 		if (!static::$instance) {
 			static::$instance = new static(static::$config);
 		}
-		
+
 		return static::$instance;
 	}
 
@@ -162,7 +168,7 @@ class Redis {
 		// mset
 		// renamenx
 	);
-	
+
 	/**
 	 * Establish a Redis connection.
 	 *
@@ -170,12 +176,22 @@ class Redis {
 	 * @return Redis
 	 */
 	public function __construct(array $config = array()) {
-		$this->redis = new Predis\Client(array(
+		// configuration options array
+		$options = array(
 			'scheme' => $config['scheme'],
 			'host'   => $config['host'],
 			'port'   => $config['port']
-		));
-		
+		);
+
+		// setup password
+		if (!empty($config['password'])) {
+			$options['password'] = $config['password'];
+		}
+
+		// create Predis client
+		$this->redis = new Predis\Client($options);
+
+		// setup namespace
 		if (!empty($config['namespace'])) {
 			$this->setNamespace($config['namespace']);
 		} else {
@@ -219,10 +235,10 @@ class Redis {
 			foreach ($string as &$str) {
  				$str = $this->addNamespace($str);
 			}
-			
+
 			return $string;
 		}
-		
+
 		if (strpos($string, $this->namespace) !== 0) {
 			$string = $this->namespace.$string;
 		}
@@ -260,7 +276,7 @@ class Redis {
 
 		// try {
 			return call_user_func_array(array($this->redis, $method), $parameters);
-			
+
 		// } catch (\Exception $e) {
 		// 	return false;
 		// }
