@@ -21,6 +21,7 @@
 		"symfony/process": "~2.3"
 	},
 	"suggest": {
+		"ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker in PHP versions < 5.5.0.",
 		"ext-redis": "Native PHP extension for Redis connectivity. Predis will automatically utilize when available."
 	},
 	"require-dev": {
