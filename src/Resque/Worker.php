@@ -1161,9 +1161,7 @@ class Worker {
 	 * @param string $status The updated process title.
 	 */
 	protected function updateProcLine($status) {
-		if (function_exists('setproctitle')) {
-			setproctitle(sprintf('resque-%s: %s', \Resque::VERSION, $status));
-		}
+		cli_set_process_title(sprintf('resque-%s: %s', \Resque::VERSION, $status));
 	}
 
 	/**
