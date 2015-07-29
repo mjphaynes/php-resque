@@ -1173,7 +1173,6 @@ class Worker {
 		if (function_exists('setproctitle')) {
 			setproctitle($status);
 		}
-		return;
 	}
 	
 	/**
