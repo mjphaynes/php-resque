@@ -13,10 +13,11 @@
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class HelloWorld {
-	
-	public function perform($args) {
-		$text = <<<TEXT
+class HelloWorld
+{
+    public function perform($args)
+    {
+        $text = <<<TEXT
 	    __  __     ____         _       __           __    __   __
 	   / / / /__  / / /___     | |     / /___  _____/ /___/ /  / /
 	  / /_/ / _ \/ / / __ \    | | /| / / __ \/ ___/ / __  /  / / 
@@ -25,7 +26,6 @@ class HelloWorld {
 
 
 TEXT;
-		echo $text;		
-	}
-	
+        echo $text;
+    }
 }

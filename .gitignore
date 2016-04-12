@@ -1,3 +1,4 @@
 composer.lock
 vendor/
 test/speed/output.log
+.php_cs.cache

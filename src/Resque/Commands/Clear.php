@@ -22,36 +22,38 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Clear extends Command {
+class Clear extends Command
+{
 
-	protected function configure() {
-		$this->setName('clear')
-			->setDefinition($this->mergeDefinitions(array(
-				new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force without asking.'),
-			)))
-			->setDescription('Clears all php-resque data from Redis')
-			->setHelp('Clears all php-resque data from Redis')
-		;
-	}
+    protected function configure()
+    {
+        $this->setName('clear')
+            ->setDefinition($this->mergeDefinitions(array(
+                new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force without asking.'),
+            )))
+            ->setDescription('Clears all php-resque data from Redis')
+            ->setHelp('Clears all php-resque data from Redis')
+        ;
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$dialog = $this->getHelperSet()->get('dialog');
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $dialog = $this->getHelperSet()->get('dialog');
 
-		if (
-			$input->getOption('force') ||
-			$dialog->askConfirmation($output, 'Continuing will clear all php-resque data from Redis. Are you sure? ', false)
-		) {
-			$output->write('Clearing Redis php-resque data... ');
+        if (
+            $input->getOption('force') ||
+            $dialog->askConfirmation($output, 'Continuing will clear all php-resque data from Redis. Are you sure? ', false)
+        ) {
+            $output->write('Clearing Redis php-resque data... ');
 
-			$redis = Resque\Redis::instance();
+            $redis = Resque\Redis::instance();
 
-			$keys = $redis->keys('*');
-			foreach ($keys as $key) {
-				$redis->del($key);
-			}
+            $keys = $redis->keys('*');
+            foreach ($keys as $key) {
+                $redis->del($key);
+            }
 
-			$output->writeln('<pop>Done.</pop>');
-		}
-	}
-
+            $output->writeln('<pop>Done.</pop>');
+        }
+    }
 }

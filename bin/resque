@@ -12,23 +12,21 @@
 /**
  * The main point of entry for the php-resque commands
  */
-
-if (!ini_get('date.timezone') or !date_default_timezone_get()) {
-	date_default_timezone_set('UTC');
+if (!ini_get('date.timezone') or ! date_default_timezone_get()) {
+    date_default_timezone_set('UTC');
 }
 
 define('RESQUE_BIN_DIR', realpath(__DIR__));
-define('RESQUE_DIR', realpath(RESQUE_BIN_DIR.'/../'));
+define('RESQUE_DIR', realpath(RESQUE_BIN_DIR . '/../'));
 
 $files = array(
-    RESQUE_DIR.'/vendor/autoload.php',
-    RESQUE_DIR.'/../../autoload.php'
+    RESQUE_DIR . '/vendor/autoload.php',
+    RESQUE_DIR . '/../../autoload.php'
 );
 
 $loaded = false;
 
-foreach ($files as $file)
-{
+foreach ($files as $file) {
     if (file_exists($file)) {
         require_once $file;
         $loaded = true;
@@ -37,10 +35,10 @@ foreach ($files as $file)
 }
 
 if (!$loaded) {
-	echo '<pre>You need to set up the project dependencies using the following commands:'.PHP_EOL.
-		"\t".'$ curl -s http://getcomposer.org/installer | php'.PHP_EOL.
-		"\t".'$ php composer.phar install</pre>'.PHP_EOL;
-	exit(1);
+    echo '<pre>You need to set up the project dependencies using the following commands:' . PHP_EOL .
+    "\t" . '$ curl -s http://getcomposer.org/installer | php' . PHP_EOL .
+    "\t" . '$ php composer.phar install</pre>' . PHP_EOL;
+    exit(1);
 }
 
 $application = new Symfony\Component\Console\Application('php-resque', Resque::VERSION);

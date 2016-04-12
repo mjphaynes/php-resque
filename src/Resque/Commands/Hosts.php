@@ -22,36 +22,38 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Hosts extends Command {
+class Hosts extends Command
+{
 
-	protected function configure() {
-		$this->setName('hosts')
-			->setDefinition($this->mergeDefinitions(array(
-			)))
-			->setDescription('List hosts with running workers')
-			->setHelp('List hosts with running workers')
-		;
-	}
+    protected function configure()
+    {
+        $this->setName('hosts')
+            ->setDefinition($this->mergeDefinitions(array(
+            )))
+            ->setDescription('List hosts with running workers')
+            ->setHelp('List hosts with running workers')
+        ;
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$hosts = Resque\Redis::instance()->smembers(Resque\Host::redisKey());
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $hosts = Resque\Redis::instance()->smembers(Resque\Host::redisKey());
 
-		if (empty($hosts)) {
-			$this->log('<warn>There are no hosts with running workers.</warn>');
-			return;
-		}
+        if (empty($hosts)) {
+            $this->log('<warn>There are no hosts with running workers.</warn>');
+            return;
+        }
 
-		$table = new Resque\Helpers\Table($this);
-		$table->setHeaders(array('#', 'Hostname', '# workers'));
+        $table = new Resque\Helpers\Table($this);
+        $table->setHeaders(array('#', 'Hostname', '# workers'));
 
-		foreach ($hosts as $i => $hostname) {
-			$host = new Resque\Host($hostname);
-			$workers = Resque\Redis::instance()->scard(Resque\Host::redisKey($host));
+        foreach ($hosts as $i => $hostname) {
+            $host = new Resque\Host($hostname);
+            $workers = Resque\Redis::instance()->scard(Resque\Host::redisKey($host));
 
-			$table->addRow(array($i + 1, $hostname, $workers));
-		}
+            $table->addRow(array($i + 1, $hostname, $workers));
+        }
 
-		$this->log((string)$table);
-	}
-
+        $this->log((string)$table);
+    }
 }

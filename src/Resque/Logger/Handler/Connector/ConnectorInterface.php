@@ -18,37 +18,37 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-interface ConnectorInterface {
+interface ConnectorInterface
+{
 
-	/**
-	 * Resolves the handler class
-	 *
-	 * @param  Command         $command
-	 * @param  InputInterface  $input
-	 * @param  OutputInterface $output
-	 * @param  array           $args
-	 * @return HandlerInterface
-	 */
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args);
+    /**
+     * Resolves the handler class
+     *
+     * @param  Command         $command
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
+     * @param  array           $args
+     * @return HandlerInterface
+     */
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args);
 
-	/**
-	 * Returns the processor for this handler
-	 *
-	 * @param  Command         $command
-	 * @param  InputInterface  $input
-	 * @param  OutputInterface $output
-	 * @param  array           $args
-	 * @return Callable
-	 */
-	public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args);
+    /**
+     * Returns the processor for this handler
+     *
+     * @param  Command         $command
+     * @param  InputInterface  $input
+     * @param  OutputInterface $output
+     * @param  array           $args
+     * @return Callable
+     */
+    public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args);
 
-	/**
-	 * Replaces all instances of [%host%, %worker%, %pid%, %date%, %time%] 
-	 * in logger target key so can be unique log per worker 
-	 *
-	 * @param  string $string Input string
-	 * @return string
-	 */
-	public function replacePlaceholders($string);
-
+    /**
+     * Replaces all instances of [%host%, %worker%, %pid%, %date%, %time%] 
+     * in logger target key so can be unique log per worker 
+     *
+     * @param  string $string Input string
+     * @return string
+     */
+    public function replacePlaceholders($string);
 }

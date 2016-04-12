@@ -13,10 +13,10 @@
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class FailLong {
-	
-	public function perform($args) {
-		for (;;);
-	}
-	
+class FailLong
+{
+    public function perform($args)
+    {
+        for (;;);
+    }
 }

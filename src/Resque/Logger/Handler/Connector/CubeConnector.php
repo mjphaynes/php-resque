@@ -19,10 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class CubeConnector extends AbstractConnector {
+class CubeConnector extends AbstractConnector
+{
 
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		return new CubeHandler($this->replacePlaceholders($args['url']));
-	}
-
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        return new CubeHandler($this->replacePlaceholders($args['url']));
+    }
 }

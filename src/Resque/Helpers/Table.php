@@ -17,59 +17,62 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Table {
+class Table
+{
 
-	/**
-	 * @var TableHelper
-	 */
-	protected $table;
+    /**
+     * @var TableHelper
+     */
+    protected $table;
 
-	/**
-	 * @var CatchOutput
-	 */
-	protected $output;
+    /**
+     * @var CatchOutput
+     */
+    protected $output;
 
-	/**
-	 * Render the table and pass the output back.
-	 * This is done this way because the table
-	 * helper dumps everything to the output and
-	 * there is no way to catch so have to override
-	 * with a special output.
-	 *
-	 * @param  Command  $command
-	 * @return void
-	 */
-	public function __construct(Command $command) {
-		$this->table = $command->getHelperSet()->get('table');
-		$this->table->setCellHeaderFormat('<pop>%s</pop>');
+    /**
+     * Render the table and pass the output back.
+     * This is done this way because the table
+     * helper dumps everything to the output and
+     * there is no way to catch so have to override
+     * with a special output.
+     *
+     * @param  Command  $command
+     * @return void
+     */
+    public function __construct(Command $command)
+    {
+        $this->table = $command->getHelperSet()->get('table');
+        $this->table->setCellHeaderFormat('<pop>%s</pop>');
 
-		$this->output = new CatchOutput;
-	}
+        $this->output = new CatchOutput;
+    }
 
-	/**
-	 * Render the table and pass the output back.
-	 * This is done this way because the table
-	 * helper dumps everything to the output and
-	 * there is no way to catch so have to override
-	 * with a special output.
-	 *
-	 * @return string
-	 */
-	public function __toString() {
-		$this->table->render($this->output);
+    /**
+     * Render the table and pass the output back.
+     * This is done this way because the table
+     * helper dumps everything to the output and
+     * there is no way to catch so have to override
+     * with a special output.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $this->table->render($this->output);
 
-		return rtrim($this->output->written()); // Remove trailing \n
-	}
+        return rtrim($this->output->written()); // Remove trailing \n
+    }
 
-	/**
-	 * Pass all called functions to the table helper
-	 *
-	 * @param  string  $method
-	 * @param  array   $parameters
-	 * @return mixed
-	 */
-	public function __call($method, $parameters) {
-		return call_user_func_array(array($this->table, $method), $parameters);
-	}
-
+    /**
+     * Pass all called functions to the table helper
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        return call_user_func_array(array($this->table, $method), $parameters);
+    }
 }
