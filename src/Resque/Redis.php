@@ -180,7 +180,8 @@ class Redis {
 		$options = array(
 			'scheme' => $config['scheme'],
 			'host'   => $config['host'],
-			'port'   => $config['port']
+			'port'   => $config['port'],
+			'read_write_timeout' => isset($config['read_write_timeout']) ? $config['read_write_timeout'] : 240,
 		);
 
 		// setup password
