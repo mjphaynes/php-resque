@@ -45,6 +45,11 @@ class Redis {
 	const DEFAULT_PASSWORD = null;
 
 	/**
+	 * Default Redis Read Write Timeout
+	 */
+	const DEFAULT_RW_TIMEOUT = 300;
+
+	/**
 	 * @var array Default configuration
 	 */
 	protected static $config = array(
@@ -52,7 +57,8 @@ class Redis {
 		'host'      => self::DEFAULT_HOST,
 		'port'      => self::DEFAULT_PORT,
 		'namespace' => self::DEFAULT_NS,
-		'password'  => self::DEFAULT_PASSWORD
+		'password'  => self::DEFAULT_PASSWORD,
+		'read_write_timeout' => self::DEFAULT_RW_TIMEOUT,
 	);
 
 	/**
@@ -180,7 +186,8 @@ class Redis {
 		$options = array(
 			'scheme' => $config['scheme'],
 			'host'   => $config['host'],
-			'port'   => $config['port']
+			'port'   => $config['port'],
+			'read_write_timeout' => $config['read_write_timeout'],
 		);
 
 		// setup password
