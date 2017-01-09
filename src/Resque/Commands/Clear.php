@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Deletes all resque data from redis
@@ -38,11 +39,14 @@ class Clear extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dialog = $this->getHelperSet()->get('dialog');
+        $question = $this->getHelperSet()->get('question');
 
         if (
             $input->getOption('force') ||
-            $dialog->askConfirmation($output, 'Continuing will clear all php-resque data from Redis. Are you sure? ', false)
+            $question->ask(
+                $input, $output, 
+                new ConfirmationQuestion('Continuing will clear all php-resque data from Redis. Are you sure? ', false)
+            )
         ) {
             $output->write('Clearing Redis php-resque data... ');
 
