@@ -11,6 +11,7 @@ namespace Resque\Helpers;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\Table;
 
 /**
  * Wrapper for Symfony table helper
@@ -42,10 +43,10 @@ class Table
      */
     public function __construct(Command $command)
     {
-        $this->table = $command->getHelperSet()->get('table');
-        $this->table->setCellHeaderFormat('<pop>%s</pop>');
-
         $this->output = new CatchOutput;
+
+        $this->table = new Table($this->output);
+        $this->table->setCellHeaderFormat('<pop>%s</pop>');
     }
 
     /**
