@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BINDIR=$(cd `dirname "$0"` && pwd)
 TOPDIR=$(dirname $BINDIR)
@@ -17,7 +17,7 @@ parse_git_dirty () {
 DIRTY_BRANCH=$(parse_git_dirty)
 
 if [[ $DIRTY_BRANCH == 1 ]]; then
-    echo "\033[31mCommit changes before generating documenation\033[0m"
+    echo "ERROR: Commit changes before generating documenation"
     exit 1
 fi
 
