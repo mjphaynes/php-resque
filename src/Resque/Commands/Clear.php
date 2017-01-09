@@ -39,7 +39,7 @@ class Clear extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $helper = $this->getHelperSet()->get('question');
+        $helper = $this->getHelper('question');
 
         $question = new ConfirmationQuestion('Continuing will clear all php-resque data from Redis. Are you sure? ', false);
 
