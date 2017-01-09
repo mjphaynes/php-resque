@@ -1,14 +1,14 @@
 {
-    "name": "mjphaynes/php-resque",
+    "name": "francislavoie/php-resque",
     "type": "library",
     "description": "Redis backed library for creating background jobs and processing them later.",
     "keywords": ["job", "background", "redis", "resque", "php", "php-resque", "queue", "worker"],
-    "homepage": "https://github.com/mjphaynes/php-resque/",
+    "homepage": "https://github.com/francislavoie/php-resque/",
     "license": "MIT",
     "authors": [
         {
-            "name": "Michael Haynes",
-            "email": "mike@mjphaynes.com"
+            "name": "Francis Lavoie",
+            "email": "lavofr@gmail.com"
         }
     ],
     "require": {
