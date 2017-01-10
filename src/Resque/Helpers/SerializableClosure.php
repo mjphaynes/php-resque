@@ -85,7 +85,8 @@ class SerializableClosure implements Serializable
             $file->next();
         }
 
-        $begin = strpos($code, 'function(');
+        preg_match('/function\s*\(/', $code, $matches, PREG_OFFSET_CAPTURE);
+        $begin = isset($matches[0][1]) ? $matches[0][1] : 0;
 
         return substr($code, $begin, strrpos($code, '}') - $begin + 1);
     }
@@ -204,4 +205,6 @@ class SerializableClosure implements Serializable
     {
         return call_user_func_array($this->closure, func_get_args());
     }
+}
+
 }
