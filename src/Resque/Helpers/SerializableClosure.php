@@ -206,5 +206,3 @@ class SerializableClosure implements Serializable
         return call_user_func_array($this->closure, func_get_args());
     }
 }
-
-}
