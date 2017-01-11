@@ -353,7 +353,9 @@ class Worker
 
         $job->perform();
 
-        switch ($job->getStatus()) {
+        $status = $job->getStatus();
+
+        switch ($status) {
             case Job::STATUS_COMPLETE :
                 $this->log('Done job <pop>'.$job.'</pop> in <pop>'.$job->execTimeStr().'</pop>', Logger::INFO);
             break;
@@ -367,7 +369,7 @@ class Worker
             break;
 
             default :
-                $this->log('Unknown job status "('.gettype($job->getStatus()).')'.$job->getStatus().'" for <pop>'.$job.'</pop>', Logger::WARNING);
+                $this->log('Unknown job status "('.gettype($status).')'.$status.'" for <pop>'.$job.'</pop>', Logger::WARNING);
             break;
         }
     }
