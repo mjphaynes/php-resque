@@ -11,7 +11,7 @@ namespace Resque\Helpers;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\Table as TableHelper;
 
 /**
  * Wrapper for Symfony table helper
@@ -45,7 +45,7 @@ class Table
     {
         $this->output = new CatchOutput;
 
-        $this->table = new Table($this->output);
+        $this->table = new TableHelper($this->output);
         $this->table->setCellHeaderFormat('<pop>%s</pop>');
     }
 
