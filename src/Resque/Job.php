@@ -575,8 +575,10 @@ class Job
      */
     public function getStatus()
     {
-        if ($packet = $this->getPacket() && isset($packet['status'])) {
-            return (int)$packet['status'];
+        if ($packet = $this->getPacket()) {
+            if(isset($packet['status'])) {
+                return (int)$packet['status'];
+            }
         }
 
         return false;
