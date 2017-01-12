@@ -46,6 +46,11 @@ class Redis
     const DEFAULT_PASSWORD = null;
 
     /**
+    * Default Redis option for using phpiredis or not
+    */
+    const DEFAULT_PHPIREDIS = false;
+
+    /**
      * @var array Default configuration
      */
     protected static $config = array(
@@ -53,7 +58,8 @@ class Redis
         'host'      => self::DEFAULT_HOST,
         'port'      => self::DEFAULT_PORT,
         'namespace' => self::DEFAULT_NS,
-        'password'  => self::DEFAULT_PASSWORD
+        'password'  => self::DEFAULT_PASSWORD,
+        'phpiredis' => self::DEFAULT_PHPIREDIS
     );
 
     /**
@@ -180,8 +186,8 @@ class Redis
      */
     public function __construct(array $config = array())
     {
-        // configuration options array
-        $options = array(
+        // configuration params array
+        $params = array(
             'scheme' => $config['scheme'],
             'host'   => $config['host'],
             'port'   => $config['port']
@@ -189,11 +195,22 @@ class Redis
 
         // setup password
         if (!empty($config['password'])) {
-            $options['password'] = $config['password'];
+            $params['password'] = $config['password'];
+        }
+
+        // setup predis client options
+        $options = [];
+        if ($config['phpiredis']) {
+            $options = [
+                'connections' => [
+                    'tcp'  => 'Predis\Connection\PhpiredisStreamConnection',
+                    'unix' => 'Predis\Connection\PhpiredisSocketConnection'
+                ],
+            ];
         }
 
         // create Predis client
-        $this->redis = new Predis\Client($options);
+        $this->redis = new Predis\Client($params, $options);
 
         // setup namespace
         if (!empty($config['namespace'])) {
