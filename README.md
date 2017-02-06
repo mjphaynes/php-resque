@@ -6,10 +6,6 @@ background jobs, placing those jobs on multiple queues, and processing them late
 
 ---
 
-This is a fork of [mjphaynes/php-resque](https://github.com/mjphaynes/php-resque) to update to using the latest Symfony packages as well as pulling the changes to conform to PSR-2 by [oanhnn](https://github.com/oanhnn/php-resque). Also thanks to [@xelan](https://github.com/xelan) for helping with the Symfony and composer changes.
-
----
-
 #### Contents ####
 
 * [Background](#background)
