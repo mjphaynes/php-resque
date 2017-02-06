@@ -200,7 +200,7 @@ class Redis
 
         // setup predis client options
         $options = [];
-        if ($config['phpiredis']) {
+        if (!empty($config['phpiredis'])) {
             $options = [
                 'connections' => [
                     'tcp'  => 'Predis\Connection\PhpiredisStreamConnection',
