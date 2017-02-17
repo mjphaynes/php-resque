@@ -67,7 +67,7 @@ You must have the following installed in order to run php-resque:
 * [Composer](http://getcomposer.org/)
 
 Optional, but recommended:
-* [Redis 2.2+ PECL Package](http://pecl.php.net/package/redis)
+* [Phpiredis 1.0+](https://github.com/nrk/phpiredis)
 * [proctitle PECL Package](http://pecl.php.net/package/proctitle)
 
 ---
