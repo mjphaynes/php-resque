@@ -257,7 +257,7 @@ class Worker {
 			$this->queueDelayed();
 
 			if ($this->blocking) {
-				$this->log('Pop blocking with timeout of '.$this->interval_string(), Logger::INFO);
+				$this->log('Pop blocking with timeout of '.$this->interval_string(), Logger::DEBUG);
 				$this->updateProcLine('Worker: waiting for job on '.implode(',', $this->queues).' with blocking timeout '.$this->interval_string());
 			} else {
 				$this->updateProcLine('Worker: waiting for job on '.implode(',', $this->queues).' with interval '.$this->interval_string());
@@ -267,7 +267,7 @@ class Worker {
 			
 			if (!$job instanceof Job) {
 				if (!$this->blocking) {
-					$this->log('Sleeping for '.$this->interval_string(), Logger::INFO);
+					$this->log('Sleeping for '.$this->interval_string(), Logger::DEBUG);
 					sleep($this->interval);
 				}
 
