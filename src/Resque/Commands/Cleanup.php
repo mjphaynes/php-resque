@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -43,7 +43,7 @@ class Cleanup extends Command
         $worker = new Resque\Worker('*');
         $cleaned_workers = $worker->cleanup();
         $cleaned_hosts = array_merge_recursive($cleaned_hosts, $host->cleanup());
-        
+
         $cleaned_jobs = Resque\Job::cleanup();
 
         $this->log('Cleaned hosts: <pop>'.json_encode($cleaned_hosts['hosts']).'</pop>');

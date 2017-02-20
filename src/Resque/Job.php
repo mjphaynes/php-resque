@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -114,7 +114,7 @@ class Job
         $id = static::createId($queue, $class, $data, $run_at);
 
         $job = new static($queue, $id, $class, $data);
-        
+
         if ($run_at > 0) {
             if (!$job->delay($run_at)) {
                 return false;
@@ -128,7 +128,7 @@ class Job
 
         return $job;
     }
-    
+
     /**
      * Create a new job id
      *
@@ -156,7 +156,7 @@ class Job
     public static function load($id)
     {
         $packet = Redis::instance()->hgetall(self::redisKey($id));
-        
+
         if (empty($packet) or empty($packet['queue']) or !count($payload = json_decode($packet['payload'], true))) {
             return null;
         }
@@ -193,7 +193,7 @@ class Job
     public function __construct($queue, $id, $class, array $data = null)
     {
         $this->redis = Redis::instance();
-        
+
         if (!is_string($queue) or empty($queue)) {
             throw new \InvalidArgumentException('The Job queue "('.gettype($queue).')'.$queue.'" must a non-empty string');
         }
@@ -210,7 +210,7 @@ class Job
             if (strpos($this->class, '@')) {
                 list($this->class, $this->method) = explode('@', $this->class, 2);
             }
-            
+
             // Remove any spaces or back slashes
             $this->class = trim($this->class, '\\ ');
         }
@@ -234,7 +234,7 @@ class Job
             empty($this->data) ? '' : json_encode($this->data)
         );
     }
-    
+
     /**
      * Save the job to Redis queue
      *
@@ -284,7 +284,7 @@ class Job
 
         $this->setStatus(self::STATUS_DELAYED);
         $this->redis->hset(self::redisKey($this), 'delayed', $time);
-        
+
         Stats::incr('delayed', 1);
         Stats::incr('delayed', 1, Queue::redisKey($this->queue, 'stats'));
 
@@ -314,7 +314,7 @@ class Job
 
         try {
             $instance = $this->getInstance();
-            
+
             ob_start();
 
             if (method_exists($instance, 'setUp')) {
@@ -337,7 +337,7 @@ class Job
             $this->fail($e);
             $retval = false;
         }
-        
+
         $output = ob_get_contents();
 
         while (ob_get_length()) {
@@ -359,7 +359,7 @@ class Job
         if (!is_null($this->instance)) {
             return $this->instance;
         }
-        
+
         if (!class_exists($this->class)) {
             throw new \RuntimeException('Could not find job class "'.$this->class.'"');
         }
@@ -369,7 +369,7 @@ class Job
         }
 
         $class = new \ReflectionClass($this->class);
-        
+
         if ($class->isAbstract()) {
             throw new \RuntimeException('Job class "'.$this->class.'" cannot be an abstract class');
         }
@@ -439,7 +439,7 @@ class Job
 
     /**
      * Mark the current job as having failed
-     * 
+     *
      * @param \Exception $e
      */
     public function fail(\Exception $e)
@@ -466,7 +466,7 @@ class Job
 
     /**
      * Returns the fail error for the job
-     * 
+     *
      * @return mixed
      */
     public function failError()
@@ -529,7 +529,7 @@ class Job
         $packet['worker']  = (string)$this->worker;
         $packet['status']  = $status;
         $packet['updated'] = microtime(true);
-        
+
         if ($status == Job::STATUS_RUNNING) {
             $packet['started'] = microtime(true);
         }
@@ -537,7 +537,7 @@ class Job
         if (in_array($status, self::$completeStatuses)) {
             $packet['finished'] = microtime(true);
         }
-        
+
         if ($e) {
             $packet['exception'] = json_encode(array(
                 'class'     => get_class($e),
@@ -731,7 +731,7 @@ class Job
     {
         $this->worker = $worker;
     }
-    
+
     /**
      * Return array representation of this job
      *
@@ -757,7 +757,7 @@ class Job
             'exception' => $packet['exception']
         );
     }
-    
+
     /**
      * Look for any jobs which are running but the worker is dead.
      * Meaning that they are also not running but left in limbo
@@ -782,11 +782,11 @@ class Job
 
         foreach ($queues as $queue) {
             $jobs = $redis->zrangebyscore(Queue::redisKey($queue, 'running'), 0, time());
-            
+
             foreach ($jobs as $payload) {
                 $job = self::loadPayload($queue, $payload);
                 $packet = $job->getPacket();
-                
+
                 if (!in_array($packet['worker'], $workers)) {
                     $job->fail(new Exception\Zombie);
 

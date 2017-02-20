@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -20,7 +20,7 @@ class Stats
 {
 
     const DEFAULT_KEY = 'stats';
-    
+
     /**
      * Get the value of the supplied statistic counter for the specified statistic
      *

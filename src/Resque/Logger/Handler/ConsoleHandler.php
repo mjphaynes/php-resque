@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -26,7 +26,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      * @var OutputInterface  The console output interface
      */
     protected $output;
-    
+
     /**
      * @var array  Map log levels to output verbosity
      */
@@ -41,7 +41,7 @@ class ConsoleHandler extends AbstractProcessingHandler
         Logger::ALERT     => OutputInterface::VERBOSITY_NORMAL,
         Logger::EMERGENCY => OutputInterface::VERBOSITY_NORMAL
     );
-    
+
     /**
      * Colours: black, red, green, yellow, blue, magenta, cyan, white
      * Options: bold, underscore, blink, reverse, conceal
@@ -57,7 +57,7 @@ class ConsoleHandler extends AbstractProcessingHandler
         'critical'  => array('white', 'red'),
         'alert'     => array('white', 'red'),
         'emergency' => array('white', 'red'),
-        
+
         'pop'       => array('green'),
         'warn'      => array('yellow'),
         'comment'   => array('yellow'),
@@ -74,17 +74,17 @@ class ConsoleHandler extends AbstractProcessingHandler
         parent::__construct($level, $bubble);
 
         $this->output = $output;
-        
+
         foreach ($this->styleMap as $name => $styles) {
             $style = new \ReflectionClass('Symfony\Component\Console\Formatter\OutputFormatterStyle');
             $this->output->getFormatter()->setStyle($name, $style->newInstanceArgs($styles));
-            
+
             if ($this->output instanceof ConsoleOutputInterface) {
                 $this->output->getErrorOutput()->getFormatter()->setStyle($name, $style->newInstanceArgs($styles));
             }
         }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -145,7 +145,7 @@ class ConsoleHandler extends AbstractProcessingHandler
         if (null === $this->output or OutputInterface::VERBOSITY_QUIET === ($verbosity = $this->output->getVerbosity())) {
             return false;
         }
-        
+
         $this->setLevel(Logger::DEBUG);
         return true;
     }

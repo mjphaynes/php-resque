@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -69,7 +69,7 @@ class Receive extends Command
 
             break;
         } while ($retry);
-        
+
         $command = $this;
 
         $server->onConnect(function ($server, &$client, $input) {
@@ -110,34 +110,34 @@ class Receive extends Command
             }
 
             switch (strtolower($cmd)) {
-                case 'shell' :
+                case 'shell':
                     $server->send($client, 'Connected to php-resque on '.$server.'. To quit, type "quit"');
-                break;
+                    break;
 
-                case 'workers' :
+                case 'workers':
                     $workers = Worker::hostWorkers();
-                    
+
                     if (empty($workers)) {
                         $response = array('ok' => 0, 'message' => 'There are no workers running on this host.');
                         $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
                         return;
                     }
-                    
+
                     if ($data['json']) {
                         $response = array('ok' => 1, 'data' => array());
-                    
+
                         foreach ($workers as $i => $worker) {
                             $response['data'][] = $worker->getPacket();
                         }
-                    
+
                         $server->send($client, json_encode($response));
                     } else {
                         $table = new Resque\Helpers\Table($command);
                         $table->setHeaders(array('#', 'Status', 'ID', 'Running for', 'Running job', 'P', 'C', 'F', 'Interval', 'Timeout', 'Memory (Limit)'));
-                        
+
                         foreach ($workers as $i => $worker) {
                             $packet = $worker->getPacket();
-                        
+
                             $table->addRow(array(
                                 $i + 1,
                                 Worker::$statusText[$packet['status']],
@@ -152,21 +152,20 @@ class Receive extends Command
                                 Util::bytes($packet['memory']).' ('.$packet['memory_limit'].' MB)',
                             ));
                         }
-                        
+
                         $server->send($client, (string)$table);
                     }
-                break;
 
-                case 'worker:start' :
-                case 'worker:restart' :
+                    break;
+                case 'worker:start':
+                case 'worker:restart':
                     $response = array('ok' => 0, 'message' => 'This command is not yet supported remotely.');
                     $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
-                break;
-
-                case 'worker:pause' :
-                case 'worker:resume' :
-                case 'worker:stop' :
-                case 'worker:cancel' :
+                    break;
+                case 'worker:pause':
+                case 'worker:resume':
+                case 'worker:stop':
+                case 'worker:cancel':
                     $valid_id = false;
 
                     $id = preg_replace('/[^a-z0-9\*:,\.;-]/i', '', $data['id']);
@@ -194,7 +193,7 @@ class Receive extends Command
                             return;
                         }
                     }
-                    
+
                     $cmd = $data['force'] ? 'worker:term' : $cmd;
 
                     $signals = array(
@@ -238,14 +237,14 @@ class Receive extends Command
                     }
 
                     $server->send($client, $data['json'] ? json_encode($response) : implode(PHP_EOL, array_map(function ($d) {return $d['message'];}, $response['data'])));
-                break;
 
-                case 'job:queue' :
+                    break;
+                case 'job:queue':
                     $response = array('ok' => 0, 'message' => 'Cannot queue remotely as it makes no sense. Use command `resque job:queue <job> <args> [--queue=<queue> [--delay=<delay>]]` locally.');
                     $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
-                break;
 
-                case 'cleanup' :
+                    break;
+                case 'cleanup':
                     $host = new Host();
                     $cleaned_hosts = $host->cleanup();
 
@@ -266,21 +265,19 @@ class Receive extends Command
                     }
 
                     $server->send($client, $output);
-                break;
 
-                case 'shutdown' :
+                    break;
+                case 'shutdown':
                     $server->shutdown();
-                break;
-                
-                case 'quit' :
-                case 'exit' :
+                    break;
+                case 'quit':
+                case 'exit':
                     $server->disconnect($client);
-                break;
-
-                default :
+                    break;
+                default:
                     $response = array('ok' => 0, 'message' => 'Sorry, I don\'t know what to do with command "'.$cmd.'".');
                     $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
-                break;
+                    break;
             }
         });
 

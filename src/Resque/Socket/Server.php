@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -117,7 +117,7 @@ class Server
 
         $this->config = array_merge($defaults, $config);
     }
-    
+
     /**
      * Generate a string representation of this server.
      *
@@ -127,7 +127,7 @@ class Server
     {
         return $this->config['ip'].':'.$this->config['port'];
     }
-    
+
     /**
      * Starts the server
      */
@@ -151,7 +151,7 @@ class Server
         if (false === @socket_listen($this->socket)) {
             throw new Exception(sprintf('socket_listen($socket) failed: [%d] %s', $code = socket_last_error(), socket_strerror($code)));
         }
-        
+
         $this->started = true;
 
         $this->log('Listening for connections on <pop>'.$this.'</pop>', Logger::INFO);
@@ -240,7 +240,7 @@ class Server
                         $this->disconnect($client);
                         continue;
                     }
-                    
+
                     // Remove any control characters
                     $data = preg_replace('/[\x00-\x1F\x7F]/', '', trim($data));
 
@@ -255,18 +255,18 @@ class Server
             }
         }
     }
-    
+
     /**
      * Writes data to the socket, including the length of the data, and ends it with a CRLF unless specified.
-     * It is perfectly valid for socket_write to return zero which means no bytes have been written. 
-     * Be sure to use the === operator to check for FALSE in case of an error. 
+     * It is perfectly valid for socket_write to return zero which means no bytes have been written.
+     * Be sure to use the === operator to check for FALSE in case of an error.
      *
      * @param Client $client  Connected client to write to
      * @param string $message Data to write to the socket.
      * @param string $end     Data to end the line with.  Specify false if you don't want a line end sent.
-     * @return mixed Returns the number of bytes successfully written to the socket or FALSE on failure. 
-     * 		The error code can be retrieved with socket_last_error(). This code may be passed to 
-     * 		socket_strerror() to get a textual explanation of the error.
+     * @return mixed Returns the number of bytes successfully written to the socket or FALSE on failure.
+     *               The error code can be retrieved with socket_last_error(). This code may be passed to
+     *               socket_strerror() to get a textual explanation of the error.
      */
     public function send(&$client, $message, $end = true)
     {
@@ -282,7 +282,7 @@ class Server
             if ($attempt === false) {
                 return false;
             }
-            
+
             $sent += $attempt;
 
             if ($attempt < $length) {
@@ -295,7 +295,7 @@ class Server
 
         return false;
     }
-    
+
     /**
      * Disconnect a client
      *
@@ -310,7 +310,7 @@ class Server
         $this->log('Client disconnected: <pop>'.$client.'</pop>', Logger::INFO);
 
         $client->disconnect();
-        
+
         $i = array_search($client, $this->clients);
         unset($this->clients[$i]);
     }
@@ -362,7 +362,7 @@ class Server
         }
 
         $this->events[$event][] = $callback;
-        
+
         return true;
     }
 
@@ -387,7 +387,7 @@ class Server
 
         return true;
     }
-    
+
     /**
      * Raise a given event with the supplied data.
      *

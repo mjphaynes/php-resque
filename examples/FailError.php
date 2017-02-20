@@ -15,8 +15,11 @@
  */
 class FailError
 {
+    // @codingStandardsIgnoreStart
     public function perform($args)
     {
         }
+
     }
+    // @codingStandardsIgnoreEnd
 }

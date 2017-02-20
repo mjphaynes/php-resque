@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -75,7 +75,7 @@ class Event
             }
             return;
         }
-        
+
         if ($event !== '*' and !self::eventName($event)) {
             throw new \InvalidArgumentException('Event "'.$event.'" is not a valid event');
         }
@@ -86,7 +86,7 @@ class Event
 
         self::$events[$event][] = $callback;
     }
-    
+
     /**
      * Raise a given event with the supplied data.
      *
@@ -118,7 +118,7 @@ class Event
                 }
             }
         }
-        
+
         return $retval !== false;
     }
 
@@ -143,7 +143,7 @@ class Event
 
         return true;
     }
-    
+
     /**
      * Clear all registered listeners.
      */
@@ -161,7 +161,7 @@ class Event
     public static function eventName($event)
     {
         static $constants = null;
-        
+
         if (is_null($constants)) {
             $class = new \ReflectionClass('Resque\Event');
 

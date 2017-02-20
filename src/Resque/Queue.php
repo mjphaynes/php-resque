@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -86,8 +86,8 @@ class Queue
     }
 
     /**
-     * Queue a job for later retrieval. Jobs are unique per queue and 
-     * are deleted upon retrieval. If a given job (payload) already exists, 
+     * Queue a job for later retrieval. Jobs are unique per queue and
+     * are deleted upon retrieval. If a given job (payload) already exists,
      * it is updated with the new delay.
      *
      * @param  int    $delay This can be number of seconds or unix timestamp

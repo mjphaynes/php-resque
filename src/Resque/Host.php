@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -70,7 +70,7 @@ class Host
     {
         return $this->hostname;
     }
-    
+
     /**
      * Mark host as having an active worker
      *
@@ -93,7 +93,7 @@ class Host
     {
         $this->redis->srem(self::redisKey($this), (string)$worker);
     }
-    
+
     /**
      * Cleans up any dead hosts
      *

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -33,8 +33,8 @@ class Client
     protected $port;
 
     /**
-     * The client's hostname, as seen by the server. This 
-     * variable is only set after calling lookup_hostname, 
+     * The client's hostname, as seen by the server. This
+     * variable is only set after calling lookup_hostname,
      * as hostname lookups can take up a decent amount of time.
      *
      * @var string
@@ -54,7 +54,7 @@ class Client
 
         socket_getpeername($this->socket, $this->ip, $this->port);
     }
-    
+
     /**
      * String representation of the client
      *
@@ -75,7 +75,7 @@ class Client
             $this->socket = null;
         }
     }
-    
+
     /**
      * Returns this clients socket
      *
@@ -85,7 +85,7 @@ class Client
     {
         return $this->socket;
     }
-    
+
     /**
      * Gets the IP hostname
      *
@@ -96,7 +96,7 @@ class Client
         if (is_null($this->hostname)) {
             $this->hostname = gethostbyaddr($this->ip);
         }
-        
+
         return $this->hostname;
     }
 }

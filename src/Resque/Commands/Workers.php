@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -65,7 +65,7 @@ class Workers extends Command
                 Resque\Helpers\Util::bytes($packet['memory']).' ('.$packet['memory_limit'].' MB)',
             ));
         }
-        
+
         $this->log((string)$table);
     }
 }

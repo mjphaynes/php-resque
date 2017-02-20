@@ -1,4 +1,4 @@
-<?php 
+<?php
 use Resque\Event;
 use Resque\Logger;
 
@@ -14,7 +14,7 @@ class TestJob
 // Lets record the forking time
 Event::listen(array(Event::WORKER_FORK, Event::WORKER_FORK_CHILD), function ($event, $job) use ($logger) {
     static $start = 0;
-    
+
     if ($event === Event::WORKER_FORK_CHILD) {
         $exec = microtime(true) - $start;
         $logger->log('Forking process took '.round($exec * 1000, 2).'ms', Logger::DEBUG);

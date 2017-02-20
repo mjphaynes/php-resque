@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -60,7 +60,7 @@ class Queues extends Command
                 (int)@$stats['total']
             ));
         }
-        
+
         $this->log((string)$table);
     }
 }
