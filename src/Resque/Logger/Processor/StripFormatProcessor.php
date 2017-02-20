@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -53,7 +53,7 @@ class StripFormatProcessor
         'comment',
         'question'
     );
-    
+
     /**
      * Creates a new instance
      */
@@ -71,7 +71,7 @@ class StripFormatProcessor
     public function __invoke(array $record)
     {
         static $find = array();
-        
+
         if (empty($find)) {
             foreach ($this->stripTags as $tag) {
                 $find[] = '<'.$tag.'>';

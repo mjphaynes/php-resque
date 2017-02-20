@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -43,10 +43,7 @@ class Clear extends Command
 
         $question = new ConfirmationQuestion('Continuing will clear all php-resque data from Redis. Are you sure? ', false);
 
-        if (
-            $input->getOption('force') ||
-            $helper->ask($input, $output, $question)
-        ) {
+        if ($input->getOption('force') || $helper->ask($input, $output, $question)) {
             $output->write('Clearing Redis php-resque data... ');
 
             $redis = Resque\Redis::instance();

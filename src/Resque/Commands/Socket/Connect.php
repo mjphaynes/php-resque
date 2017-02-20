@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -53,10 +53,10 @@ class Connect extends Command
             $output->writeln('<error>['.$errno.'] '.$errstr.' host '.$conn.'</error>');
             return;
         }
-        
+
         // Set socket timeout to 200ms
         stream_set_timeout($fh, 0, 200 * 1000);
-        
+
         $stdin = fopen('php://stdin', 'r');
 
         $prompting = false;
@@ -78,7 +78,7 @@ class Connect extends Command
                 foreach ($read as $r) {
                     if ($r == $stdin) {
                         $input = trim(fgets($stdin));
-                        
+
                         if (empty($input)) {
                             $output->write($prompt);
                             $prompting = true;
@@ -91,11 +91,11 @@ class Connect extends Command
                         while (($buffer = fgets($fh, 1024)) !== false) {
                             $input .= $buffer;
                         }
-                        
+
                         if ($prompting) {
                             $output->writeln('');
                         }
-                        
+
                         $output->writeln('<pop>'.trim($input).'</pop>');
 
                         if (!feof($fh)) {

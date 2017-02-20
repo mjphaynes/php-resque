@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -59,7 +59,7 @@ class SpeedTest extends Command
 
         if (!$process->isSuccessful()) {
             list($error) = explode('Exception trace:', $process->getErrorOutput());
-        
+
             $output->write('<error>'.$error.'</error>');
         }
 
@@ -70,7 +70,7 @@ class SpeedTest extends Command
             $redis->del($key);
         }
     }
-    
+
     // http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html
     public function setProgress(OutputInterface $output, $stats, $testTime, $start)
     {
@@ -107,7 +107,7 @@ STATS;
         );
 
         $output->writeln(($reset ? "\033[6A" : '').strtr($display, $replace));
-        
+
         !$reset and $reset = true;
     }
 }

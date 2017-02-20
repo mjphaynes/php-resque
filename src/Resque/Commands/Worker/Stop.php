@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -50,12 +50,12 @@ class Stop extends Command
                 $this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
                 return;
             }
-            
+
             $workers = array($worker);
         } else {
             $workers = Resque\Worker::hostWorkers();
         }
-        
+
         if (!count($workers)) {
             $this->log('<warn>There are no workers on this host</warn>');
         }

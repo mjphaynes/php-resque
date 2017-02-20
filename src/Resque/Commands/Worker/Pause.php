@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -49,7 +49,7 @@ class Pause extends Command
                 $this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
                 return;
             }
-            
+
             $workers = array($worker);
         } else {
             $workers = Resque\Worker::hostWorkers();

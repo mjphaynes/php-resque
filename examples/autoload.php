@@ -59,11 +59,19 @@ class ExampleAutoloader
             $isJobClass = $job instanceof Job and $job->getClass() == trim($class, ' \\');
 
             if (file_exists($file = __DIR__ . '/' . str_replace('\\', '/', $class) . '.php')) {
-                $isJobClass and $logger->log('Including job ' . $job . ' class ' . $class . ' file ' . $file . ' in pid:' . getmypid(), Logger::DEBUG);
+                $logMessage = sprintf('Including job %s class %s file %s in pid:%s', $job, $class, $file, getmypid());
+                $isJobClass and $logger->log($logMessage, Logger::DEBUG);
 
                 require_once $file;
             } else {
-                $isJobClass and $logger->log('Job ' . $job . ' class ' . $class . ' file was not found, tried: ' . $file . ' in pid:' . getmypid(), Logger::DEBUG);
+                $logMessage = sprintf(
+                    'Job %s class %s file was not found, tried: %s in pid:%s',
+                    $job,
+                    $class,
+                    $file,
+                    getmypid()
+                );
+                $isJobClass and $logger->log($logMessage, Logger::DEBUG);
             }
         });
     }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -93,13 +93,15 @@ class Connector
                     // Tell them the error of their ways
                     $format = str_replace(array('(?:', ')?', '\)'), '', $this->connectionMap[$handler]);
 
-                    $cb = function ($m) {return ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';};
+                    $cb = function ($m) {
+                        return ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
+                    };
                     $format = preg_replace_callback('/\(\?P<([a-z_]+)>(?:.+?)\)/', $cb, $format);
 
                     throw new \InvalidArgumentException('Invalid format "'.$logFormat.'" for "'.$handler.'" handler. Should be of format "'.$format.'"');
                 }
             }
-            
+
             if ($args = $this->matches('~^'.$match.'$~i', $logFormat)) {
                 $connectorClass = new \ReflectionClass('Resque\Logger\Handler\Connector\\'.$connection.'Connector');
                 $connectorClass = $connectorClass->newInstance();
@@ -113,7 +115,7 @@ class Connector
 
         throw new \InvalidArgumentException('Log format "'.$logFormat.'" is invalid');
     }
-    
+
     /**
      * Performs a pattern match on a string and returns just
      * the named matches or false if no match

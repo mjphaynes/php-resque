@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -31,8 +31,11 @@ class CatchOutput extends \Symfony\Component\Console\Output\Output
      * @param Boolean                       $decorated Whether to decorate messages
      * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
      */
-    public function __construct($verbosity = self::VERBOSITY_NORMAL, $decorated = true, OutputFormatterInterface $formatter = null)
-    {
+    public function __construct(
+        $verbosity = self::VERBOSITY_NORMAL,
+        $decorated = true,
+        OutputFormatterInterface $formatter = null
+    ) {
         parent::__construct($verbosity, $decorated, $formatter);
     }
 

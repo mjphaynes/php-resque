@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -49,7 +49,7 @@ class Util
 
         return sprintf($format, $bytes / pow($mod, $power), $units[$power]);
     }
-    
+
     /**
      * Constants for human_time_diff()
      */
@@ -90,11 +90,11 @@ class Util
         } elseif ($diff >= self::YEAR_IN_SECONDS) {
             $since = array(round($diff / self::YEAR_IN_SECONDS), 'year');
         }
-        
+
         if ($since[0] <= 1) {
             $since[0] = 1;
         }
-        
+
         return $since[0].' '.$since[1].($since[0] == 1 ? '' : 's');
     }
 

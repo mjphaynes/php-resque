@@ -12,7 +12,7 @@
  * This is a quick and dirty to give you something visual when getting started
  * with php-resque. Navigate to /path/to/php-resque/examples/ in your browser
  * and you can add some test jobs to see how it all works.
- * 
+ *
  * Note that you will also have to run `/path/to/bin/resque worker:start` from
  * your command line in order for php-resque to process jobs.
  */
@@ -34,7 +34,7 @@ Resque::loadConfig();
 $job = false;
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
-        case 'reset' :
+        case 'reset':
             $redis = Resque\Redis::instance();
             $keys = $redis->keys('*');
             foreach ($keys as $key) {
@@ -43,29 +43,39 @@ if (isset($_GET['action'])) {
             header('Location: ?');
             break;
 
-        case 'push' : $job = Resque::push('HelloWorld', array());
+        case 'push':
+            $job = Resque::push('HelloWorld', array());
             break;
-        case 'delayed' : $job = Resque::later(mt_rand(0, 30), 'HelloWorld', array());
+        case 'delayed':
+            $job = Resque::later(mt_rand(0, 30), 'HelloWorld', array());
             break;
-        case 'delayedat' : $job = Resque::later(new \DateTime('+2 mins'), 'HelloWorld', array());
+        case 'delayedat':
+            $job = Resque::later(new \DateTime('+2 mins'), 'HelloWorld', array());
             break;
-        case 'longrunning' : $job = Resque::push('LongRunning', array());
+        case 'longrunning':
+            $job = Resque::push('LongRunning', array());
             break;
-        case 'failnoclass' : $job = Resque::push('\Does\Not\Exist', array());
+        case 'failnoclass':
+            $job = Resque::push('\Does\Not\Exist', array());
             break;
-        case 'faillong' : $job = Resque::push('FailLong', array());
+        case 'faillong':
+            $job = Resque::push('FailLong', array());
             break;
-        case 'failexception' : $job = Resque::push('FailException', array());
+        case 'failexception':
+            $job = Resque::push('FailException', array());
             break;
-        case 'failerror' : $job = Resque::push('FailError', array());
+        case 'failerror':
+            $job = Resque::push('FailError', array());
             break;
-        case 'closure' : $job = Resque::push(function ($job) {
-                    echo 'This is an inline job! #' . $job->getId() . PHP_EOL;
-                });
+        case 'closure':
+            $job = Resque::push(function ($job) {
+                echo 'This is an inline job! #' . $job->getId() . PHP_EOL;
+            });
             break;
-        case 'closure-delayed' : $job = Resque::later(mt_rand(0, 30), function ($job) {
-                    echo 'This is a delayed inline job! #' . $job->getId() . PHP_EOL;
-                });
+        case 'closure-delayed':
+            $job = Resque::later(mt_rand(0, 30), function ($job) {
+                echo 'This is a delayed inline job! #' . $job->getId() . PHP_EOL;
+            });
             break;
     }
 }
@@ -113,7 +123,10 @@ if (!empty($id)) {
 
 list_jobs('Default queue queued jobs', Resque\Redis::instance()->lrange('queue:default', 0, -1));
 foreach (array('delayed', 'running', 'processed', 'failed', 'cancelled') as $status) {
-    list_jobs('Default queue ' . $status . ' jobs', $djobs = Resque\Redis::instance()->zrevrangebyscore('queue:default:' . $status, strtotime('+1 year'), 0));
+    list_jobs(
+        'Default queue ' . $status . ' jobs',
+        $djobs = Resque\Redis::instance()->zrevrangebyscore('queue:default:' . $status, strtotime('+1 year'), 0)
+    );
 }
 
 function list_jobs($title, $jobs)

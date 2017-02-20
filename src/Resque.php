@@ -108,7 +108,14 @@ class Resque
         }
 
         $baseDir = realpath(dirname($file));
-        $searchDirs = array($baseDir.'/', $baseDir.'/../', $baseDir.'/../../', $baseDir.'/config/', $baseDir.'/../config/', $baseDir.'/../../config/');
+        $searchDirs = array(
+            $baseDir.'/',
+            $baseDir.'/../',
+            $baseDir.'/../../',
+            $baseDir.'/config/',
+            $baseDir.'/../config/',
+            $baseDir.'/../../config/'
+        );
 
         $filename = basename($file);
 

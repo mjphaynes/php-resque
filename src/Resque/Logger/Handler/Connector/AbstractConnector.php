@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -39,8 +39,8 @@ abstract class AbstractConnector implements ConnectorInterface
     }
 
     /**
-     * Replaces all instances of [%host%, %worker%, %pid%, %date%, %time%] 
-     * in logger target key so can be unique log per worker 
+     * Replaces all instances of [%host%, %worker%, %pid%, %date%, %time%]
+     * in logger target key so can be unique log per worker
      *
      * @param  string $string Input string
      * @return string

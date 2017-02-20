@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -49,12 +49,12 @@ class Restart extends Command
                 $this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
                 return;
             }
-            
+
             $workers = array($worker);
         } else {
             $workers = Resque\Worker::hostWorkers();
         }
-        
+
         if (!count($workers)) {
             $this->log('<warn>There are no workers on this host</warn>');
         }
@@ -66,12 +66,12 @@ class Restart extends Command
                 // Failed
                 if ($child == -1) {
                     $this->log('Unable to fork, worker '.$worker.' has been stopped.', Resque\Logger::CRITICAL);
-                    
+
                 // Parent
                 } elseif ($child > 0) {
                     $this->log('Worker <pop>'.$worker.'</pop> restarted.');
                     continue;
-                    
+
                 // Child
                 } else {
                     $new_worker = new Resque\Worker($worker->getQueues(), $worker->getBlocking());
@@ -87,7 +87,7 @@ class Restart extends Command
                 $this->log('Worker <pop>'.$worker.'</pop> <error>could not send TERM signal.</error>');
             }
         }
-        
+
         exit(0);
     }
 }

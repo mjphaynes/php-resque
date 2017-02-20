@@ -217,7 +217,7 @@ class Command extends \Symfony\Component\Console\Command\Command
                 ) {
                     switch ($key) {
                         // Need to make sure the log handlers are in the correct format
-                        case 'log' :
+                        case 'log':
                             $value = array();
                             foreach ((array)$found as $handler => $target) {
                                 $handler = strtolower($handler);
@@ -234,11 +234,11 @@ class Command extends \Symfony\Component\Console\Command\Command
 
                                 $value[] = $handler;
                             }
-                        break;
 
-                        default :
+                            break;
+                        default:
                             $value = $found;
-                        break;
+                            break;
                     }
                 }
             }

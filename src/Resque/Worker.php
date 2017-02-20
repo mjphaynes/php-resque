@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -145,12 +145,12 @@ class Worker
         if (is_null($worker)) {
             return 'workers';
         }
-        
+
         $id = $worker instanceof Worker ? $worker->id : $worker;
 
         return 'worker:'.$id.($suffix ? ':'.$suffix : '');
     }
-    
+
     /**
      * Return a worker from it's ID
      *
@@ -204,7 +204,7 @@ class Worker
     {
         return $this->id;
     }
-    
+
     /**
      * The primary loop for a worker which when called on an instance starts
      * the worker's life cycle.
@@ -228,7 +228,7 @@ class Worker
 
                 Event::fire(Event::WORKER_LOW_MEMORY, $this);
             }
-            
+
             if (!$this->redis->sismember(self::redisKey(), $this->id) or $this->redis->hlen(self::redisKey($this)) == 0) {
                 $this->log('Worker is not in list of workers or packet is corrupt, aborting', Logger::CRITICAL);
                 $this->shutdown();
@@ -241,7 +241,7 @@ class Worker
                 $this->updateProcLine('Worker: shutting down...');
                 break;
             }
-            
+
             if ($this->status == self::STATUS_PAUSED) {
                 $this->log('Worker paused, trying again in '.$this->interval_string(), Logger::INFO);
                 $this->updateProcLine('Worker: paused');
@@ -259,7 +259,7 @@ class Worker
                 sleep($this->interval);
                 continue;
             }
-            
+
             $this->queueDelayed();
 
             if ($this->blocking) {
@@ -270,7 +270,7 @@ class Worker
             }
 
             $job = \Resque::pop($this->resolveQueues(), $this->interval, $this->blocking);
-            
+
             if (!$job instanceof Job) {
                 if (!$this->blocking) {
                     $this->log('Sleeping for '.$this->interval_string(), Logger::INFO);
@@ -341,7 +341,7 @@ class Worker
             $this->doneWorking();
         }
     }
-    
+
     /**
      * Process a single job
      *
@@ -360,24 +360,22 @@ class Worker
         $status = $job->getStatus();
 
         switch ($status) {
-            case Job::STATUS_COMPLETE :
+            case Job::STATUS_COMPLETE:
                 $this->log('Done job <pop>'.$job.'</pop> in <pop>'.$job->execTimeStr().'</pop>', Logger::INFO);
-            break;
-
-            case Job::STATUS_CANCELLED :
+                break;
+            case Job::STATUS_CANCELLED:
                 $this->log('Cancelled job <pop>'.$job.'</pop>', Logger::INFO);
-            break;
+                break;
 
-            case Job::STATUS_FAILED :
+            case Job::STATUS_FAILED:
                 $this->log('Job '.$job.' failed: "'.$job->failError().'" in '.$job->execTimeStr(), Logger::ERROR);
-            break;
-
-            default :
+                break;
+            default:
                 $this->log('Unknown job status "('.gettype($status).')'.$status.'" for <pop>'.$job.'</pop>', Logger::WARNING);
-            break;
+                break;
         }
     }
-    
+
     /**
      * Perform necessary actions to start a worker
      */
@@ -386,7 +384,7 @@ class Worker
         $this->host->cleanup();
         $this->cleanup();
         $this->register();
-        
+
         $cleaned = Job::cleanup($this->queues);
         if ($cleaned['zombie']) {
             $this->log('Failed <pop>'.$cleaned['zombie'].'</pop> zombie job'.($cleaned['zombie'] == 1 ? '' : 's'), Logger::NOTICE);
@@ -399,7 +397,7 @@ class Worker
 
         Event::fire(Event::WORKER_STARTUP, $this);
     }
-    
+
     /**
      * Schedule a worker for shutdown. Will finish processing the current job
      * and when the timeout interval is reached, the worker will shut down.
@@ -410,7 +408,7 @@ class Worker
 
         Event::fire(Event::WORKER_SHUTDOWN, $this);
     }
-    
+
     /**
      * Force an immediate shutdown of the worker, killing any child jobs
      * currently running.
@@ -428,7 +426,7 @@ class Worker
         $this->shutdown();
         $this->killChild();
     }
-    
+
     /**
      * Cancel the currently running job
      */
@@ -440,7 +438,7 @@ class Worker
             throw new Exception\Cancel('Cancel signal received');
         }
     }
-    
+
     /**
      * Kill a forked child job immediately. The job it is processing will not
      * be completed.
@@ -450,7 +448,7 @@ class Worker
         if (is_null($this->child)) {
             return;
         }
-        
+
         if ($this->child === 0) {
             throw new Exception\Shutdown('Job forced shutdown');
         }
@@ -497,7 +495,7 @@ class Worker
             'job_pid'      => 0,
             'job_started'  => 0
         ));
-        
+
         if (function_exists('pcntl_signal')) {
             $this->log('Registering sig handlers for worker '.$this, Logger::DEBUG);
 
@@ -540,14 +538,14 @@ class Worker
             $this->job->fail(new Exception\Cancel);
             $this->log('Failing running job <pop>'.$this->job.'</pop>', Logger::NOTICE);
         }
-        
+
         $this->log('Unregistering worker <pop>'.$this.'</pop>', Logger::NOTICE);
 
         $this->redis->srem(self::redisKey(), $this->id);
         $this->redis->expire(self::redisKey($this), \Resque::getConfig('default.expiry_time', \Resque::DEFAULT_EXPIRY_TIME));
 
         $this->host->finished($this);
-        
+
         // Remove pid file if one set
         if (!is_null($this->pidFile) and getmypid() === (int)trim(file_get_contents($this->pidFile))) {
             unlink($this->pidFile);
@@ -555,24 +553,30 @@ class Worker
 
         Event::fire(Event::WORKER_UNREGISTER, $this);
     }
-    
+
     /**
      * Signal handler callback for TERM or INT, forces shutdown of worker
-     * 
+     *
      * @param int $sig Signal that was sent
      */
     public function sigForceShutdown($sig)
     {
         switch ($sig) {
-            case SIGTERM : $sig = 'TERM';break;
-            case SIGINT  : $sig = 'INT';break;
-            default      : $sig = 'Unknown';break;
+            case SIGTERM:
+                $sig = 'TERM';
+                break;
+            case SIGINT:
+                $sig = 'INT';
+                break;
+            default:
+                $sig = 'Unknown';
+                break;
         }
 
         $this->log($sig.' received; force shutdown worker', Logger::DEBUG);
         $this->forceShutdown();
     }
-    
+
     /**
      * Signal handler callback for QUIT, shutdown the worker.
      */
@@ -581,7 +585,7 @@ class Worker
         $this->log('QUIT received; shutdown worker', Logger::DEBUG);
         $this->shutdown();
     }
-    
+
     /**
      * Signal handler callback for USR1, cancel current job.
      */
@@ -590,7 +594,7 @@ class Worker
         $this->log('USR1 received; cancel current job', Logger::DEBUG);
         $this->cancelJob();
     }
-    
+
     /**
      * Signal handler callback for USR2, pauses processing of new jobs.
      */
@@ -609,7 +613,7 @@ class Worker
         $this->log('CONT received; resuming job processing', Logger::DEBUG);
         $this->setStatus(self::STATUS_RUNNING);
     }
-    
+
     /**
      * Signal handler for SIGPIPE, in the event the Redis connection has gone away.
      * Attempts to reconnect to Redis, or raises an Exception.
@@ -655,17 +659,15 @@ class Worker
         ));
 
         switch ($this->job->getStatus()) {
-            case Job::STATUS_COMPLETE :
+            case Job::STATUS_COMPLETE:
                 $this->redis->hincrby(self::redisKey($this), 'processed', 1);
-            break;
-
-            case Job::STATUS_CANCELLED :
+                break;
+            case Job::STATUS_CANCELLED:
                 $this->redis->hincrby(self::redisKey($this), 'cancelled', 1);
-            break;
-
-            case Job::STATUS_FAILED :
+                break;
+            case Job::STATUS_FAILED:
                 $this->redis->hincrby(self::redisKey($this), 'failed', 1);
-            break;
+                break;
         }
 
         $this->job = null;
@@ -698,17 +700,17 @@ class Worker
         $this->status = $status;
 
         switch ($status) {
-            case self::STATUS_NEW : break;
-
-            case self::STATUS_RUNNING :
+            case self::STATUS_NEW:
+                break;
+            case self::STATUS_RUNNING:
                 if ($oldstatus != self::STATUS_NEW) {
                     Event::fire(Event::WORKER_RESUME, $this);
                 }
-            break;
 
-            case self::STATUS_PAUSED :
+                break;
+            case self::STATUS_PAUSED:
                 Event::fire(Event::WORKER_PAUSE, $this);
-            break;
+                break;
         }
     }
 
@@ -736,7 +738,7 @@ class Worker
 
         return $queues;
     }
-    
+
     /**
      * Find any delayed jobs and add them to the queue if found
      *
@@ -804,13 +806,18 @@ class Worker
             $cleaned[] = (string)$worker;
         }
 
-        $workerIds = array_map(function ($w) {return (string)$w;}, $workers);
+        $workerIds = array_map(
+            function ($w) {
+                return (string)$w;
+            },
+            $workers
+        );
         $keys = (array)$this->redis->keys('worker:'.$this->host.':*');
 
         foreach ($keys as $key) {
             $key = $this->redis->removeNamespace($key);
             $id = substr($key, strlen('worker:'));
-            
+
             if (!in_array($id, $workerIds)) {
                 if ($this->redis->ttl($key) < 0) {
                     $this->log('Expiring worker data: '.$key, Logger::DEBUG);
@@ -821,13 +828,13 @@ class Worker
         }
 
         Event::fire(Event::WORKER_CLEANUP, array($this, $cleaned));
-        
+
         return $cleaned;
     }
 
     /**
      * Return all known workers
-     * 
+     *
      * @return array
      */
     public static function allWorkers(Logger $logger = null)
@@ -835,7 +842,7 @@ class Worker
         if (!($ids = Redis::instance()->smembers(self::redisKey()))) {
             return array();
         }
-        
+
         $workers = array();
         foreach ($ids as $id) {
             if (($worker = self::fromId($id, $logger)) !== false) {
@@ -863,7 +870,7 @@ class Worker
                 return $worker;
             }
         }
-        
+
         return false;
     }
 
@@ -879,7 +886,7 @@ class Worker
         if (!($ids = Redis::instance()->smembers(self::redisKey()))) {
             return array();
         }
-        
+
         $host = $host ?: (function_exists('gethostname') ? gethostname() : php_uname('n'));
 
         $workers = array();
@@ -997,7 +1004,7 @@ class Worker
         if (!is_dir($dir)) {
             throw new \RuntimeException('The pid file directory "'.$dir.'" does not exist');
         }
-        
+
         if (!is_writeable($dir)) {
             throw new \RuntimeException('The pid file directory "'.$dir.'" is not writeable');
         }
@@ -1068,7 +1075,7 @@ class Worker
         if ($this->logger !== null) {
             return call_user_func_array(array($this->logger, 'log'), func_get_args());
         }
-        
+
         return false;
     }
 
@@ -1208,11 +1215,11 @@ class Worker
     /**
      * On supported systems, update the name of the currently running process
      * to indicate the current state of a worker.
-     * 
+     *
      * supported systems are
      * - PHP Version < 5.5.0 with the PECL proctitle module installed
      * - PHP Version >= 5.5.0 using built in method
-     * 
+     *
      * @param string $status The updated process title.
      */
     protected function updateProcLine($status)
@@ -1222,12 +1229,12 @@ class Worker
             cli_set_process_title($status);
             return;
         }
-        
+
         if (function_exists('setproctitle')) {
             setproctitle($status);
         }
     }
-    
+
     /**
      * Creates process title string from current version and status of worker
      */
@@ -1254,7 +1261,7 @@ class Worker
 
         return $percent > 0.999;
     }
-    
+
     /**
      * Returns formatted interval string
      *
