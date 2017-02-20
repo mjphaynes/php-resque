@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -13,10 +13,12 @@
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class FailLong {
-	
-	public function perform($args) {
-		for (;;);
-	}
-	
+class FailLong
+{
+    public function perform($args)
+    {
+        while (true) {
+            // loop forever (until the timeout is reached)
+        }
+    }
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -13,9 +13,13 @@
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class FailError {
-	
-	public function perform($args) {
-	}}
+class FailError
+{
+    // @codingStandardsIgnoreStart
+    public function perform($args)
+    {
+        }
 
+    }
+    // @codingStandardsIgnoreEnd
 }

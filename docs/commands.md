@@ -1,5 +1,5 @@
 [php-resque](https://github.com/mjphaynes/php-resque)
-===========================================
+===
 
 php-resque (pronounced like "rescue") is a Redis-backed library for creating
 background jobs, placing those jobs on multiple queues, and processing them later.
@@ -61,6 +61,7 @@ There are some options that can be used for any command:
 * `events`    - Outputs all events to the console, for debugging.
 
 And here are the command specific options:
+
 * `worker:start`
     * `queue`          - The queue(s) to listen on, comma separated.
     * `blocking`       - Use Redis pop blocking or time interval.
@@ -69,40 +70,40 @@ And here are the command specific options:
     * `memory`         - The memory limit in megabytes.
     * `pid`            - Absolute path to PID file, must be writeable by worker.
 * `worker:stop`
-	* `id`             - The id of the worker to stop (optional; if not present stops all workers).
-	* `force`          - Force worker to stop, cancelling any current job.
+    * `id`             - The id of the worker to stop (optional; if not present stops all workers).
+    * `force`          - Force worker to stop, cancelling any current job.
 * `worker:cancel`
-	* `id`             - The id of the worker to cancel it's running job (optional; if not present cancels all workers).
+    * `id`             - The id of the worker to cancel it's running job (optional; if not present cancels all workers).
 * `worker:pause`
-	* `id`             - The id of the worker to pause (optional; if not present pauses all workers).
+    * `id`             - The id of the worker to pause (optional; if not present pauses all workers).
 * `worker:resume`
-	* `id`             - The id of the worker to resume (optional; if not present resumes all workers).
+    * `id`             - The id of the worker to resume (optional; if not present resumes all workers).
 * `worker:restart`
-	* `id`             - The id of the worker to restart (optional; if not present restarts all workers).
+    * `id`             - The id of the worker to restart (optional; if not present restarts all workers).
 * `job:queue`
-	* `job`            - The job to run.
-	* `args`           - The arguments to send with the job.
-	* `queue`          - The queue to add the job to.
-	* `delay`          - The amount of time or a unix time to delay execution of job till.
+    * `job`            - The job to run.
+    * `args`           - The arguments to send with the job.
+    * `queue`          - The queue to add the job to.
+    * `delay`          - The amount of time or a unix time to delay execution of job till.
 * `clear`
-	* `force`          - Force without asking.
+    * `force`          - Force without asking.
 * `socket:connect`
-	* `connecthost`    - The host to connect to.
-	* `connectport`    - The port to connect to.
-	* `connecttimeout` - The connection timeout time (seconds).
+    * `connecthost`    - The host to connect to.
+    * `connectport`    - The port to connect to.
+    * `connecttimeout` - The connection timeout time (seconds).
 * `socket:receive`
-	* `listenhost`     - The host to listen on.
-	* `listenport`     - The port to listen on.
-	* `listenretry`    - If can't bind address or port then retry every <timeout> seconds until it can.
-	* `listentimeout`  - The retry timeout time (seconds).
+    * `listenhost`     - The host to listen on.
+    * `listenport`     - The port to listen on.
+    * `listenretry`    - If can't bind address or port then retry every <timeout> seconds until it can.
+    * `listentimeout`  - The retry timeout time (seconds).
 * `socket:send`
-	* `cmd`            - The command to send to the receiver.
-	* `id`             - The id of the worker (optional; required for worker: commands).
-	* `connecthost`    - The host to send to.
-	* `connectport`    - The port to send on.
-	* `connecttimeout` - The send request timeout time (seconds).
-	* `force`          - Force the command.
-	* `json`           - Whether to return the response in JSON format.
+    * `cmd`            - The command to send to the receiver.
+    * `id`             - The id of the worker (optional; required for worker: commands).
+    * `connecthost`    - The host to send to.
+    * `connectport`    - The port to send on.
+    * `connecttimeout` - The send request timeout time (seconds).
+    * `force`          - Force the command.
+    * `json`           - Whether to return the response in JSON format.
 
 
 ---

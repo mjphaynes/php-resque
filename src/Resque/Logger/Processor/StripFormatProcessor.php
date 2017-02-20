@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -18,67 +18,69 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class StripFormatProcessor {
+class StripFormatProcessor
+{
 
-	/**
-	 * @var Command  command instance
-	 */
-	protected $command;
+    /**
+     * @var Command  command instance
+     */
+    protected $command;
 
-	/**
-	 * @var InputInterface  input instance
-	 */
-	protected $input;
+    /**
+     * @var InputInterface  input instance
+     */
+    protected $input;
 
-	/**
-	 * @var OutputInterface  output instance
-	 */
-	protected $output;
+    /**
+     * @var OutputInterface  output instance
+     */
+    protected $output;
 
-	/**
-	 * @var array  list of formatting tags to strip out
-	 */
-	private $stripTags = array(
-		'info',
-		'notice',
-		'warning',
-		'debug',
-		'error',
-		'critical',
-		'alert',
-		'emergency',
-		'pop',
-		'warn',
-		'comment',
-		'question'
-	);
-	
-	/**
-	 * Creates a new instance
-	 */
-	public function __construct(Command $command, InputInterface $input, OutputInterface $output) {
-		$this->command = $command;
-		$this->input   = $input;
-		$this->output  = $output;
-	}
+    /**
+     * @var array  list of formatting tags to strip out
+     */
+    private $stripTags = array(
+        'info',
+        'notice',
+        'warning',
+        'debug',
+        'error',
+        'critical',
+        'alert',
+        'emergency',
+        'pop',
+        'warn',
+        'comment',
+        'question'
+    );
 
-	/**
-	 * @param  array $record
-	 * @return array
-	 */
-	public function __invoke(array $record) {
-		static $find = array();
-		
-		if (empty($find)) {
-			foreach ($this->stripTags as $tag) {
-				$find[] = '<'.$tag.'>';
-				$find[] = '</'.$tag.'>';
-			}
-		}
+    /**
+     * Creates a new instance
+     */
+    public function __construct(Command $command, InputInterface $input, OutputInterface $output)
+    {
+        $this->command = $command;
+        $this->input   = $input;
+        $this->output  = $output;
+    }
 
-		$record['message'] = str_replace($find, '', $record['message']);
+    /**
+     * @param  array $record
+     * @return array
+     */
+    public function __invoke(array $record)
+    {
+        static $find = array();
 
-		return $record;
-	}
+        if (empty($find)) {
+            foreach ($this->stripTags as $tag) {
+                $find[] = '<'.$tag.'>';
+                $find[] = '</'.$tag.'>';
+            }
+        }
 
+        $record['message'] = str_replace($find, '', $record['message']);
+
+        return $record;
+    }
 }

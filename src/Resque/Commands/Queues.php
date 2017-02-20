@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -22,43 +22,45 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Queues extends Command {
+class Queues extends Command
+{
 
-	protected function configure() {
-		$this->setName('queues')
-			->setDefinition($this->mergeDefinitions(array(
-			)))
-			->setDescription('Get queue statistics')
-			->setHelp('Get queue statistics')
-		;
-	}
+    protected function configure()
+    {
+        $this->setName('queues')
+            ->setDefinition($this->mergeDefinitions(array(
+            )))
+            ->setDescription('Get queue statistics')
+            ->setHelp('Get queue statistics')
+        ;
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$queues = Resque\Redis::instance()->smembers('queues');
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $queues = Resque\Redis::instance()->smembers('queues');
 
-		if (empty($queues)) {
-			$this->log('<warn>There are no queues.</warn>');
-			return;
-		}
+        if (empty($queues)) {
+            $this->log('<warn>There are no queues.</warn>');
+            return;
+        }
 
-		$table = new Resque\Helpers\Table($this);
-		$table->setHeaders(array('#', 'Name', 'Queued', 'Delayed', 'Processed', 'Failed', 'Cancelled', 'Total'));
+        $table = new Resque\Helpers\Table($this);
+        $table->setHeaders(array('#', 'Name', 'Queued', 'Delayed', 'Processed', 'Failed', 'Cancelled', 'Total'));
 
-		foreach ($queues as $i => $queue) {
-			$stats = Resque\Redis::instance()->hgetall(Resque\Queue::redisKey($queue, 'stats'));
+        foreach ($queues as $i => $queue) {
+            $stats = Resque\Redis::instance()->hgetall(Resque\Queue::redisKey($queue, 'stats'));
 
-			$table->addRow(array(
-				$i + 1, $queue,
-				(int)@$stats['queued'],
-				(int)@$stats['delayed'],
-				(int)@$stats['processed'],
-				(int)@$stats['failed'],
-				(int)@$stats['cancelled'],
-				(int)@$stats['total']
-			));
-		}
-		
-		$this->log((string)$table);
-	}
+            $table->addRow(array(
+                $i + 1, $queue,
+                (int)@$stats['queued'],
+                (int)@$stats['delayed'],
+                (int)@$stats['processed'],
+                (int)@$stats['failed'],
+                (int)@$stats['cancelled'],
+                (int)@$stats['total']
+            ));
+        }
 
+        $this->log((string)$table);
+    }
 }

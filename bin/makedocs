@@ -1,24 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 
 BINDIR=$(cd `dirname "$0"` && pwd)
 TOPDIR=$(dirname $BINDIR)
 
 if [[ ! -f $TOPDIR/vendor/sami/sami/sami.php ]]; then
-	echo "You need to set up the project dependencies using the following commands:"
-	echo "$ curl -s http://getcomposer.org/installer | php"
-	echo "$ php composer.phar install"
-	exit 1;
+    echo "You need to set up the project dependencies using the following commands:"
+    echo "$ curl -s http://getcomposer.org/installer | php"
+    echo "$ php composer.phar install"
+    exit 1;
 fi
 
 parse_git_dirty () {
-	[[ $(git status 2> /dev/null | tail -n1 | sed -E "s/nothing to commit..working directory clean.?/1/") != "1" ]] && echo 1
+    [[ $(git status 2> /dev/null | tail -n1 | sed -E "s/nothing to commit..working directory clean.?/1/") != "1" ]] && echo 1
 }
 
 DIRTY_BRANCH=$(parse_git_dirty)
 
 if [[ $DIRTY_BRANCH == 1 ]]; then
-	echo "\033[31mCommit changes before generating documenation\033[0m"
-	exit 1
+    echo "ERROR: Commit changes before generating documenation"
+    exit 1
 fi
 
 php $TOPDIR/vendor/sami/sami/sami.php update $TOPDIR/docs/api/config.php --force -vvv

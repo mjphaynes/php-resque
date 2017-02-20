@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -19,22 +19,23 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class AmqpConnector extends AbstractConnector {
+class AmqpConnector extends AbstractConnector
+{
 
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		$options = array_merge(array(
-			'host'     => 'localhost',
-			'port'     => 5763,
-			'login'    => null,
-			'password' => null,
-		), $args);
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        $options = array_merge(array(
+            'host'     => 'localhost',
+            'port'     => 5763,
+            'login'    => null,
+            'password' => null,
+        ), $args);
 
-		$conn = new \AMQPConnection($options);
-		$conn->connect();
+        $conn = new \AMQPConnection($options);
+        $conn->connect();
 
-		$channel = new \AMQPChannel($conn);
+        $channel = new \AMQPChannel($conn);
 
-		return new AmqpHandler(new \AMQPExchange($channel), $this->replacePlaceholders($args['name']));
-	}
-
+        return new AmqpHandler(new \AMQPExchange($channel), $this->replacePlaceholders($args['name']));
+    }
 }

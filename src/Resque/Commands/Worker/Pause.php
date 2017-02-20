@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -22,49 +22,49 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Pause extends Command {
+class Pause extends Command
+{
 
-	protected function configure() {
-		$this->setName('worker:pause')
-			->setDefinition($this->mergeDefinitions(array(
-				new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to pause (optional; if not present pauses all workers).'),
-			)))
-			->setDescription('Pause a running worker. If no worker id set then pauses all workers')
-			->setHelp('Pause a running worker. If no worker id set then pauses all workers')
-		;
-	}
+    protected function configure()
+    {
+        $this->setName('worker:pause')
+            ->setDefinition($this->mergeDefinitions(array(
+                new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to pause (optional; if not present pauses all workers).'),
+            )))
+            ->setDescription('Pause a running worker. If no worker id set then pauses all workers')
+            ->setHelp('Pause a running worker. If no worker id set then pauses all workers')
+        ;
+    }
 
-	protected function execute(InputInterface $input, OutputInterface $output) {
-		$id = $input->getArgument('id');
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $id = $input->getArgument('id');
 
-		// Do a cleanup
-		$worker = new Resque\Worker('*');
-		$worker->cleanup();
+        // Do a cleanup
+        $worker = new Resque\Worker('*');
+        $worker->cleanup();
 
-		if ($id) {
-			if (false === ($worker = Resque\Worker::hostWorker($id))) {
-				$this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
-				return;
-			}
-			
-			$workers = array($worker);
+        if ($id) {
+            if (false === ($worker = Resque\Worker::hostWorker($id))) {
+                $this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
+                return;
+            }
 
-		} else {
-			$workers = Resque\Worker::hostWorkers();
-		}
+            $workers = array($worker);
+        } else {
+            $workers = Resque\Worker::hostWorkers();
+        }
 
-		if (!count($workers)) {
-			$this->log('<warn>There are no workers on this host.<warn>');
-		}
+        if (!count($workers)) {
+            $this->log('<warn>There are no workers on this host.<warn>');
+        }
 
-		foreach ($workers as $worker) {
-			if (posix_kill($worker->getPid(), SIGUSR2)) {
-				$this->log('Worker <pop>'.$worker.'</pop> USR2 signal sent.');
-
-			} else {
-				$this->log('Worker <pop>'.$worker.'</pop> <error>could not send USR2 signal.</error>');
-			}
-		}
-	}
-
+        foreach ($workers as $worker) {
+            if (posix_kill($worker->getPid(), SIGUSR2)) {
+                $this->log('Worker <pop>'.$worker.'</pop> USR2 signal sent.');
+            } else {
+                $this->log('Worker <pop>'.$worker.'</pop> <error>could not send USR2 signal.</error>');
+            }
+        }
+    }
 }

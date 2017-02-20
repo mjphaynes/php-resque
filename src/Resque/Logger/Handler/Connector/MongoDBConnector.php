@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -19,21 +19,21 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class MongoDBConnector extends AbstractConnector {
+class MongoDBConnector extends AbstractConnector
+{
 
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		$mongodb = null;
-		$dsn     = strtr('mongodb://host:port', $args);
-		$options = array();
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        $mongodb = null;
+        $dsn     = strtr('mongodb://host:port', $args);
+        $options = array();
 
-		if (class_exists('MongoClient')) {
-			$mongodb = new \MongoClient($dsn, $options);
+        if (class_exists('MongoClient')) {
+            $mongodb = new \MongoClient($dsn, $options);
+        } elseif (class_exists('Mongo')) {
+            $mongodb = new \Mongo($dsn, $options);
+        }
 
-		} elseif (class_exists('Mongo')) {
-			$mongodb = new \Mongo($dsn, $options);
-		}
-
-		return new MongoDBHandler($mongodb, $this->replacePlaceholders($args['dbname']), $this->replacePlaceholders($args['collection']));
-	}
-
+        return new MongoDBHandler($mongodb, $this->replacePlaceholders($args['dbname']), $this->replacePlaceholders($args['collection']));
+    }
 }

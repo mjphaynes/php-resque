@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -14,6 +14,6 @@ namespace Resque\Socket;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Exception extends \Exception {
-
+class Exception extends \Exception
+{
 }

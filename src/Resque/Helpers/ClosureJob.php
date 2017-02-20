@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * This file is part of the php-resque package.
  *
@@ -14,18 +14,19 @@ namespace Resque\Helpers;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class ClosureJob {
+class ClosureJob
+{
 
-	/**
-	 * Fire the Closure based queue job.
-	 *
-	 * @param  array  $data
-	 * @param  \Resque\Job  $job
-	 * @return void
-	 */
-	public function perform($data, $job) {
-		$closure = unserialize($data['closure']);
-		$closure($job);
-	}
-
+    /**
+     * Fire the Closure based queue job.
+     *
+     * @param  array  $data
+     * @param  \Resque\Job  $job
+     * @return void
+     */
+    public function perform($data, $job)
+    {
+        $closure = unserialize($data['closure']);
+        $closure($job);
+    }
 }
