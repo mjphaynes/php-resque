@@ -84,12 +84,13 @@ class Resque
         self::readConfigFile($file);
 
         Redis::setConfig(array(
-            'scheme'    => static::getConfig('redis.scheme', Redis::DEFAULT_SCHEME),
-            'host'      => static::getConfig('redis.host', Redis::DEFAULT_HOST),
-            'port'      => static::getConfig('redis.port', Redis::DEFAULT_PORT),
-            'namespace' => static::getConfig('redis.namespace', Redis::DEFAULT_NS),
-            'password'  => static::getConfig('redis.password', Redis::DEFAULT_PASSWORD),
-            'phpiredis' => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS)
+            'scheme'     => static::getConfig('redis.scheme', Redis::DEFAULT_SCHEME),
+            'host'       => static::getConfig('redis.host', Redis::DEFAULT_HOST),
+            'port'       => static::getConfig('redis.port', Redis::DEFAULT_PORT),
+            'namespace'  => static::getConfig('redis.namespace', Redis::DEFAULT_NS),
+            'password'   => static::getConfig('redis.password', Redis::DEFAULT_PASSWORD),
+            'rw_timeout' => static::getConfig('redis.rw_timeout', Redis::DEFAULT_RW_TIMEOUT),
+            'phpiredis'  => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS)
         ));
 
         return true;

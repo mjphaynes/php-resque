@@ -46,6 +46,11 @@ class Redis
     const DEFAULT_PASSWORD = null;
 
     /**
+     * Default Redis Read Write Timeout
+     */
+    const DEFAULT_RW_TIMEOUT = 60;
+
+    /**
     * Default Redis option for using phpiredis or not
     */
     const DEFAULT_PHPIREDIS = false;
@@ -54,12 +59,13 @@ class Redis
      * @var array Default configuration
      */
     protected static $config = array(
-        'scheme'    => self::DEFAULT_SCHEME,
-        'host'      => self::DEFAULT_HOST,
-        'port'      => self::DEFAULT_PORT,
-        'namespace' => self::DEFAULT_NS,
-        'password'  => self::DEFAULT_PASSWORD,
-        'phpiredis' => self::DEFAULT_PHPIREDIS
+        'scheme'     => self::DEFAULT_SCHEME,
+        'host'       => self::DEFAULT_HOST,
+        'port'       => self::DEFAULT_PORT,
+        'namespace'  => self::DEFAULT_NS,
+        'password'   => self::DEFAULT_PASSWORD,
+        'rw_timeout' => self::DEFAULT_RW_TIMEOUT,
+        'phpiredis'  => self::DEFAULT_PHPIREDIS
     );
 
     /**
@@ -196,6 +202,11 @@ class Redis
         // setup password
         if (!empty($config['password'])) {
             $params['password'] = $config['password'];
+        }
+
+        // setup read/write timeout
+        if (!empty($config['rw_timeout'])) {
+            $params['read_write_timeout'] = $config['rw_timeout'];
         }
 
         // setup predis client options
