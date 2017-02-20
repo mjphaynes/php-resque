@@ -20,14 +20,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class ConsoleConnector extends AbstractConnector {
+class ConsoleConnector extends AbstractConnector
+{
 
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		return new ConsoleHandler($output);
-	}
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        return new ConsoleHandler($output);
+    }
 
-	public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		return new ConsoleProcessor($command, $input, $output);
-	}
-
+    public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        return new ConsoleProcessor($command, $input, $output);
+    }
 }

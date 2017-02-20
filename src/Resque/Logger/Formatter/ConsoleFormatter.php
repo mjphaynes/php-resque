@@ -16,20 +16,21 @@ use Monolog\Formatter\LineFormatter;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class ConsoleFormatter extends LineFormatter {
+class ConsoleFormatter extends LineFormatter
+{
 
-	const SIMPLE_FORMAT = "%start_tag%%message%%end_tag%\n";
+    const SIMPLE_FORMAT = "%start_tag%%message%%end_tag%\n";
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function format(array $record) {
-		$tag = strtolower($record['level_name']);
+    /**
+     * {@inheritdoc}
+     */
+    public function format(array $record)
+    {
+        $tag = strtolower($record['level_name']);
 
-		$record['start_tag'] = '<'.$tag.'>';
-		$record['end_tag']   = '</'.$tag.'>';
+        $record['start_tag'] = '<'.$tag.'>';
+        $record['end_tag']   = '</'.$tag.'>';
 
-		return parent::format($record);
-	}
-
+        return parent::format($record);
+    }
 }

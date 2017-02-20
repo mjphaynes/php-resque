@@ -19,10 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class SocketConnector extends AbstractConnector {
+class SocketConnector extends AbstractConnector
+{
 
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		return new SocketHandler($this->replacePlaceholders($args['connection']));
-	}
-
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        return new SocketHandler($this->replacePlaceholders($args['connection']));
+    }
 }

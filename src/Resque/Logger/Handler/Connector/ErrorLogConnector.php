@@ -19,10 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class ErrorLogConnector extends AbstractConnector {
+class ErrorLogConnector extends AbstractConnector
+{
 
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		return new ErrorLogHandler($args['type']);
-	}
-
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        return new ErrorLogHandler($args['type']);
+    }
 }

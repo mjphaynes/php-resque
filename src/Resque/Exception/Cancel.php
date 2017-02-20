@@ -14,6 +14,6 @@ namespace Resque\Exception;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Cancel extends \Exception {
-
+class Cancel extends \Exception
+{
 }

@@ -19,10 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class StreamConnector extends AbstractConnector {
+class StreamConnector extends AbstractConnector
+{
 
-	public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args) {
-		return new StreamHandler($this->replacePlaceholders($args['stream']));
-	}
-
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    {
+        return new StreamHandler($this->replacePlaceholders($args['stream']));
+    }
 }

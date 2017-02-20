@@ -13,10 +13,10 @@
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class FailException {
-	
-	public function perform($args) {
-		throw new \Exception('Testing exception handling');
-	}
-	
+class FailException
+{
+    public function perform($args)
+    {
+        throw new \Exception('Testing exception handling');
+    }
 }

@@ -14,6 +14,6 @@ namespace Resque\Socket;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Exception extends \Exception {
-
+class Exception extends \Exception
+{
 }

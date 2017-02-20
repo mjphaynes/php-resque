@@ -1,14 +1,22 @@
 <?php
+/**
+ * This file is part of the php-resque package.
+ *
+ * (c) Michael Haynes <mike@mjphaynes.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use Sami\Sami;
 use Symfony\Component\Finder\Finder;
 use Sami\Version\GitVersionCollection;
 
-define('RESQUE_DIR', realpath(__DIR__.'/../../'));
+define('RESQUE_DIR', realpath(__DIR__ . '/../../'));
 
 $iterator = Finder::create()
     ->files()
     ->name('*.php')
-    ->in($dir = RESQUE_DIR.'/src')
+    ->in($dir = RESQUE_DIR . '/src')
 ;
 
 $versions = GitVersionCollection::create($dir)
@@ -19,12 +27,12 @@ $versions = GitVersionCollection::create($dir)
 ;
 
 return new Sami($iterator, array(
-	'theme'                => 'enhanced',
-	'title'                => 'php-resque',
+    'theme'                => 'enhanced',
+    'title'                => 'php-resque',
     'versions'             => $versions,
-	'build_dir'            => RESQUE_DIR.'/docs/api/%version%',
-	'cache_dir'            => RESQUE_DIR.'/docs/api/%version%/.cache',
-	'simulate_namespaces'  => false,
-	'include_parent_data'  => true,
-	'default_opened_level' => 1,
+    'build_dir'            => RESQUE_DIR.'/docs/api/%version%',
+    'cache_dir'            => RESQUE_DIR.'/docs/api/%version%/.cache',
+    'simulate_namespaces'  => false,
+    'include_parent_data'  => true,
+    'default_opened_level' => 1,
 ));

@@ -17,6 +17,7 @@ include: examples/autoload.php  # A file to include on each command
 #     host: 127.0.0.1     # The hostname to connect to
 #     port: 6379          # The port to connect to
 #     namespace: resque   # The key prefix in Redis
+#     phpiredis: false    # Should use phpiredis php extension (must be installed)
 
 
 # default:

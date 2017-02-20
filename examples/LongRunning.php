@@ -13,11 +13,11 @@
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class LongRunning {
-	
-	public function perform($args) {
-		sleep(30);
-		echo 'Done.';
-	}
-	
+class LongRunning
+{
+    public function perform($args)
+    {
+        sleep(30);
+        echo 'Done.';
+    }
 }
