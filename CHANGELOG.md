@@ -1,18 +1,18 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-- Change code style to PSR-2 (PR [#25](https://github.com/mjphaynes/php-resque/pull/25))
 - Update required Symfony components to 2.7+ or 3.x
 - Update required Predis version to 1.1.x
+- Change worker wait log level from INFO to DEBUG(Commit [4915d51](https://github.com/mjphaynes/php-resque/commit/4915d51ca2593a743cecbab9597ad6a1314bdbed))
+- Add option to allow phpiredis support (Commit [4e22e0fb](https://github.com/mjphaynes/php-resque/commit/4e22e0fb31d8658c2a1ef73a5a44c927fd88d55c))
+- Change code style to PSR-2 (PR [#25](https://github.com/mjphaynes/php-resque/pull/25))
 - Fix closures with whitespace in their declaration (Issue [#30](https://github.com/mjphaynes/php-resque/issues/30))
 - Fix job stability by reconnecting to redis after forking (Commit [cadfb09e](https://github.com/mjphaynes/php-resque/commit/cadfb09e81152cf902ef7f20e6883d29e6d1373b))
 - Fix crash if the status is not set (Commit [cadfb09e](https://github.com/mjphaynes/php-resque/commit/cadfb09e81152cf902ef7f20e6883d29e6d1373b))
-- Add option to allow phpiredis support (Commit [4e22e0fb](https://github.com/mjphaynes/php-resque/commit/4e22e0fb31d8658c2a1ef73a5a44c927fd88d55c))
-- Change worker wait log level from DEBUG from INFO (Commit [4915d51](https://github.com/mjphaynes/php-resque/commit/4915d51ca2593a743cecbab9597ad6a1314bdbed))
 - Improve code style to increase PSR-2 compliance (Commit [36daf9a](https://github.com/mjphaynes/php-resque/commit/36daf9a23128e75eab15522ecc595ece8e4b6874))
 - Add this changelog!
 
