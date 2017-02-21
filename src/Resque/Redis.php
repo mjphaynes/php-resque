@@ -199,14 +199,14 @@ class Redis
         }
 
         // setup predis client options
-        $options = [];
+        $options = array();
         if (!empty($config['phpiredis'])) {
-            $options = [
-                'connections' => [
+            $options = array(
+                'connections' => array(
                     'tcp'  => 'Predis\Connection\PhpiredisStreamConnection',
                     'unix' => 'Predis\Connection\PhpiredisSocketConnection'
-                ],
-            ];
+                ),
+            );
         }
 
         // create Predis client
