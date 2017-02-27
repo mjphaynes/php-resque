@@ -47,7 +47,7 @@ class Redis {
 	/**
 	 * Default Redis Read Write Timeout
 	 */
-	const DEFAULT_RW_TIMEOUT = 300;
+	const DEFAULT_RW_TIMEOUT = 60;
 
 	/**
 	 * @var array Default configuration
