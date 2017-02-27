@@ -227,7 +227,8 @@ class Job
      */
     public function __toString()
     {
-        return sprintf('%s:%s#%s(%s)',
+        return sprintf(
+            '%s:%s#%s(%s)',
             $this->queue,
             $this->class,
             $this->id,
@@ -576,7 +577,7 @@ class Job
     public function getStatus()
     {
         if ($packet = $this->getPacket()) {
-            if(isset($packet['status'])) {
+            if (isset($packet['status'])) {
                 return (int)$packet['status'];
             }
         }

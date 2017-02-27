@@ -92,18 +92,18 @@ class Redis
     }
 
     /**
-     * @var \Predis\Client  The Predis instance
+     * @var \Predis\Client The Predis instance
      */
     protected $redis;
 
     /**
-     * @var string  Redis namespace
+     * @var string Redis namespace
      */
     protected $namespace;
 
     /**
      * @var array List of all commands in Redis that supply a key as their
-     *	first argument. Used to prefix keys with the Resque namespace.
+     * first argument. Used to prefix keys with the Resque namespace.
      */
     protected $keyCommands = array(
         'exists',
