@@ -85,7 +85,7 @@ class Resque {
 			'port'      => static::getConfig('redis.port', Redis::DEFAULT_PORT),
 			'namespace' => static::getConfig('redis.namespace', Redis::DEFAULT_NS),
 			'password'  => static::getConfig('redis.password', Redis::DEFAULT_PASSWORD),
-			'read_write_timeout'  => static::getConfig('redis.read_write_timeout', Redis::DEFAULT_RW_TIMEOUT),
+			'rw_timeout' => static::getConfig('redis.rw_timeout', Redis::DEFAULT_RW_TIMEOUT),
 		));
 
 		return true;

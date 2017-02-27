@@ -58,7 +58,7 @@ class Redis {
 		'port'      => self::DEFAULT_PORT,
 		'namespace' => self::DEFAULT_NS,
 		'password'  => self::DEFAULT_PASSWORD,
-		'read_write_timeout' => self::DEFAULT_RW_TIMEOUT,
+		'rw_timeout' => self::DEFAULT_RW_TIMEOUT,
 	);
 
 	/**
@@ -187,7 +187,7 @@ class Redis {
 			'scheme' => $config['scheme'],
 			'host'   => $config['host'],
 			'port'   => $config['port'],
-			'read_write_timeout' => $config['read_write_timeout'],
+			'rw_timeout' => $config['rw_timeout'],
 		);
 
 		// setup password
