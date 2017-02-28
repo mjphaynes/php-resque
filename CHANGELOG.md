@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.0.0] - 2017-03-01
 - Update required Symfony components to 2.7+ or 3.x
 - Update required Predis version to 1.1.x
 - Change worker wait log level from INFO to DEBUG (Commit [4915d51](https://github.com/mjphaynes/php-resque/commit/4915d51ca2593a743cecbab9597ad6a1314bdbed))
