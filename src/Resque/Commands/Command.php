@@ -129,7 +129,17 @@ class Command extends \Symfony\Component\Console\Command\Command
 
         $handlers = array();
         foreach ($logs as $log) {
-            $handlers[] = $handlerConnector->resolve($log);
+            $handler = $handlerConnector->resolve($log);
+
+            // Create dummy object to hold the handler
+            $eventData = new \stdClass();
+            $eventData->data = $handler;
+
+            // Fire the event, passing the object
+            Resque\Event::fire(Resque\Event::LOG_HANDLER, $eventData);
+
+            // Take the modified handler from the object and append to the list
+            $handlers[] = $eventData->data;
         }
 
         $this->logger = $logger = new Resque\Logger($handlers);
