@@ -887,7 +887,7 @@ class Worker
             return array();
         }
 
-        $host = $host ?: (function_exists('gethostname') ? gethostname() : php_uname('n'));
+        $host = $host ?: gethostname();
 
         $workers = array();
         foreach ($ids as $id) {

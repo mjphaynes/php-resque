@@ -58,7 +58,7 @@ class Host
     public function __construct($hostname = null)
     {
         $this->redis    = Redis::instance();
-        $this->hostname = $hostname ?: (function_exists('gethostname') ? gethostname() : php_uname('n'));
+        $this->hostname = $hostname ?: gethostname();
     }
 
     /**
