@@ -223,7 +223,6 @@ class Worker
             ($this->blocking ? 'timeout blocking' : 'time interval').' <pop>'.$this->interval_string().'</pop>', Logger::INFO);
 
         while (true) {
-            $this->shutdown = $this->redis->hget(self::redisKey($this), 'shutdown');
 
             if ($this->memoryExceeded()) {
                 $this->log('Worker memory has been exceeded, aborting', Logger::CRITICAL);
@@ -238,6 +237,8 @@ class Worker
 
                 Event::fire(Event::WORKER_CORRUPT, $this);
             }
+
+            $this->shutdown = $this->redis->hget(self::redisKey($this), 'shutdown');
 
             if ($this->shutdown) {
                 $this->log('Shutting down worker <pop>'.$this.'</pop>', Logger::INFO);
