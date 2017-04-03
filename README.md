@@ -247,6 +247,14 @@ logging. To silence any logging the `-q` flag is used.
 For more commands and full list of options please see
 the [commands](https://github.com/mjphaynes/php-resque/blob/master/docs/commands.md) documentation.
 
+In addition, if the workers are running on a different host, you may trigger a graceful shutdown of a worker remotely via the data in Redis. For example:
+
+```php
+foreach(Resque\Worker::allWorkers() as $worker) {
+    $worker->shutdown();
+}
+```
+
 ### Signals ###
 
 Signals work on supported platforms. Signals sent to workers will have the following effect:
