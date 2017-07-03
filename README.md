@@ -1,7 +1,7 @@
 php-resque
 ===========================================
 
-php-resque (pronounced like "rescue") is a Redis-backed library for creating 
+php-resque (pronounced like "rescue") is a Redis-backed library for creating
 background jobs, placing those jobs on multiple queues, and processing them later.
 
 ---
@@ -35,7 +35,7 @@ background jobs, placing those jobs on multiple queues, and processing them late
 This version of php-resque is based on the work originally done by [chrisboulton](https://github.com/chrisboulton/php-resque) where
 he ported the [ruby version](https://github.com/resque/resque) of the same name that was created by [GitHub](http://github.com/blog/542-introducing-resque).
 
-The reasoning behind rewriting the previous work is to add better support for horizontal scaling of worker 
+The reasoning behind rewriting the previous work is to add better support for horizontal scaling of worker
 servers and to improve job failure tolerance to create a very highly available system. Integration
 with Monolog means that very verbose logging is achievable which makes it far easier to solve bugs across
 distributed systems. And an extensive events/hooks system enables deeper integration and stats gathering.
@@ -74,14 +74,14 @@ Optional, but recommended:
 
 ## Getting Started ##
 
-The easiest way to work with php-resque is when it's installed as a [Composer package](https://packagist.org/packages/mjphaynes/php-resque) inside your project. 
+The easiest way to work with php-resque is when it's installed as a [Composer package](https://packagist.org/packages/mjphaynes/php-resque) inside your project.
 [Composer (http://getcomposer.org/)](http://getcomposer.org/) isn't strictly required, but makes life a lot easier.
 
 Add php-resque to your application's `composer.json` file:
 ```json
 {
     "require": {
-        "francislavoie/php-resque": "1.3.x"
+        "mjphaynes/php-resque": "2.0.*"
     }
 }
 ```
@@ -120,16 +120,16 @@ class MyJob {
 }
 ```
 
-When the job is run, the class will be instantiated and any arguments will be sent as 
+When the job is run, the class will be instantiated and any arguments will be sent as
 arguments to the perform method.
 
-Any exception thrown by a job will result in the job failing - be careful here and make 
-sure you handle the exceptions that shouldn't result in a job failing. If you want to 
-cancel a job (instead of having it fail) then you can throw a `Resque\Exception\Cancel` 
+Any exception thrown by a job will result in the job failing - be careful here and make
+sure you handle the exceptions that shouldn't result in a job failing. If you want to
+cancel a job (instead of having it fail) then you can throw a `Resque\Exception\Cancel`
 exception and the job will be marked as cancelled.
 
-Jobs can also have `setUp` and `tearDown` methods. If a `setUp` method is defined, it will 
-be called before the perform method is run. The `tearDown` method if defined, will be 
+Jobs can also have `setUp` and `tearDown` methods. If a `setUp` method is defined, it will
+be called before the perform method is run. The `tearDown` method if defined, will be
 called after the job finishes. If an exception is thrown int the `setUp` method the perform
 method will not be run. This is useful for cases where you have different jobs that require
 the same bootstrap, for instance a database connection.
@@ -146,8 +146,8 @@ The first argument is the fully resolved classname for your job class (if you're
 php-resque knows about your job classes see [autoloading job classes](#autoload-job-classes)).
 The second argument is an array of any arguments you want to pass through to the job class.
 
-It is also possible to push a Closure onto the queue. This is very convenient for quick, 
-simple tasks that need to be queued. When pushing Closures onto the queue, the `__DIR__` 
+It is also possible to push a Closure onto the queue. This is very convenient for quick,
+simple tasks that need to be queued. When pushing Closures onto the queue, the `__DIR__`
 and `__FILE__` constants should not be used.
 
 ```php
@@ -166,7 +166,7 @@ $job = Resque::push('SendEmail', array(), 'email');
 
 ### Delaying Jobs ###
 
-It is possible to schedule a job to run at a specified time in the future using the `Resque::later` 
+It is possible to schedule a job to run at a specified time in the future using the `Resque::later`
 method. You can do this by either passing through an `int` or a `DateTime` object.
 
 ```php
@@ -220,7 +220,7 @@ $ bin/resque worker:start
 ```
 
 Note that once this worker has started, it will continue to run until it is manually stopped.
-You may use a process monitor such as [Supervisor](http://supervisord.org/) to run the worker 
+You may use a process monitor such as [Supervisor](http://supervisord.org/) to run the worker
 as a background process and to ensure that the worker does not stop running.
 
 If the worker is a background task you can stop, pause & restart the worker with the following commands:
@@ -241,11 +241,19 @@ $ bin/resque worker:start --queue=high,low --memory=30 -vvv
 ```
 
 Note that this will check the `high` queue first and then the `low` queue, so it is possible to facilitate job queue
-priorities using this. To run all queues use `*` - this is the default value. The `-vvv` enables very verbose 
+priorities using this. To run all queues use `*` - this is the default value. The `-vvv` enables very verbose
 logging. To silence any logging the `-q` flag is used.
 
-For more commands and full list of options please see 
+For more commands and full list of options please see
 the [commands](https://github.com/mjphaynes/php-resque/blob/master/docs/commands.md) documentation.
+
+In addition, if the workers are running on a different host, you may trigger a graceful shutdown of a worker remotely via the data in Redis. For example:
+
+```php
+foreach(Resque\Worker::allWorkers() as $worker) {
+    $worker->shutdown();
+}
+```
 
 ### Signals ###
 
@@ -260,26 +268,26 @@ Signals work on supported platforms. Signals sent to workers will have the follo
 ### Forking ###
 
 When php-resque runs a job it first forks the process to a child process. This is so that if the job fails
-the worker can detect that the job failed and will continue to run. The forked child will always exit as 
+the worker can detect that the job failed and will continue to run. The forked child will always exit as
 soon as the job finishes.
 
 The PECL module (http://php.net/manual/en/book.pcntl.php) must be installed to use php-resque.
 
 ### Process Titles ###
 
-Updating the process title of the worker is useful because it indicates  what the worker is doing, 
-and any forked children also set their process title with the job being run. 
+Updating the process title of the worker is useful because it indicates  what the worker is doing,
+and any forked children also set their process title with the job being run.
 This helps identify running processes on the server and their php-resque status.
 
 _Unfortunately PHP does not have the ability to update process titles installed by default._
 
-A PECL module (http://pecl.php.net/package/proctitle) exists that adds this funcitonality to PHP, 
+A PECL module (http://pecl.php.net/package/proctitle) exists that adds this funcitonality to PHP,
 so if you'd like process titles updated, install the PECL module as well. php-resque will detect and use it.
 
 
 ### Autoload Job Classes ###
 
-Getting your application underway also requires telling the worker about your job classes, 
+Getting your application underway also requires telling the worker about your job classes,
 by means of either an autoloader or including them. If you're using Composer then it will
 be relatively straightforward to add your job classes there.
 
@@ -294,7 +302,7 @@ There is an example of how this all works in the `examples/` folder in this proj
 
 ## Commands & Options ##
 
-For the full list of php-resque commands and their associated arguments please 
+For the full list of php-resque commands and their associated arguments please
 see the [commands documentation](https://github.com/mjphaynes/php-resque/blob/master/docs/commands.md).
 
 
@@ -312,7 +320,7 @@ having to modify any core files. For full documentation and list of all events p
 
 ## Configuration Options ##
 
-For a complete list of all configuration options please 
+For a complete list of all configuration options please
 see the [configuration documentation](https://github.com/mjphaynes/php-resque/blob/master/docs/configuration.md).
 
 
@@ -330,8 +338,9 @@ $ bin/resque [command] --host=<hostname> --port=<port>
 
 ## Contributors ##
 
-Contributing to the project would be a massive help in maintaining and extending the script. 
+Contributing to the project would be a massive help in maintaining and extending the script.
 If you're interested in contributing, issue a pull request on Github.
 
 * [mjphaynes](https://github.com/mjphaynes)
 * [chrisboulton](https://github.com/chrisboulton) (orignal port)
+* [Project contributors](https://github.com/mjphaynes/php-resque/graphs/contributors)

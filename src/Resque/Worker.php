@@ -171,6 +171,7 @@ class Worker
         $worker->setTimeout($packet['timeout']);
         $worker->setMemoryLimit($packet['memory_limit']);
         $worker->setHost(new Host($packet['hostname']));
+        $worker->shutdown = $packet['shutdown'];
         $worker->setLogger($logger);
 
         return $worker;
@@ -222,6 +223,7 @@ class Worker
             ($this->blocking ? 'timeout blocking' : 'time interval').' <pop>'.$this->interval_string().'</pop>', Logger::INFO);
 
         while (true) {
+
             if ($this->memoryExceeded()) {
                 $this->log('Worker memory has been exceeded, aborting', Logger::CRITICAL);
                 $this->shutdown();
@@ -235,6 +237,8 @@ class Worker
 
                 Event::fire(Event::WORKER_CORRUPT, $this);
             }
+
+            $this->shutdown = $this->redis->hget(self::redisKey($this), 'shutdown');
 
             if ($this->shutdown) {
                 $this->log('Shutting down worker <pop>'.$this.'</pop>', Logger::INFO);
@@ -405,6 +409,7 @@ class Worker
     public function shutdown()
     {
         $this->shutdown = true;
+        $this->redis->hmset(self::redisKey($this), 'shutdown', true);
 
         Event::fire(Event::WORKER_SHUTDOWN, $this);
     }
@@ -484,6 +489,7 @@ class Worker
             'memory'       => memory_get_usage(),
             'memory_limit' => $this->memoryLimit,
             'queues'       => implode(',', $this->queues),
+            'shutdown'     => false,
             'blocking'     => $this->blocking,
             'status'       => $this->status,
             'interval'     => $this->interval,
@@ -887,7 +893,7 @@ class Worker
             return array();
         }
 
-        $host = $host ?: (function_exists('gethostname') ? gethostname() : php_uname('n'));
+        $host = $host ?: gethostname();
 
         $workers = array();
         foreach ($ids as $id) {
@@ -1194,6 +1200,7 @@ class Worker
                 'selected' => (array)explode(',', $packet['queues']),
                 'resolved' => (array)$this->resolveQueues()
             ),
+            'shutdown'     => (bool)$packet['shutdown'],
             'blocking'     => (bool)$packet['blocking'],
             'status'       => (int)$packet['status'],
             'interval'     => (int)$packet['interval'],

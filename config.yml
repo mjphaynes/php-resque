@@ -1,9 +1,9 @@
 # //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 #
 #  php-resque configuration file
-# 
+#
 #  This is the default configuration for your php-resque application
-#  Most of these settings can be overriden through their corresponding 
+#  Most of these settings can be overriden through their corresponding
 #  option flag when running a command
 #
 # //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
@@ -17,6 +17,7 @@ include: examples/autoload.php  # A file to include on each command
 #     host: 127.0.0.1     # The hostname to connect to
 #     port: 6379          # The port to connect to
 #     namespace: resque   # The key prefix in Redis
+#     rw_timeout: 60      # Redis read/write timeout
 #     phpiredis: false    # Should use phpiredis php extension (must be installed)
 
 
