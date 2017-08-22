@@ -53,7 +53,7 @@ This version provides features such as:
 * Has built in event system to enable hooks for deep integration.
 * Support for priorities (queues).
 
-_This version is not a direct port of Gihtub's Resque and therefore is not compatible with it, or their web interface._
+_This version is not a direct port of Github's Resque and therefore is not compatible with it, or their web interface._
 _A web interface for this version is currently in development, if you want to know more or help out then drop me a line._
 
 
@@ -121,7 +121,8 @@ class MyJob {
 ```
 
 When the job is run, the class will be instantiated and any arguments will be sent as
-arguments to the perform method.
+arguments to the perform method. The current job instance (`Resque\Job`) is passed
+to the perform method as the second argument.
 
 Any exception thrown by a job will result in the job failing - be careful here and make
 sure you handle the exceptions that shouldn't result in a job failing. If you want to
