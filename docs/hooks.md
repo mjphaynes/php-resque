@@ -46,6 +46,9 @@ Resque\Event::listen(Resque\Event::JOB_COMPLETE, function($event, $job) {
 });
 ```
 
+The `Resque\Event::JOB_DONE` is triggered as last action in the job processing. While `Resque\Event::JOB_COMPLETE` is triggered after the jobs `perform()` method is finished, the `Resque\Event::JOB_DONE` Event is triggered after job output is stored in redis backend.
+In short: `Resque\Event::JOB_COMPLETE` is fired, when the jobs perform method work is done, while `Resque\Event::JOB_DONE` is fired, when the whole job processing is coming to an end.
+
 ### Worker events ###
 
 * `Resque\Event::WORKER_INSTANCE`       - New worker is created
@@ -83,6 +86,7 @@ Resque\Event::listen(Resque\Event::JOB_COMPLETE, function($event, $job) {
 * `Resque\Event::JOB_COMPLETE`       - Job has completed
 * `Resque\Event::JOB_CANCELLED`      - Job has been cancelled
 * `Resque\Event::JOB_FAILURE`        - Job has failed
+* `Resque\Event::JOB_DONE`           - Job is done
 
 
 ---

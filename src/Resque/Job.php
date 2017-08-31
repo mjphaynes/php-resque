@@ -347,6 +347,8 @@ class Job
 
         $this->redis->hset(self::redisKey($this), 'output', $output);
 
+        Event::fire(Event::JOB_DONE, $this);
+
         return $retval;
     }
 
