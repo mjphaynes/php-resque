@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.0] - 2017-08-31
+- Add JOB_DONE event (PR [#58](https://github.com/mjphaynes/php-resque/pull/58))
+- Allow remote shutdown of workers (PR [#50](https://github.com/mjphaynes/php-resque/pull/50))
+- Improve documentation
+
 ## [2.0.0] - 2017-03-01
 - Update required Symfony components to 2.7+ or 3.x
 - Update required Predis version to 1.1.x

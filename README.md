@@ -81,7 +81,7 @@ Add php-resque to your application's `composer.json` file:
 ```json
 {
     "require": {
-        "mjphaynes/php-resque": "2.0.*"
+        "mjphaynes/php-resque": "2.1.*"
     }
 }
 ```
