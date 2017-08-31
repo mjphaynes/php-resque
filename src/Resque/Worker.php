@@ -171,7 +171,7 @@ class Worker
         $worker->setTimeout($packet['timeout']);
         $worker->setMemoryLimit($packet['memory_limit']);
         $worker->setHost(new Host($packet['hostname']));
-        $worker->shutdown = $packet['shutdown'];
+        $worker->shutdown = isset($packet['shutdown']) ? $packet['shutdown'] : null;
         $worker->setLogger($logger);
 
         return $worker;
