@@ -60,7 +60,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.0.0 - 2013-10-09
 - First public release of php-resque
 
-[Unreleased]: https://github.com/mjphaynes/php-resque/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/mjphaynes/php-resque/compare/2.1.1...HEAD
+[2.1.1]: https://github.com/mjphaynes/php-resque/compare/2.1.0...2.1.1
+[2.1.0]: https://github.com/mjphaynes/php-resque/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/mjphaynes/php-resque/compare/1.3.0...2.0.0
 [1.3.0]: https://github.com/mjphaynes/php-resque/compare/1.2.4...1.3.0
 [1.2.4]: https://github.com/mjphaynes/php-resque/compare/1.2.3...1.2.4
