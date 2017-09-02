@@ -128,8 +128,8 @@ class Queue
     {
         $queue = $payload = null;
 
-        foreach ($queues as &$queue) {
-            $queue = self::redisKey($queue);
+        foreach ($queues as $key => $queue) {
+            $queues[$key] = self::redisKey($queue);
         }
 
         if ($blocking) {
