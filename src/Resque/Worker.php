@@ -505,7 +505,12 @@ class Worker
         if (function_exists('pcntl_signal')) {
             $this->log('Registering sig handlers for worker '.$this, Logger::DEBUG);
 
-            declare (ticks = 1);
+            // PHP 7.1 allows async signals
+            if (function_exists('pcntl_async_signals')) {
+                pcntl_async_signals(true);
+            } else {
+                declare(ticks = 1);
+            }
             pcntl_signal(SIGTERM, array($this, 'sigForceShutdown'));
             pcntl_signal(SIGINT, array($this, 'sigForceShutdown'));
             pcntl_signal(SIGQUIT, array($this, 'sigShutdown'));
