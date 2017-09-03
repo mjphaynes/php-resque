@@ -187,7 +187,12 @@ class Server
         }
 
         if (function_exists('pcntl_signal')) {
-            declare (ticks = 1);
+            // PHP 7.1 allows async signals
+            if (function_exists('pcntl_async_signals')) {
+                pcntl_async_signals(true);
+            } else {
+                declare(ticks = 1);
+            }
             pcntl_signal(SIGTERM, array($this, 'shutdown'));
             pcntl_signal(SIGINT, array($this, 'shutdown'));
             pcntl_signal(SIGQUIT, array($this, 'shutdown'));
