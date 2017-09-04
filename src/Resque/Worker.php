@@ -760,7 +760,11 @@ class Worker
             $this->redis->multi();
             $jobs = $this->redis->zrangebyscore(Queue::redisKey($queue, 'delayed'), $startTime, $endTime);
             $this->redis->zremrangebyscore(Queue::redisKey($queue, 'delayed'), $startTime, $endTime);
-            list($jobs, $found) = $this->redis->exec();
+            $execReturn = $this->redis->exec();
+            if (!is_array($execReturn) || count($execReturn) !== 2) {
+                return;
+            }
+            list($jobs, $found) = $execReturn;
 
             if ($found > 0) {
                 foreach ($jobs as $payload) {
