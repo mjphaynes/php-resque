@@ -48,7 +48,8 @@ class Redis
     /**
     * Default Redis SSL options
     */
-    const DEFAULT_SSL = array();
+    const DEFAULT_SSL_CAFILE = null;
+    const DEFAULT_SSL_VERIFY_PEER = false;
 
     /**
      * Default Redis Read Write Timeout
@@ -69,7 +70,8 @@ class Redis
         'port'       => self::DEFAULT_PORT,
         'namespace'  => self::DEFAULT_NS,
         'password'   => self::DEFAULT_PASSWORD,
-        'ssl'        => self::DEFAULT_SSL,
+        'ssl-cafile' => self::DEFAULT_SSL_CAFILE,
+        'ssl-verify_peeor'=> self::DEFAULT_SSL_VERIFY_PEER,
         'rw_timeout' => self::DEFAULT_RW_TIMEOUT,
         'phpiredis'  => self::DEFAULT_PHPIREDIS
     );
@@ -211,8 +213,11 @@ class Redis
         }
 
         // setup ssl
-        if (!empty($config['ssl'])) {
-            $params['ssl'] = $config['ssl'];
+        if (!empty($config['ssl-cafile'])) {
+            $params['ssl'] = array(
+            	'cafile'=>$config['ssl-cafile'],
+            	'verify_peer'=>$config['ssl-verify_peer']
+            );	
         }
 
 
