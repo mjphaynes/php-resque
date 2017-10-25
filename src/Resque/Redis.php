@@ -46,6 +46,11 @@ class Redis
     const DEFAULT_PASSWORD = null;
 
     /**
+    * Default Redis SSL options
+    */
+    const DEFAULT_SSL = array();
+
+    /**
      * Default Redis Read Write Timeout
      */
     const DEFAULT_RW_TIMEOUT = 60;
@@ -64,6 +69,7 @@ class Redis
         'port'       => self::DEFAULT_PORT,
         'namespace'  => self::DEFAULT_NS,
         'password'   => self::DEFAULT_PASSWORD,
+        'ssl'        => self::DEFAULT_SSL,
         'rw_timeout' => self::DEFAULT_RW_TIMEOUT,
         'phpiredis'  => self::DEFAULT_PHPIREDIS
     );
@@ -203,6 +209,12 @@ class Redis
         if (!empty($config['password'])) {
             $params['password'] = $config['password'];
         }
+
+        // setup ssl
+        if (!empty($config['ssl'])) {
+            $params['ssl'] = $config['ssl'];
+        }
+
 
         // setup read/write timeout
         if (!empty($config['rw_timeout'])) {

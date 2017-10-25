@@ -36,6 +36,12 @@ class RedisConnector extends AbstractConnector
             $options['password'] = $password;
         }
 
+        $ssl = Resque::getConfig('redis.ssl', Resque\Redis::DEFAULT_SSL);
+        if ($ssl !== null && $ssl !== false && is_array($ssl)) {
+            $options['ssl'] = $ssl;
+        }
+
+
         $redis = new \Predis\Client($options);
 
         $namespace = Resque::getConfig('redis.namespace', Resque\Redis::DEFAULT_NS);
