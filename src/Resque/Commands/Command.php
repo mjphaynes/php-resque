@@ -45,8 +45,8 @@ class Command extends \Symfony\Component\Console\Command\Command
         'port'           => 'redis.port',
         'namespace'      => 'redis.namespace',
         'password'       => 'redis.password',
-        'ssl-cafile'     => 'redis.ssl.cafile',
-        'ssl-verify_peer'=> 'redis.ssl.verify_peer',
+        'ssl-cafile'     => 'redis.ssl-cafile',
+        'ssl-verify_peer'=> 'redis.ssl-verify_peer',
         'verbose'        => 'default.verbose',
         'queue'          => 'default.jobs.queue',
         'delay'          => 'default.jobs.delay',
@@ -114,7 +114,8 @@ class Command extends \Symfony\Component\Console\Command\Command
             'port'      => $config['port'],
             'namespace' => $config['namespace'],
             'password'  => $config['password'],
-            'ssl'       => array('catfile'=>$config['ssl-cafile'], 'verify_peer'=>$config['ssl-verify_peer'])
+            'ssl-cafile'=> $config['ssl-cafile'], 
+            'verify_peer'=>$config['ssl-verify_peer']
         ));
 
         // Set the verbosity

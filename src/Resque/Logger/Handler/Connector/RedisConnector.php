@@ -36,9 +36,9 @@ class RedisConnector extends AbstractConnector
             $options['password'] = $password;
         }
 
-        $ssl = Resque::getConfig('redis.ssl', Resque\Redis::DEFAULT_SSL);
-        if ($ssl !== null && $ssl !== false && is_array($ssl)) {
-            $options['ssl'] = $ssl;
+        $sslCafile = Resque::getConfig('redis.ssl-cafile', Resque\Redis::DEFAULT_SSL_CAFILE);
+        if ($sslCafile !== null && $sslCafile !== false && is_array($sslCafile)) {
+            $options['ssl'] = array('cafile'=>$sslCafile, 'verify_peer'=>Resque::getConfig('redis.ssl-verify_peer', Resque\Redis::DEFAULT_SSL_VERIFY_PEER));
         }
 
 
