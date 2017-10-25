@@ -114,7 +114,7 @@ class Command extends \Symfony\Component\Console\Command\Command
             'port'      => $config['port'],
             'namespace' => $config['namespace'],
             'password'  => $config['password'],
-            'ssl'  => $config['ssl']
+            'ssl'       => array('catfile'=>$config['ssl-cafile'], 'verify_peer'=>$config['ssl-verify_peer'])
         ));
 
         // Set the verbosity
