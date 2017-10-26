@@ -115,7 +115,7 @@ class Command extends \Symfony\Component\Console\Command\Command
             'namespace' => $config['namespace'],
             'password'  => $config['password'],
             'ssl-cafile'=> $config['ssl-cafile'], 
-            'verify_peer'=>$config['ssl-verify_peer']
+            'ssl-verify_peer'=>$config['ssl-verify_peer']
         ));
 
         // Set the verbosity

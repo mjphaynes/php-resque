@@ -89,8 +89,8 @@ class Resque
             'port'       => static::getConfig('redis.port', Redis::DEFAULT_PORT),
             'namespace'  => static::getConfig('redis.namespace', Redis::DEFAULT_NS),
             'password'   => static::getConfig('redis.password', Redis::DEFAULT_PASSWORD),
-            'ssl-cafile' => static::getConfig('redis.ssl', Redis::DEFAULT_SSL_CAFILE),
-            'ssl-verify_peer' => static::getConfig('redis.ssl', Redis::DEFAULT_SSL_VERIFY_PEER),
+            'ssl-cafile' => static::getConfig('redis.ssl-cafile', Redis::DEFAULT_SSL_CAFILE),
+            'ssl-verify_peer' => static::getConfig('redis.ssl-verify_peer', Redis::DEFAULT_SSL_VERIFY_PEER),
             'rw_timeout' => static::getConfig('redis.rw_timeout', Redis::DEFAULT_RW_TIMEOUT),
             'phpiredis'  => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS)
         ));

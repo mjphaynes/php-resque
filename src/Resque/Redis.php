@@ -71,7 +71,7 @@ class Redis
         'namespace'  => self::DEFAULT_NS,
         'password'   => self::DEFAULT_PASSWORD,
         'ssl-cafile' => self::DEFAULT_SSL_CAFILE,
-        'ssl-verify_peeor'=> self::DEFAULT_SSL_VERIFY_PEER,
+        'ssl-verify_peer'=> self::DEFAULT_SSL_VERIFY_PEER,
         'rw_timeout' => self::DEFAULT_RW_TIMEOUT,
         'phpiredis'  => self::DEFAULT_PHPIREDIS
     );
