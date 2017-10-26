@@ -57,6 +57,8 @@ There are some options that can be used for any command:
 * `scheme`    - The Redis scheme to use.
 * `namespace` - The Redis namespace to use. This is prefixed to all keys.
 * `password`  - The Redis AUTH password
+* `ssl-cafile`  - The Redis SSL cafile path.
+* `ssl-verify_peer`  - The Redis SSL verify_peer.
 * `log`       - Specify the handler(s) to use for logging.
 * `events`    - Outputs all events to the console, for debugging.
 
