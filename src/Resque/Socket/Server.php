@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Socket;
 
 use Resque\Logger;
@@ -85,12 +87,12 @@ class Server
     protected $tv_sec = 5;
 
     /**
-     * @var boolean if the server has started
+     * @var bool if the server has started
      */
     protected $started = false;
 
     /**
-     * @var boolean True if on the next iteration, the server should shutdown.
+     * @var bool True if on the next iteration, the server should shutdown.
      */
     protected $shutdown = false;
 
@@ -102,8 +104,8 @@ class Server
     /**
      * Creates the socket and starts listening to it.
      *
-     * @param  array  $config Array of configuration options
-     * @param  Logger $logger Output logger
+     * @param array  $config Array of configuration options
+     * @param Logger $logger Output logger
      */
     public function __construct(array $config, Logger $logger)
     {
@@ -266,12 +268,12 @@ class Server
      * It is perfectly valid for socket_write to return zero which means no bytes have been written.
      * Be sure to use the === operator to check for FALSE in case of an error.
      *
-     * @param Client $client  Connected client to write to
-     * @param string $message Data to write to the socket.
-     * @param string $end     Data to end the line with.  Specify false if you don't want a line end sent.
-     * @return mixed Returns the number of bytes successfully written to the socket or FALSE on failure.
-     *               The error code can be retrieved with socket_last_error(). This code may be passed to
-     *               socket_strerror() to get a textual explanation of the error.
+     * @param  Client $client  Connected client to write to
+     * @param  string $message Data to write to the socket.
+     * @param  string $end     Data to end the line with.  Specify false if you don't want a line end sent.
+     * @return mixed  Returns the number of bytes successfully written to the socket or FALSE on failure.
+     *                        The error code can be retrieved with socket_last_error(). This code may be passed to
+     *                        socket_strerror() to get a textual explanation of the error.
      */
     public function send(&$client, $message, $end = true)
     {
@@ -374,7 +376,7 @@ class Server
     /**
      * Deletes a function from the call list for a certain action
      *
-     * @param  string $event Name of event.
+     * @param  string $event    Name of event.
      * @param  mixed  $callback The callback as defined when listen() was called.
      * @return true
      */

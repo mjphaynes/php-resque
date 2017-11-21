@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 use Resque\Redis;
 use Resque\Helpers\Util;
 use Symfony\Component\Yaml;
@@ -76,7 +78,7 @@ class Resque
     /**
      * Reads and loads data from a config file
      *
-     * @param  string  $file The config file path
+     * @param  string $file The config file path
      * @return bool
      */
     public static function loadConfig($file = self::DEFAULT_CONFIG_FILE)
@@ -99,7 +101,7 @@ class Resque
     /**
      * Reads data from a config file
      *
-     * @param  string  $file The config file path
+     * @param  string $file The config file path
      * @return array
      */
     public static function readConfigFile($file = self::DEFAULT_CONFIG_FILE)
@@ -149,8 +151,8 @@ class Resque
     /**
      * Gets Resque config variable
      *
-     * @param  string  $key     The key to search for (optional)
-     * @param  mixed   $default If key not found returns this (optional)
+     * @param  string $key     The key to search for (optional)
+     * @param  mixed  $default If key not found returns this (optional)
      * @return mixed
      */
     public static function getConfig($key = null, $default = null)

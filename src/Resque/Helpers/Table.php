@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Helpers;
 
 use Symfony\Component\Console\Command\Command;
@@ -39,7 +41,7 @@ class Table
      * there is no way to catch so have to override
      * with a special output.
      *
-     * @param  Command  $command
+     * @param  Command $command
      * @return void
      */
     public function __construct(Command $command)
@@ -71,8 +73,8 @@ class Table
     /**
      * Pass all called functions to the table helper
      *
-     * @param  string  $method
-     * @param  array   $parameters
+     * @param  string $method
+     * @param  array  $parameters
      * @return mixed
      */
     public function __call($method, $parameters)

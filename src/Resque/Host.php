@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque;
 
 use Resque\Helpers\Stats;
@@ -54,6 +56,7 @@ class Host
 
     /**
      * Create a new host
+     * @param null|mixed $hostname
      */
     public function __construct($hostname = null)
     {
@@ -74,7 +77,7 @@ class Host
     /**
      * Mark host as having an active worker
      *
-     * @param  Worker $worker the worker instance
+     * @param Worker $worker the worker instance
      */
     public function working(Worker $worker)
     {
@@ -87,7 +90,7 @@ class Host
     /**
      * Mark host as having a finished worker
      *
-     * @param  Worker $worker The worker instance
+     * @param Worker $worker The worker instance
      */
     public function finished(Worker $worker)
     {

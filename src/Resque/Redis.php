@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque;
 
 use Predis;
@@ -90,7 +92,7 @@ class Redis
     /**
      * Set the Redis config
      *
-     * @param  array $config Array of configuration settings
+     * @param array $config Array of configuration settings
      */
     public static function setConfig(array $config)
     {
@@ -109,7 +111,7 @@ class Redis
 
     /**
      * @var array List of all commands in Redis that supply a key as their
-     * first argument. Used to prefix keys with the Resque namespace.
+     *            first argument. Used to prefix keys with the Resque namespace.
      */
     protected $keyCommands = array(
         'exists',
@@ -301,8 +303,8 @@ class Redis
     /**
      * Dynamically pass calls to the Predis.
      *
-     * @param  string  $method     Method to call
-     * @param  array   $parameters Arguments to send to method
+     * @param  string $method     Method to call
+     * @param  array  $parameters Arguments to send to method
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -312,7 +314,7 @@ class Redis
         }
 
         // try {
-            return call_user_func_array(array($this->redis, $method), $parameters);
+        return call_user_func_array(array($this->redis, $method), $parameters);
 
         // } catch (\Exception $e) {
         // 	return false;

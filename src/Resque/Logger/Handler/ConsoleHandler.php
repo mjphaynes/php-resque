@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Logger\Handler;
 
 use Resque\Logger;
@@ -23,12 +25,12 @@ class ConsoleHandler extends AbstractProcessingHandler
 {
 
     /**
-     * @var OutputInterface  The console output interface
+     * @var OutputInterface The console output interface
      */
     protected $output;
 
     /**
-     * @var array  Map log levels to output verbosity
+     * @var array Map log levels to output verbosity
      */
     private $verbosityLevelMap = array(
         Logger::INFO      => OutputInterface::VERBOSITY_NORMAL,
@@ -66,8 +68,8 @@ class ConsoleHandler extends AbstractProcessingHandler
 
     /**
      * @param OutputInterface $output The output interface
-     * @param integer         $level  The minimum logging level at which this handler will be triggered
-     * @param Boolean         $bubble Whether the messages that are handled can bubble up the stack or not
+     * @param int             $level  The minimum logging level at which this handler will be triggered
+     * @param bool            $bubble Whether the messages that are handled can bubble up the stack or not
      */
     public function __construct(OutputInterface $output, $level = Logger::DEBUG, $bubble = true)
     {
@@ -138,7 +140,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * Updates the logging level based on the verbosity setting of the console output.
      *
-     * @return Boolean Whether the handler is enabled and verbosity is not set to quiet.
+     * @return bool Whether the handler is enabled and verbosity is not set to quiet.
      */
     private function updateLevel()
     {

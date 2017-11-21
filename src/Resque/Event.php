@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque;
 
 use Resque\Helpers\Stats;
@@ -126,7 +128,7 @@ class Event
     /**
      * Stop a given callback from listening on a specific event.
      *
-     * @param  string  $event   Name of event
+     * @param  string $event    Name of event
      * @param  mixed  $callback The callback as defined when listen() was called
      * @return true
      */
@@ -156,7 +158,7 @@ class Event
     /**
      * Returns the name of the given event from constant
      *
-     * @param  int $event Event constant
+     * @param  int          $event Event constant
      * @return string|false
      */
     public static function eventName($event)

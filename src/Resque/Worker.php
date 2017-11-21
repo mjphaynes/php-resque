@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque;
 
 use Resque\Helpers\Stats;
@@ -61,12 +63,12 @@ class Worker
     protected $host;
 
     /**
-     * @var boolean True if on the next iteration, the worker should shutdown.
+     * @var bool True if on the next iteration, the worker should shutdown.
      */
     protected $shutdown = false;
 
     /**
-     * @var boolean Status of the worker.
+     * @var bool Status of the worker.
      */
     protected $status = self::STATUS_NEW;
 
@@ -96,7 +98,7 @@ class Worker
     protected $child = null;
 
     /**
-     * @var boolean True if uses Redis pop blocking
+     * @var bool True if uses Redis pop blocking
      */
     protected $blocking = true;
 
@@ -180,8 +182,8 @@ class Worker
     /**
      * Create a new worker.
      *
-     * @param  mixed $queues   Queues for the worker to watch
-     * @param  bool  $blocking Use Redis blocking
+     * @param mixed $queues   Queues for the worker to watch
+     * @param bool  $blocking Use Redis blocking
      */
     public function __construct($queues = '*', $blocking = true)
     {
@@ -223,7 +225,6 @@ class Worker
             ($this->blocking ? 'timeout blocking' : 'time interval').' <pop>'.$this->interval_string().'</pop>', Logger::INFO);
 
         while (true) {
-
             if ($this->memoryExceeded()) {
                 $this->log('Worker memory has been exceeded, aborting', Logger::CRITICAL);
                 $this->shutdown();
@@ -305,9 +306,8 @@ class Worker
                 $job->queue();
 
                 $this->shutdown();
-
-            // In parent if $pid > 0 since pcntl_fork returns process id of child
             } elseif ($this->child > 0) {
+                // In parent if $pid > 0 since pcntl_fork returns process id of child
                 Event::fire(Event::WORKER_FORK_PARENT, array($this, $job, $this->child));
 
                 $this->log('Forked process to run job on pid:'.$this->child, Logger::DEBUG);
@@ -349,7 +349,7 @@ class Worker
     /**
      * Process a single job
      *
-     * @param  Job  $job The job to be processed.
+     * @param Job $job The job to be processed.
      */
     public function perform(Job $job)
     {
@@ -753,7 +753,7 @@ class Worker
     /**
      * Find any delayed jobs and add them to the queue if found
      *
-     * @param int $endTime optional end time for range
+     * @param int $endTime   optional end time for range
      * @param int $startTime optional start time for range
      */
     public function queueDelayed($endTime = null, $startTime = 0)
@@ -867,9 +867,9 @@ class Worker
     /**
      * Return host worker by id
      *
-     * @param  string $id     Worker id
-     * @param  string $host   Hostname
-     * @param  Logger $logger Logger
+     * @param  string      $id     Worker id
+     * @param  string      $host   Hostname
+     * @param  Logger      $logger Logger
      * @return array|false
      */
     public static function hostWorker($id, $host = null, Logger $logger = null)
@@ -926,7 +926,7 @@ class Worker
     /**
      * Set the worker id
      *
-     * @param  string $id Id to set to
+     * @param string $id Id to set to
      */
     public function setId($id)
     {
@@ -1000,7 +1000,7 @@ class Worker
     /**
      * Set the worker pid file
      *
-     * @param  string  $pidFile Filename to store pid in
+     * @param  string     $pidFile Filename to store pid in
      * @throws \Exception
      */
     public function setPidFile($pidFile)
@@ -1068,7 +1068,7 @@ class Worker
     /**
      * Set the logger instance
      *
-     * @param  Logger $logger The logger for this worker
+     * @param Logger $logger The logger for this worker
      */
     public function setLogger(Logger $logger = null)
     {
@@ -1151,7 +1151,7 @@ class Worker
     /**
      * Set the worker queue timeout
      *
-     * @param  string  $timeout Worker queue timeout
+     * @param  string $timeout Worker queue timeout
      * @return string
      */
     public function setTimeout($timeout)
@@ -1249,6 +1249,9 @@ class Worker
 
     /**
      * Creates process title string from current version and status of worker
+     *
+     * @param string $status
+     * @return string
      */
     protected function getProcessTitle($status)
     {

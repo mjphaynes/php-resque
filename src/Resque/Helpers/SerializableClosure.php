@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Helpers;
 
 use Closure;
@@ -46,7 +48,7 @@ class SerializableClosure implements Serializable
     /**
      * Create a new serializable Closure instance.
      *
-     * @param  \Closure  $closure
+     * @param  \Closure $closure
      * @return void
      */
     public function __construct(Closure $closure)
@@ -169,7 +171,7 @@ class SerializableClosure implements Serializable
     /**
      * Unserialize the Closure instance.
      *
-     * @param  string  $serialized
+     * @param  string $serialized
      * @return void
      */
     public function unserialize($serialized)

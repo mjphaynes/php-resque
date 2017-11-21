@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Commands;
 
 use Resque;
@@ -26,17 +28,17 @@ class Command extends \Symfony\Component\Console\Command\Command
 {
 
     /**
-     * @var Logger  The logger instance
+     * @var Logger The logger instance
      */
     protected $logger;
 
     /**
-     * @var array  Config array
+     * @var array Config array
      */
     protected $config = array();
 
     /**
-     * @var array  Config to options mapping
+     * @var array Config to options mapping
      */
     protected $configOptionMap = array(
         'include'        => 'include',
@@ -67,7 +69,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Globally sets some input options that are available for all commands
      *
-     * @param array $definitions  List of command definitions
+     * @param  array $definitions List of command definitions
      * @return array
      */
     protected function mergeDefinitions(array $definitions)
@@ -94,8 +96,8 @@ class Command extends \Symfony\Component\Console\Command\Command
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialised based on the input arguments and options.
      *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
+     * @param  InputInterface  $input  An InputInterface instance
+     * @param  OutputInterface $output An OutputInterface instance
      * @return void
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
@@ -197,6 +199,8 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Parses the configuration file
      *
+     * @param  mixed $config
+     * @param  mixed $defaults
      * @return bool
      */
     protected function parseConfig($config, $defaults)
@@ -254,6 +258,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Returns all config items or a specific one
      *
+     * @param  null|mixed $key
      * @return mixed
      */
     protected function getConfig($key = null)

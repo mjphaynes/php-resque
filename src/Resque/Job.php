@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque;
 
 use Closure;
@@ -90,7 +92,7 @@ class Job
     /**
      * Get the Redis key
      *
-     * @param  Job    $job the job to get the key for
+     * @param  Job    $job    the job to get the key for
      * @param  string $suffix to be appended to key
      * @return string
      */
@@ -103,10 +105,10 @@ class Job
     /**
      * Create a new job and save it to the specified queue.
      *
-     * @param string  $queue  The name of the queue to place the job in
-     * @param string  $class  The name of the class that contains the code to execute the job
-     * @param array   $data   Any optional arguments that should be passed when the job is executed
-     * @param int     $run_at Unix timestamp of when to run the job to delay execution
+     * @param  string $queue  The name of the queue to place the job in
+     * @param  string $class  The name of the class that contains the code to execute the job
+     * @param  array  $data   Any optional arguments that should be passed when the job is executed
+     * @param  int    $run_at Unix timestamp of when to run the job to delay execution
      * @return string
      */
     public static function create($queue, $class, array $data = null, $run_at = 0)
@@ -132,10 +134,10 @@ class Job
     /**
      * Create a new job id
      *
-     * @param string  $queue  The name of the queue to place the job in
-     * @param string  $class  The name of the class that contains the code to execute the job
-     * @param array   $data   Any optional arguments that should be passed when the job is executed
-     * @param int     $run_at Unix timestamp of when to run the job to delay execution
+     * @param  string $queue  The name of the queue to place the job in
+     * @param  string $class  The name of the class that contains the code to execute the job
+     * @param  array  $data   Any optional arguments that should be passed when the job is executed
+     * @param  int    $run_at Unix timestamp of when to run the job to delay execution
      * @return string
      */
     public static function createId($queue, $class, $data = null, $run_at = 0)
@@ -185,10 +187,10 @@ class Job
     /**
      * Create a new job
      *
-     * @param  string $queue Queue to add job to
-     * @param  string $id    Job id
-     * @param  string $class Job class to run
-     * @param  array  $data  Any Job data
+     * @param string $queue Queue to add job to
+     * @param string $id    Job id
+     * @param string $class Job class to run
+     * @param array  $data  Any Job data
      */
     public function __construct($queue, $id, $class, array $data = null)
     {
@@ -329,9 +331,8 @@ class Job
             }
 
             $this->complete();
-
-        // setUp said don't perform this job
         } catch (Exception\Cancel $e) {
+            // setUp said don't perform this job
             $this->cancel();
             $retval = false;
         } catch (\Exception $e) {
@@ -488,8 +489,8 @@ class Job
     /**
      * Create a payload string from the given job and data
      *
-     * @param  string  $job
-     * @param  mixed   $data
+     * @param  string $job
+     * @param  mixed  $data
      * @return string
      */
     protected function createPayload()
@@ -507,8 +508,8 @@ class Job
     /**
      * Update the status indicator for the current job with a new status
      *
-     * @param  int        $status The status of the job
-     * @param  \Exception $e      If failed status it sends through exception
+     * @param int        $status The status of the job
+     * @param \Exception $e      If failed status it sends through exception
      */
     public function setStatus($status, \Exception $e = null)
     {
@@ -728,7 +729,7 @@ class Job
     /**
      * Set the queue worker interface
      *
-     * @param  Worker $worker
+     * @param Worker $worker
      */
     public function setWorker(Worker $worker)
     {

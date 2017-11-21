@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Logger\Processor;
 
 use Symfony\Component\Console\Command\Command;
@@ -22,22 +24,22 @@ class StripFormatProcessor
 {
 
     /**
-     * @var Command  command instance
+     * @var Command command instance
      */
     protected $command;
 
     /**
-     * @var InputInterface  input instance
+     * @var InputInterface input instance
      */
     protected $input;
 
     /**
-     * @var OutputInterface  output instance
+     * @var OutputInterface output instance
      */
     protected $output;
 
     /**
-     * @var array  list of formatting tags to strip out
+     * @var array list of formatting tags to strip out
      */
     private $stripTags = array(
         'info',

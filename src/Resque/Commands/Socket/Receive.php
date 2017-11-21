@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Commands\Socket;
 
 use Resque;
@@ -32,7 +34,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Receive extends Command
 {
-
     protected function configure()
     {
         $this->setName('socket:receive')
@@ -236,7 +237,9 @@ class Receive extends Command
                         }
                     }
 
-                    $server->send($client, $data['json'] ? json_encode($response) : implode(PHP_EOL, array_map(function ($d) {return $d['message'];}, $response['data'])));
+                    $server->send($client, $data['json'] ? json_encode($response) : implode(PHP_EOL, array_map(function ($d) {
+                        return $d['message'];
+                    }, $response['data'])));
 
                     break;
                 case 'job:queue':

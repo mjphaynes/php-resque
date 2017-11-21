@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Commands;
 
 use Resque;
@@ -25,7 +27,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 class Clear extends Command
 {
-
     protected function configure()
     {
         $this->setName('clear')
