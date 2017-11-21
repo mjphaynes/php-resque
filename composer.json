@@ -16,17 +16,17 @@
         "ext-pcntl": "*",
         "predis/predis": "1.1.*",
         "monolog/monolog": "~1.7",
-        "symfony/console": "~2.7|~3.0",
-        "symfony/yaml": "~2.7|~3.0",
-        "symfony/process": "~2.7|~3.0"
+        "symfony/console": "~4.0.0@beta",
+        "symfony/yaml": "~4.0.0@beta",
+        "symfony/process": "~4.0.0@beta",
+        "symfony/debug": "~4.0.0@beta"
     },
     "suggest": {
         "ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker in PHP versions < 5.5.0.",
         "ext-phpiredis": "Native PHP extension for Redis connectivity. Predis will automatically utilize when available."
     },
     "require-dev": {
-        "sami/sami": "~3.3|~4.0",
-        "phpunit/phpunit": "~4.8"
+        "phpunit/phpunit": "~6.4"
     },
     "bin": [
         "bin/resque"
