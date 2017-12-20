@@ -10,6 +10,7 @@
 namespace Resque;
 
 use Resque\Helpers\Stats;
+use Psr\Container\ContainerInterface;
 
 /**
  * Resque worker class
@@ -132,6 +133,11 @@ class Worker
      * @var Logger logger instance
      */
     protected $logger = null;
+
+    /**
+     * @var ContainerInterface local container class
+     */
+    protected $container = null;
 
     /**
      * Get the Redis key
@@ -358,6 +364,10 @@ class Worker
         // up the console
         set_time_limit($this->timeout);
         ini_set('display_errors', 0);
+
+        if (!is_null($this->container)) {
+          $job->setContainer($this->container);
+        }
 
         $job->perform();
 
@@ -1174,6 +1184,24 @@ class Worker
         }
 
         $this->memoryLimit = $memoryLimit;
+    }
+
+    /**
+     * Retrieve the local container
+     *
+     * @return ContainerInterface the local container
+     **/
+     public function getContainer() {
+        return $this->container;
+     }
+
+    /**
+     * Add a container
+     *
+     * @param ContainerInterface the container to be injected into the user land job
+     */
+    public function setContainer(ContainerInterface $container) {
+        $this->container = $container;
     }
 
     /****
