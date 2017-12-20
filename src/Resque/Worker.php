@@ -913,6 +913,10 @@ class Worker
         return $workers;
     }
 
+    /****
+     * start SETTER / GETTER section
+     ****/
+
     /**
      * Get the worker id.
      *
@@ -1076,21 +1080,6 @@ class Worker
     }
 
     /**
-     * Helper function that passes through to logger instance
-     *
-     * @see    Logger::log For more documentation
-     * @return mixed
-     */
-    public function log()
-    {
-        if ($this->logger !== null) {
-            return call_user_func_array(array($this->logger, 'log'), func_get_args());
-        }
-
-        return false;
-    }
-
-    /**
      * Get the queue blocking.
      *
      * @return bool
@@ -1186,6 +1175,25 @@ class Worker
 
         $this->memoryLimit = $memoryLimit;
     }
+
+    /****
+     * end SETTER / GETTER section
+     ****/
+
+     /**
+      * Helper function that passes through to logger instance
+      *
+      * @see    Logger::log For more documentation
+      * @return mixed
+      */
+     public function log()
+     {
+         if ($this->logger !== null) {
+             return call_user_func_array(array($this->logger, 'log'), func_get_args());
+         }
+
+         return false;
+     }
 
     /**
      * Return array representation of this job
