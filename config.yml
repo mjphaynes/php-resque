@@ -25,7 +25,7 @@ include: examples/autoload.php  # A file to include on each command
 #    expiry_time: 604800 # Default expiry time of Redis keys
 #    verbose: 1          # quiet=0, normal=1, verbose=2, very_verbose=3, debug=4
 #     jobs:
-#         queue: default  # Defalt queue to add a job to
+#         queue: default  # Default queue to add a job to
 #         delay: false    # Default delay to add to jobs false=no delay
 #     workers:
 #         queue: "*"      # Default queue to watch, *=all queues
