@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Commands\Worker;
 
 use Resque;
@@ -24,7 +26,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Restart extends Command
 {
-
     protected function configure()
     {
         $this->setName('worker:restart')
@@ -67,12 +68,12 @@ class Restart extends Command
                 if ($child == -1) {
                     $this->log('Unable to fork, worker '.$worker.' has been stopped.', Resque\Logger::CRITICAL);
 
-                // Parent
+                    // Parent
                 } elseif ($child > 0) {
                     $this->log('Worker <pop>'.$worker.'</pop> restarted.');
                     continue;
 
-                // Child
+                    // Child
                 } else {
                     $new_worker = new Resque\Worker($worker->getQueues(), $worker->getBlocking());
                     $new_worker->setInterval($worker->getInterval());

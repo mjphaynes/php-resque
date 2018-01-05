@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque;
 
 use Resque\Helpers\Stats;
@@ -32,7 +34,7 @@ class Queue
     /**
      * Get the Queue key
      *
-     * @param  Queue|null  $queue the worker to get the key for
+     * @param  Queue|null  $queue  the worker to get the key for
      * @param  string|null $suffix to be appended to key
      * @return string
      */
@@ -61,7 +63,7 @@ class Queue
      * Get a job by id
      *
      * @param  string $id Job id
-     * @return Job job instance
+     * @return Job    job instance
      */
     public function job($id)
     {
@@ -74,7 +76,7 @@ class Queue
      * @param  string $job   The job class
      * @param  mixed  $data  The job data
      * @param  string $queue The queue to add the job to
-     * @return Job job instance
+     * @return Job    job instance
      */
     public function push($job, array $data = null, $queue = null)
     {
@@ -94,7 +96,7 @@ class Queue
      * @param  string $job   The job class
      * @param  mixed  $data  The job data
      * @param  string $queue The queue to add the job to
-     * @return Job job instance
+     * @return Job    job instance
      */
     public function later($delay, $job, array $data = array(), $queue = null)
     {
@@ -108,7 +110,7 @@ class Queue
         }
 
         // If the delay is smaller than 3 years then assume that an interval
-         // has been passed i.e. 600 seconds, otherwise it's a unix timestamp
+        // has been passed i.e. 600 seconds, otherwise it's a unix timestamp
         if ($delay < 94608000) {
             $delay += time();
         }
@@ -119,9 +121,9 @@ class Queue
     /**
      * Pop the next job off of the queue.
      *
-     * @param  array $queues   Queues to watch for new jobs
-     * @param  int   $timeout  Timeout if blocking
-     * @param  bool  $blocking Should Redis use blocking
+     * @param  array     $queues   Queues to watch for new jobs
+     * @param  int       $timeout  Timeout if blocking
+     * @param  bool      $blocking Should Redis use blocking
      * @return Job|false
      */
     public function pop(array $queues, $timeout = 10, $blocking = true)
@@ -156,7 +158,7 @@ class Queue
      * Return the size (number of pending jobs) of the specified queue.
      *
      * @param  string $queue name of the queue to be checked for pending jobs
-     * @return int The size of the queue.
+     * @return int    The size of the queue.
      */
     public function size($queue)
     {
@@ -167,7 +169,7 @@ class Queue
      * Return the size (number of delayed jobs) of the specified queue.
      *
      * @param  string $queue name of the queue to be checked for delayed jobs
-     * @return int The size of the delayed queue.
+     * @return int    The size of the delayed queue.
      */
     public function sizeDelayed($queue)
     {

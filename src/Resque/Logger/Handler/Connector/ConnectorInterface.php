@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Logger\Handler\Connector;
 
 use Symfony\Component\Console\Command\Command;
@@ -24,10 +26,10 @@ interface ConnectorInterface
     /**
      * Resolves the handler class
      *
-     * @param  Command         $command
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @param  array           $args
+     * @param  Command          $command
+     * @param  InputInterface   $input
+     * @param  OutputInterface  $output
+     * @param  array            $args
      * @return HandlerInterface
      */
     public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args);
@@ -39,7 +41,7 @@ interface ConnectorInterface
      * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @param  array           $args
-     * @return Callable
+     * @return callable
      */
     public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args);
 

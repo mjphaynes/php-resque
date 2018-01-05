@@ -25,15 +25,25 @@
         "ext-phpiredis": "Native PHP extension for Redis connectivity. Predis will automatically utilize when available."
     },
     "require-dev": {
-        "sami/sami": "~3.3|~4.0",
-        "phpunit/phpunit": "~4.8"
+        "phpunit/phpunit": "~4.8",
+        "friendsofphp/php-cs-fixer": "~2.2.0"
     },
     "bin": [
         "bin/resque"
     ],
+    "scripts": {
+        "cs-ci": "./vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose",
+        "cs-fix": "./vendor/bin/php-cs-fixer fix --using-cache=no --verbose",
+        "test": "./vendor/bin/phpunit"
+    },
     "autoload": {
         "psr-0": {
             "Resque": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Resque\\Tests\\": "tests/Resque"
         }
     }
 }

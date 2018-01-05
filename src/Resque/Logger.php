@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque;
 
 use Monolog;
@@ -82,7 +84,7 @@ class Logger
      * Create a Monolog\Logger instance and attach a handler
      *
      * @see    https://github.com/Seldaek/monolog#handlers Monolog handlers documentation
-     * @param  array $handlers Array of Monolog handlers
+     * @param array $handlers Array of Monolog handlers
      */
     public function __construct(array $handlers)
     {
@@ -106,9 +108,9 @@ class Logger
     /**
      * Send log message to output interface
      *
-     * @param  string $message Message to output
-     * @param  int    $context Some context around the log
-     * @param  int    $logType The log type
+     * @param string $message Message to output
+     * @param int    $context Some context around the log
+     * @param int    $logType The log type
      * @reutrn mixed
      */
     public function log($message, $context = null, $logType = null)

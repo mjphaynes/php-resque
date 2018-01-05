@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Resque\Logger\Handler;
 
 use Symfony\Component\Console\Command\Command;
@@ -22,22 +24,22 @@ class Connector
 {
 
     /**
-     * @var Command  command instance
+     * @var Command command instance
      */
     protected $command;
 
     /**
-     * @var InputInterface  input instance
+     * @var InputInterface input instance
      */
     protected $input;
 
     /**
-     * @var OutputInterface  output instance
+     * @var OutputInterface output instance
      */
     protected $output;
 
     /**
-     * @var array  output instance
+     * @var array output instance
      */
     private $connectionMap = array(
         'Redis'    => 'redis://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<key>.+)',               // redis://127.0.0.1:6379/log:%worker$
@@ -69,6 +71,7 @@ class Connector
     /**
      * Resolves a Monolog handler from string input
      *
+     * @param  mixed                            $logFormat
      * @throws InvalidArgumentException
      * @return Monolog\Handler\HandlerInterface
      */
@@ -120,6 +123,8 @@ class Connector
      * Performs a pattern match on a string and returns just
      * the named matches or false if no match
      *
+     * @param  mixed       $pattern
+     * @param  mixed       $subject
      * @return array|false
      */
     private function matches($pattern, $subject)
