@@ -13,6 +13,7 @@ namespace Resque;
 
 use Closure;
 use Resque\Helpers\Stats;
+use Psr\Container\ContainerInterface;
 
 /**
  * Resque job class
@@ -79,6 +80,11 @@ class Job
      * @var object Instance of the class performing work for this job
      */
     protected $instance;
+
+    /**
+     * @var ContainerInterface local container
+     */
+    protected $container = null;
 
     /**
      * @var array of statuses that are considered final/complete
@@ -317,6 +323,10 @@ class Job
 
         try {
             $instance = $this->getInstance();
+
+            if (!is_null($this->container) && method_exists($instance, 'setContainer')) {
+              $instance->setContainer($this->container);
+            }
 
             ob_start();
 
@@ -734,6 +744,24 @@ class Job
     public function setWorker(Worker $worker)
     {
         $this->worker = $worker;
+    }
+
+    /**
+     * Retrieve local container
+     *
+     * @return ContainerInterface
+     */
+    public function getContainer() {
+        return $this->container;
+    }
+
+    /**
+     * Set local container
+     *
+     * @param ContainerInterface the container to be injected into user land jobs
+     */
+    public function setContainer(ContainerInterface $container) {
+        $this->container = $container;
     }
 
     /**

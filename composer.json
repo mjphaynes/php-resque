@@ -18,7 +18,8 @@
         "monolog/monolog": "~1.7",
         "symfony/console": "~2.7|~3.0",
         "symfony/yaml": "~2.7|~3.0",
-        "symfony/process": "~2.7|~3.0"
+        "symfony/process": "~2.7|~3.0",
+        "psr/container": "*@stable"
     },
     "suggest": {
         "ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker in PHP versions < 5.5.0.",
