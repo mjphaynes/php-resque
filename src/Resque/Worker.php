@@ -11,7 +11,9 @@
 
 namespace Resque;
 
+use InvalidArgumentException;
 use Resque\Helpers\Stats;
+use Resque\Plugin\PluginInterface;
 
 /**
  * Resque worker class
@@ -44,6 +46,11 @@ class Worker
         self::STATUS_RUNNING => 'Running',
         self::STATUS_PAUSED  => 'Paused'
     );
+
+    /**
+     * @var PluginInterface[] List of registered plugin
+     */
+    public static $plugins = array();
 
     /**
      * The Redis instance.
@@ -180,6 +187,39 @@ class Worker
     }
 
     /**
+     * Register a plugin to the worker
+     *
+     * @param PluginInterface $plugin
+     * @throws Exception
+     */
+    public static function registerPlugin($plugin)
+    {
+        if($plugin instanceof PluginInterface) {
+            self::$plugins[get_class($plugin)] = $plugin;
+            Event::fire(Event::PLUGIN_REGISTERED, $plugin);
+        } else {
+            throw new InvalidArgumentException('$plugin must implement `' . PluginInterface::class . '`');
+        }
+    }
+
+    /**
+     * Unregister a plugin using FQCN or a plugin instance
+     *
+     * @param string|PluginInterface $plugin FQCN or Plugin instance
+     */
+    public static function unregisterPlugin($plugin)
+    {
+        if (is_string($plugin) || is_object($plugin)) {
+            $ref = is_object($plugin) ? get_class($plugin) : $plugin;
+            unset(self::$plugins[$ref]);
+
+            Event::fire(Event::PLUGIN_UNREGISTERED, $plugin);
+        } else {
+            throw new InvalidArgumentException('$plugin must implement `' . PluginInterface::class . '` or be a string');
+        }
+    }
+
+    /**
      * Create a new worker.
      *
      * @param mixed $queues   Queues for the worker to watch
@@ -194,6 +234,11 @@ class Worker
         $this->host = new Host();
         $this->pid  = getmypid();
         $this->id   = $this->host.':'.$this->pid;
+
+        foreach (self::$plugins as $plugin) {
+            $plugin->init($this);
+            Event::fire(Event::PLUGIN_INSTANCE, $plugin);
+        }
 
         Event::fire(Event::WORKER_INSTANCE, $this);
     }

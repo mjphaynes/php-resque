@@ -58,6 +58,11 @@ class Event
     const JOB_FAILURE        = 211;
     const JOB_DONE           = 212;
 
+    // Plugin event constants
+    const PLUGIN_INSTANCE     = 300;
+    const PLUGIN_REGISTERED   = 301;
+    const PLUGIN_UNREGISTERED = 302;
+
     /**
      * @var array containing all registered callbacks, indexed by event name
      */
