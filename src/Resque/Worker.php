@@ -190,7 +190,7 @@ class Worker
      * Register a plugin to the worker
      *
      * @param  PluginInterface $plugin
-     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public static function registerPlugin($plugin)
     {
@@ -198,7 +198,7 @@ class Worker
             self::$plugins[get_class($plugin)] = $plugin;
             Event::fire(Event::PLUGIN_REGISTERED, $plugin);
         } else {
-            throw new InvalidArgumentException('$plugin must implement `' . PluginInterface::class . '`');
+            throw new InvalidArgumentException('$plugin must implement `\Resque\Plugin\PluginInterface`');
         }
     }
 

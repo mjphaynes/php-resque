@@ -13,14 +13,13 @@ namespace Resque\Tests;
 
 use stdClass;
 use Resque\Event;
-use Resque\Plugin\PluginInterface;
 use Resque\Worker;
 
 class WorkerTest extends \PHPUnit_Framework_TestCase
 {
     public function testRegisterPlugin()
     {
-        $plugin = $this->getMock(PluginInterface::class);
+        $plugin = $this->getMock('\Resque\Plugin\PluginInterface');
         $listener = $this->getMock(stdClass::class, array('onPluginRegistration'));
 
         $listener
@@ -40,7 +39,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
 
     public function testInitPlugin()
     {
-        $plugin = $this->getMock(PluginInterface::class, array('init'));
+        $plugin = $this->getMock('Resque\Plugin\PluginInterface', array('init'));
 
         $plugin
             ->expects($this->once())
@@ -68,7 +67,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
 
     public function testUnregisterPlugin()
     {
-        $plugin = $this->getMock(PluginInterface::class);
+        $plugin = $this->getMock('Resque\Plugin\PluginInterface');
         $listener = $this->getMock(stdClass::class, array('onPluginUnregistration'));
 
         $listener
