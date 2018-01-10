@@ -215,7 +215,7 @@ class Worker
 
             Event::fire(Event::PLUGIN_UNREGISTERED, $plugin);
         } else {
-            throw new InvalidArgumentException('$plugin must implement `' . PluginInterface::class . '` or be a string');
+            throw new InvalidArgumentException('$plugin must implement `\Resque\Plugin\PluginInterface` or be a string');
         }
     }
 

@@ -20,7 +20,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterPlugin()
     {
         $plugin = $this->getMock('\Resque\Plugin\PluginInterface');
-        $listener = $this->getMock(stdClass::class, array('onPluginRegistration'));
+        $listener = $this->getMock('stdClass', array('onPluginRegistration'));
 
         $listener
             ->expects($this->once())
@@ -44,11 +44,11 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
         $plugin
             ->expects($this->once())
             ->method('init')
-            ->with($this->isInstanceOf(Worker::class));
+            ->with($this->isInstanceOf('\Resque\Worker'));
 
         Worker::registerPlugin($plugin);
 
-        $mock = $this->getMock(stdClass::class, array('onPluginInitialization'));
+        $mock = $this->getMock('stdClass', array('onPluginInitialization'));
 
         $mock
             ->expects($this->once())
@@ -68,7 +68,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
     public function testUnregisterPlugin()
     {
         $plugin = $this->getMock('Resque\Plugin\PluginInterface');
-        $listener = $this->getMock(stdClass::class, array('onPluginUnregistration'));
+        $listener = $this->getMock('stdClass', array('onPluginUnregistration'));
 
         $listener
             ->expects($this->once())
