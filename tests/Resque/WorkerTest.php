@@ -1,9 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: merlin
- * Date: 10/01/18
- * Time: 13:28
+
+/*
+ * This file is part of the php-resque package.
+ *
+ * (c) Michael Haynes <mike@mjphaynes.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Resque\Tests;
@@ -18,7 +21,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterPlugin()
     {
         $plugin = $this->getMock(PluginInterface::class);
-        $listener = $this->getMock(stdClass::class, ['onPluginRegistration']);
+        $listener = $this->getMock(stdClass::class, array('onPluginRegistration'));
 
         $listener
             ->expects($this->once())
@@ -46,7 +49,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
 
         Worker::registerPlugin($plugin);
 
-        $mock = $this->getMock(stdClass::class, ['onPluginInitialization']);
+        $mock = $this->getMock(stdClass::class, array('onPluginInitialization'));
 
         $mock
             ->expects($this->once())
@@ -66,7 +69,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
     public function testUnregisterPlugin()
     {
         $plugin = $this->getMock(PluginInterface::class);
-        $listener = $this->getMock(stdClass::class, ['onPluginUnregistration']);
+        $listener = $this->getMock(stdClass::class, array('onPluginUnregistration'));
 
         $listener
             ->expects($this->once())

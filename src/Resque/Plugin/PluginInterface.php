@@ -1,13 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: merlin
- * Date: 10/01/18
- * Time: 13:13
+
+/*
+ * This file is part of the php-resque package.
+ *
+ * (c) Michael Haynes <mike@mjphaynes.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Resque\Plugin;
-
 
 use Resque\Worker;
 
@@ -17,5 +19,4 @@ interface PluginInterface
      * @param Worker $worker
      */
     public function init($worker);
-
 }

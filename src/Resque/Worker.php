@@ -189,12 +189,12 @@ class Worker
     /**
      * Register a plugin to the worker
      *
-     * @param PluginInterface $plugin
+     * @param  PluginInterface $plugin
      * @throws Exception
      */
     public static function registerPlugin($plugin)
     {
-        if($plugin instanceof PluginInterface) {
+        if ($plugin instanceof PluginInterface) {
             self::$plugins[get_class($plugin)] = $plugin;
             Event::fire(Event::PLUGIN_REGISTERED, $plugin);
         } else {
@@ -1295,7 +1295,7 @@ class Worker
     /**
      * Creates process title string from current version and status of worker
      *
-     * @param string $status
+     * @param  string $status
      * @return string
      */
     protected function getProcessTitle($status)
