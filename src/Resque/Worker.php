@@ -189,7 +189,7 @@ class Worker
     /**
      * Register a plugin to the worker
      *
-     * @param  PluginInterface $plugin
+     * @param  PluginInterface          $plugin
      * @throws InvalidArgumentException
      */
     public static function registerPlugin($plugin)
