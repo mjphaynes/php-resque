@@ -118,6 +118,19 @@ class Worker
     protected $memoryLimit = 128;
 
     /**
+     * @var array Signal handler method name mapping
+     */
+    protected $signalHandlerMapping = [
+        SIGTERM => 'sigForceShutdown',
+        SIGINT  => 'sigForceShutdown',
+        SIGQUIT => 'sigShutdown',
+        SIGUSR1 => 'sigCancelJob',
+        SIGUSR2 => 'sigPause',
+        SIGCONT => 'sigResume',
+        SIGPIPE => 'sigWakeUp',
+    ];
+
+    /**
      * @var array List of shutdown errors to catch
      */
     protected $shutdownErrors = array(
@@ -511,13 +524,9 @@ class Worker
             } else {
                 declare(ticks = 1);
             }
-            pcntl_signal(SIGTERM, array($this, 'sigForceShutdown'));
-            pcntl_signal(SIGINT, array($this, 'sigForceShutdown'));
-            pcntl_signal(SIGQUIT, array($this, 'sigShutdown'));
-            pcntl_signal(SIGUSR1, array($this, 'sigCancelJob'));
-            pcntl_signal(SIGUSR2, array($this, 'sigPause'));
-            pcntl_signal(SIGCONT, array($this, 'sigResume'));
-            pcntl_signal(SIGPIPE, array($this, 'sigWakeUp'));
+            foreach ($this->signalHandlerMapping as $signalName => $signalHandler) {
+                pcntl_signal($signalName, array($this, $signalHandler));
+            }
         }
 
         register_shutdown_function(array($this, 'unregister'));
@@ -696,6 +705,16 @@ class Worker
         }
 
         return false;
+    }
+
+    /**
+     * Set a new handler method for a given signal
+     *
+     * @param  int     Signal Identifier (ie. SIGTERM)
+     * @param  string  Signal handler method name
+     */
+    public function setSignalHandler($signal, $signalHandlerMethodName) {
+        $this->signalHandlerMapping[$signal] = $signalHandlerMethodName;
     }
 
     /**
