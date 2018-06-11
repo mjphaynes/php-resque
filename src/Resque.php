@@ -92,7 +92,8 @@ class Resque
             'namespace'  => static::getConfig('redis.namespace', Redis::DEFAULT_NS),
             'password'   => static::getConfig('redis.password', Redis::DEFAULT_PASSWORD),
             'rw_timeout' => static::getConfig('redis.rw_timeout', Redis::DEFAULT_RW_TIMEOUT),
-            'phpiredis'  => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS)
+            'phpiredis'  => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS),
+            'predis'     => static::getConfig('predis'),
         ));
 
         return true;
