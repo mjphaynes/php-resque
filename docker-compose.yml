@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app_5_3:
+    build:
+      context: .
+      dockerfile: 'docker/app_5_3/Dockerfile'
+    volumes:
+      - ".:/php-resque"
+    working_dir: '/php-resque'
+
