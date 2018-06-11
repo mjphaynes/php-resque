@@ -223,7 +223,7 @@ class Redis
         }
 
         // create Predis client
-        $this->redis = new Predis\Client($params, $options);
+        $this->initializePredisClient($params, $options);
 
         // setup namespace
         if (!empty($config['namespace'])) {
@@ -234,6 +234,17 @@ class Redis
 
         // Do this to test connection is working now rather than later
         $this->redis->connect();
+    }
+
+    /**
+     * initialize the redis member with a predis client.
+     * isolated call for testability
+     * @param array $config predis config parameters
+     * @param array $options predis optional parameters
+     * @return null
+     */
+    private function initializePredisClient($config, $options) {
+      $this->redis = new Predis\Client($config, $options);
     }
 
     /**
