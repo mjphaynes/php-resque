@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Tests\Helpers\Utils;
+namespace Resque\Tests\Helpers;
 
 use Resque\Helpers\Util;
 use PHPUnit\Framework\TestCase;
