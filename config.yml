@@ -11,7 +11,7 @@
 
 include: examples/autoload.php  # A file to include on each command
 
-
+# # The legacy way, which only supports a subset of Redis options
 # redis:
 #     scheme: tcp         # The connection scheme
 #     host: 127.0.0.1     # The hostname to connect to
@@ -20,6 +20,20 @@ include: examples/autoload.php  # A file to include on each command
 #     rw_timeout: 60      # Redis read/write timeout
 #     phpiredis: false    # Should use phpiredis php extension (must be installed)
 
+# # the predis native way (sentinel example)
+# # "config" is the first parameter to Predis\Client
+# # "options" is the second parameter to Predis\Client
+# predis:
+#   config:
+#     - "tcp://10.0.0.1:12345"
+#     - "tcp://10.0.0.2:12345"
+#     - "tcp://10.0.0.3:12345"
+#   options:
+#     service: "some_redis_cluster_name"
+#     replication: "sentinel"
+#     parameters:
+#       password: "some_secret_password"
+#       database: 12
 
 # default:
 #    expiry_time: 604800 # Default expiry time of Redis keys

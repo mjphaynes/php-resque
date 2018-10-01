@@ -1,0 +1,9 @@
+
+# do not deploy docker testing stuff
+/docker export-ignore
+docker-compose.yml export-ignore
+
+# do not deploy git stuff
+.gitattributes
+.gitignore
+.git

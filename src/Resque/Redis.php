@@ -12,7 +12,6 @@
 namespace Resque;
 
 use Predis;
-use Resque\Helpers\Stats;
 
 /**
  * Resque redis class
@@ -43,8 +42,8 @@ class Redis
     const DEFAULT_NS = 'resque';
 
     /**
-    * Default Redis AUTH password
-    */
+     * Default Redis AUTH password
+     */
     const DEFAULT_PASSWORD = null;
 
     /**
@@ -53,8 +52,8 @@ class Redis
     const DEFAULT_RW_TIMEOUT = 60;
 
     /**
-    * Default Redis option for using phpiredis or not
-    */
+     * Default Redis option for using phpiredis or not
+     */
     const DEFAULT_PHPIREDIS = false;
 
     /**
@@ -67,7 +66,7 @@ class Redis
         'namespace'  => self::DEFAULT_NS,
         'password'   => self::DEFAULT_PASSWORD,
         'rw_timeout' => self::DEFAULT_RW_TIMEOUT,
-        'phpiredis'  => self::DEFAULT_PHPIREDIS
+        'phpiredis'  => self::DEFAULT_PHPIREDIS,
     );
 
     /**
@@ -194,36 +193,48 @@ class Redis
      */
     public function __construct(array $config = array())
     {
-        // configuration params array
-        $params = array(
-            'scheme' => $config['scheme'],
-            'host'   => $config['host'],
-            'port'   => $config['port']
-        );
+        $predisParams  = array();
+        $predisOptions = array();
+        if (!empty($config['predis'])) {
+            $predisParams  = $config['predis']['config'];
+            $predisOptions = $config['predis']['options'];
+        } else {
+            foreach (array('scheme', 'host', 'port') as $key) {
+                if (!isset($config[$key])) {
+                    throw new \InvalidArgumentException("key '{$key}' is missing in redis configuration");
+                }
+            }
 
-        // setup password
-        if (!empty($config['password'])) {
-            $params['password'] = $config['password'];
-        }
-
-        // setup read/write timeout
-        if (!empty($config['rw_timeout'])) {
-            $params['read_write_timeout'] = $config['rw_timeout'];
-        }
-
-        // setup predis client options
-        $options = array();
-        if (!empty($config['phpiredis'])) {
-            $options = array(
-                'connections' => array(
-                    'tcp'  => 'Predis\Connection\PhpiredisStreamConnection',
-                    'unix' => 'Predis\Connection\PhpiredisSocketConnection'
-                ),
+            // non-optional configuration parameters
+            $predisParams = array(
+                'scheme' => $config['scheme'],
+                'host'   => $config['host'],
+                'port'   => $config['port'],
             );
+
+            // setup password
+            if (!empty($config['password'])) {
+                $predisParams['password'] = $config['password'];
+            }
+
+            // setup read/write timeout
+            if (!empty($config['rw_timeout'])) {
+                $predisParams['read_write_timeout'] = $config['rw_timeout'];
+            }
+
+            // setup predis client options
+            if (!empty($config['phpiredis'])) {
+                $predisOptions = array(
+                    'connections' => array(
+                        'tcp'  => 'Predis\Connection\PhpiredisStreamConnection',
+                        'unix' => 'Predis\Connection\PhpiredisSocketConnection',
+                    ),
+                );
+            }
         }
 
         // create Predis client
-        $this->redis = new Predis\Client($params, $options);
+        $this->redis = $this->initializePredisClient($predisParams, $predisOptions);
 
         // setup namespace
         if (!empty($config['namespace'])) {
@@ -234,6 +245,18 @@ class Redis
 
         // Do this to test connection is working now rather than later
         $this->redis->connect();
+    }
+
+    /**
+     * initialize the redis member with a predis client.
+     * isolated call for testability
+     * @param array $config predis config parameters
+     * @param array $options predis optional parameters
+     * @return null
+     */
+    public function initializePredisClient($config, $options)
+    {
+        return new Predis\Client($config, $options);
     }
 
     /**
@@ -277,7 +300,7 @@ class Redis
         }
 
         if (strpos($string, $this->namespace) !== 0) {
-            $string = $this->namespace.$string;
+            $string = $this->namespace . $string;
         }
 
         return $string;
@@ -317,7 +340,7 @@ class Redis
         return call_user_func_array(array($this->redis, $method), $parameters);
 
         // } catch (\Exception $e) {
-        // 	return false;
+        //     return false;
         // }
     }
 }
