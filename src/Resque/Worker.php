@@ -120,7 +120,7 @@ class Worker
     /**
      * @var array Signal handler method name mapping
      */
-    protected $signalHandlerMapping = [
+    protected $signalHandlerMapping = array(
         SIGTERM => 'sigForceShutdown',
         SIGINT  => 'sigForceShutdown',
         SIGQUIT => 'sigShutdown',
@@ -128,7 +128,7 @@ class Worker
         SIGUSR2 => 'sigPause',
         SIGCONT => 'sigResume',
         SIGPIPE => 'sigWakeUp',
-    ];
+    );
 
     /**
      * @var array List of shutdown errors to catch
@@ -713,7 +713,8 @@ class Worker
      * @param  int     Signal Identifier (ie. SIGTERM)
      * @param  string  Signal handler method name
      */
-    public function setSignalHandler($signal, $signalHandlerMethodName) {
+    public function setSignalHandler($signal, $signalHandlerMethodName)
+    {
         $this->signalHandlerMapping[$signal] = $signalHandlerMethodName;
     }
 
