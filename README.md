@@ -343,5 +343,5 @@ Contributing to the project would be a massive help in maintaining and extending
 If you're interested in contributing, issue a pull request on Github.
 
 * [mjphaynes](https://github.com/mjphaynes)
-* [chrisboulton](https://github.com/chrisboulton) (orignal port)
+* [chrisboulton](https://github.com/chrisboulton) (original port)
 * [Project contributors](https://github.com/mjphaynes/php-resque/graphs/contributors)
