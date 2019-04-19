@@ -1257,7 +1257,7 @@ class Worker
     protected function updateProcLine($status)
     {
         $status = $this->getProcessTitle($status);
-        if (function_exists('cli_set_process_title')) {
+        if (function_exists('cli_set_process_title') && PHP_OS !== 'Darwin') {
             cli_set_process_title($status);
             return;
         }
