@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.2.0] - 2019-04-22
+- Make signals configurable by event callback (PR [#85](https://github.com/mjphaynes/php-resque/pull/85))
+- Provide predis native configuration (PR [#88](https://github.com/mjphaynes/php-resque/pull/88))
+- Add travis support and CS check (PR [#72](https://github.com/mjphaynes/php-resque/pull/72))
+- Use pcntl_async_signals if available (PR [#65](https://github.com/mjphaynes/php-resque/pull/65))
+- Fix cli_set_process_title error on macOS (PR [#92](https://github.com/mjphaynes/php-resque/pull/92))
+
 ## [2.1.2] - 2017-09-19
 - Fix job processing of the last queue (Issue [#61](https://github.com/mjphaynes/php-resque/issues/61))
 
@@ -63,7 +70,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.0.0 - 2013-10-09
 - First public release of php-resque
 
-[Unreleased]: https://github.com/mjphaynes/php-resque/compare/2.1.2...HEAD
+[Unreleased]: https://github.com/mjphaynes/php-resque/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/mjphaynes/php-resque/compare/2.1.2...2.2.0
 [2.1.2]: https://github.com/mjphaynes/php-resque/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/mjphaynes/php-resque/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/mjphaynes/php-resque/compare/2.0.0...2.1.0
