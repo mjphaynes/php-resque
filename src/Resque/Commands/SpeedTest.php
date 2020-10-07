@@ -21,6 +21,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Helper\ProgressBar;
 
+use Exception;
+
 /**
  * Performs a raw speed test
  *
@@ -41,6 +43,10 @@ class SpeedTest extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!class_exists(Process::class)) {
+            throw new Exception('The Symfony process component is required to run the speed test.');
+        }
+
         Resque\Redis::setConfig(array('namespace' => 'resque:speedtest'));
 
         $testTime = (int)$input->getOption('time') ?: 5;
