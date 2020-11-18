@@ -75,7 +75,7 @@ class Util
     {
         $to = $to ?: time();
 
-        $diff = (int)abs($to - $from);
+        $diff = abs((int)$to - (int)$from);
 
         if ($diff < self::MINUTE_IN_SECONDS) {
             $since = array($diff, 'sec');
