@@ -809,11 +809,9 @@ class Job
      *
      * @param string $JobId
      */
-
-    public static function cancelJob($JobId) {
-        //const STATUS_CANCELLED = 5;
-        if($JobId != '') {
-            Redis::instance()->hset(self::redisKey($JobId), 'status', 5);
+    public static function cancelJob($jobId) {
+        if($jobId != '') {
+            Redis::instance()->hset(self::redisKey($jobId), 'status', self::STATUS_CANCELLED);
         }
     }
 }
