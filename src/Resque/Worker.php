@@ -347,6 +347,12 @@ class Worker
 
                 Event::fire(Event::WORKER_FORK_CHILD, array($this, $job, getmypid()));
 
+                register_shutdown_function(
+                    function() {
+                        posix_kill(getmypid(), SIGKILL);
+                    }
+                );
+
                 $this->log('Running job <pop>'.$job.'</pop>', Logger::INFO);
                 $this->updateProcLine('Job: processing '.$job->getQueue().'#'.$job->getId().' since '.strftime('%F %T'));
 
