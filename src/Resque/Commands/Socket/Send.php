@@ -74,5 +74,7 @@ class Send extends Command
         $this->log('<pop>'.trim($response).'</pop>');
 
         fclose($fh);
+
+        return self::SUCCESS;
     }
 }

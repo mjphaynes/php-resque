@@ -68,5 +68,7 @@ class Workers extends Command
         }
 
         $this->log((string)$table);
+
+        return self::SUCCESS;
     }
 }

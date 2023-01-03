@@ -49,7 +49,7 @@ class Stop extends Command
         if ($id) {
             if (false === ($worker = Resque\Worker::hostWorker($id))) {
                 $this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
-                return;
+                return self::FAILURE;
             }
 
             $workers = array($worker);
@@ -70,5 +70,7 @@ class Stop extends Command
                 $this->log('Worker <pop>'.$worker.'</pop> <error>could not send '.$sig.' signal.</error>');
             }
         }
+
+        return self::SUCCESS;
     }
 }

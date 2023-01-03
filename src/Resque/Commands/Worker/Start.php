@@ -71,6 +71,8 @@ class Start extends Command
         }
 
         $worker->work();
+
+        return self::SUCCESS;
     }
 
     public function pollingConsoleOutput()

@@ -56,5 +56,7 @@ class Hosts extends Command
         }
 
         $this->log((string)$table);
+
+        return self::SUCCESS;
     }
 }

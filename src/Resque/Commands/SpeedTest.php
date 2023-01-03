@@ -76,6 +76,8 @@ class SpeedTest extends Command
         foreach ($keys as $key) {
             $redis->del($key);
         }
+
+        return self::SUCCESS;
     }
 
     // http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html

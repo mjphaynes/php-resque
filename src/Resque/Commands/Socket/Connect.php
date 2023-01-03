@@ -112,5 +112,7 @@ class Connect extends Command
         }
 
         fclose($fh);
+
+        return self::SUCCESS;
     }
 }

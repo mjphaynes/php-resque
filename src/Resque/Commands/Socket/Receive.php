@@ -285,6 +285,8 @@ class Receive extends Command
         });
 
         $server->run();
+
+        return self::SUCCESS;
     }
 
     public function pollingConsoleOutput()

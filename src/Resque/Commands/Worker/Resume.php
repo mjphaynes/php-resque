@@ -67,5 +67,7 @@ class Resume extends Command
                 $this->log('Worker <pop>'.$worker.'</pop> <error>could not send CONT signal.</error>');
             }
         }
+
+        return self::SUCCESS;
     }
 }
