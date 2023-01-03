@@ -13,10 +13,8 @@ namespace Resque\Commands;
 
 use Resque;
 use Resque\Commands\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -51,5 +49,7 @@ class Cleanup extends Command
         $this->log('Cleaned workers: <pop>'.json_encode(array_merge($cleaned_hosts['workers'], $cleaned_workers)).'</pop>');
         $this->log('Cleaned <pop>'.$cleaned_jobs['zombie'].'</pop> zombie job'.($cleaned_jobs['zombie'] == 1 ? '' : 's'));
         $this->log('Cleared <pop>'.$cleaned_jobs['processed'].'</pop> processed job'.($cleaned_jobs['processed'] == 1 ? '' : 's'));
+
+        return self::SUCCESS;
     }
 }

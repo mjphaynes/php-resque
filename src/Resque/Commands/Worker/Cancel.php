@@ -16,7 +16,6 @@ use Resque\Commands\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -48,7 +47,7 @@ class Cancel extends Command
         if ($id) {
             if (false === ($worker = Resque\Worker::hostWorker($id))) {
                 $this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
-                return;
+                return self::FAILURE;
             }
 
             $workers = array($worker);
@@ -74,5 +73,7 @@ class Cancel extends Command
                 $this->log('Worker <pop>'.$worker.'</pop> has no running job.');
             }
         }
+
+        return self::SUCCESS;
     }
 }

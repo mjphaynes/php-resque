@@ -62,7 +62,7 @@ _A web interface for this version is currently in development, if you want to kn
 You must have the following installed in order to run php-resque:
 
 * [Redis](http://redis.io/)
-* [PHP 5.3+](http://php.net/)
+* [PHP 7.1+](http://php.net/)
 * [PCNTL PHP extension](http://php.net/manual/en/book.pcntl.php)
 * [Composer](http://getcomposer.org/)
 
@@ -81,7 +81,7 @@ Add php-resque to your application's `composer.json` file:
 ```json
 {
     "require": {
-        "mjphaynes/php-resque": "2.1.*"
+        "mjphaynes/php-resque": "3.0.*"
     }
 }
 ```

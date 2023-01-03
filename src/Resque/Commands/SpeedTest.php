@@ -13,13 +13,10 @@ namespace Resque\Commands;
 
 use Resque;
 use Resque\Commands\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 use Exception;
 
@@ -76,6 +73,8 @@ class SpeedTest extends Command
         foreach ($keys as $key) {
             $redis->del($key);
         }
+
+        return self::SUCCESS;
     }
 
     // http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html
