@@ -20,7 +20,6 @@
         "symfony/yaml": "~3.0|~4.0|~5.0"
     },
     "suggest": {
-        "ext-proctitle": "Allows php-resque to rename the title of UNIX processes to show the status of a worker in PHP versions < 5.5.0.",
         "ext-phpiredis": "Native PHP extension for Redis connectivity. Predis will automatically utilize when available.",
         "symfony/process": "To run the speed test command."
     },

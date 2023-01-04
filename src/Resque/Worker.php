@@ -1248,22 +1248,14 @@ class Worker
      * On supported systems, update the name of the currently running process
      * to indicate the current state of a worker.
      *
-     * supported systems are
-     * - PHP Version < 5.5.0 with the PECL proctitle module installed
-     * - PHP Version >= 5.5.0 using built in method
-     *
      * @param string $status The updated process title.
      */
     protected function updateProcLine($status)
     {
         $status = $this->getProcessTitle($status);
-        if (function_exists('cli_set_process_title') && PHP_OS !== 'Darwin') {
-            cli_set_process_title($status);
-            return;
-        }
 
-        if (function_exists('setproctitle')) {
-            setproctitle($status);
+        if (PHP_OS !== 'Darwin') {
+            cli_set_process_title($status);
         }
     }
 

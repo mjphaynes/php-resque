@@ -54,7 +54,7 @@ This version provides features such as:
 * Support for priorities (queues).
 
 _This version is not a direct port of Github's Resque and therefore is not compatible with it, or their web interface._
-_A web interface for this version is currently in development, if you want to know more or help out then drop me a line._
+A Resque web interface built with Symfony 3.x for this version can be found [on GitHub](https://github.com/xelan/resque-webui-bundle/).
 
 
 ## Requirements ##
@@ -68,7 +68,6 @@ You must have the following installed in order to run php-resque:
 
 Optional, but recommended:
 * [Phpiredis 1.0+](https://github.com/nrk/phpiredis)
-* [proctitle PECL Package](http://pecl.php.net/package/proctitle)
 
 ---
 
