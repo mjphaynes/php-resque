@@ -26,6 +26,7 @@ background jobs, placing those jobs on multiple queues, and processing them late
 * [Event/Hook System](#eventhook-system)
 * [Configuration Options](#configuration-options)
 * [Redis](#redis)
+* [Contributing](#contributing)
 * [Contributors](#contributors)
 
 ---
@@ -80,7 +81,7 @@ Add php-resque to your application's `composer.json` file:
 ```json
 {
     "require": {
-        "mjphaynes/php-resque": "3.0.*"
+        "mjphaynes/php-resque": "3.1.*"
     }
 }
 ```
@@ -331,8 +332,11 @@ To set when running a command:
 
 ```
 $ bin/resque [command] --host=<hostname> --port=<port>
-```
 
+```
+## Contributing ##
+
+PHP-Resque v3 is for PHP 7.1 or higher, new code must work with PHP 7.1. Most of the codebase is still for PHP 5, but PRs to upgrade the code are welcome. Please follow the [PSR-2 coding style](https://www.php-fig.org/psr/psr-2/) where possible. New features should come with tests.
 
 ---
 
