@@ -803,4 +803,15 @@ class Job
 
         return $cleaned;
     }
+
+    /**
+     * Update the Delayed Job Status to STATUS_CANCELLED manually
+     *
+     * @param string $JobId
+     */
+    public static function cancelJob($jobId) {
+        if($jobId != '') {
+            Redis::instance()->hset(self::redisKey($jobId), 'status', self::STATUS_CANCELLED);
+        }
+    }
 }
