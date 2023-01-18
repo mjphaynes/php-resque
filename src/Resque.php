@@ -24,7 +24,7 @@ class Resque
     /**
      * php-resque version
      */
-    const VERSION = '2.2.0';
+    const VERSION = '3.1.1';
 
     /**
      * How long the job and worker data will remain in Redis for
