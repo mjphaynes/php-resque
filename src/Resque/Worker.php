@@ -121,26 +121,26 @@ class Worker
      * @var array Signal handler method name mapping
      */
     protected $signalHandlerMapping = array(
-        SIGTERM => 'sigForceShutdown',
-        SIGINT  => 'sigForceShutdown',
-        SIGQUIT => 'sigShutdown',
-        SIGUSR1 => 'sigCancelJob',
-        SIGUSR2 => 'sigPause',
-        SIGCONT => 'sigResume',
-        SIGPIPE => 'sigWakeUp',
+        \SIGTERM => 'sigForceShutdown',
+        \SIGINT  => 'sigForceShutdown',
+        \SIGQUIT => 'sigShutdown',
+        \SIGUSR1 => 'sigCancelJob',
+        \SIGUSR2 => 'sigPause',
+        \SIGCONT => 'sigResume',
+        \SIGPIPE => 'sigWakeUp',
     );
 
     /**
      * @var array List of shutdown errors to catch
      */
     protected $shutdownErrors = array(
-        E_PARSE,
-        E_ERROR,
-        E_USER_ERROR,
-        E_CORE_ERROR,
-        E_CORE_WARNING,
-        E_COMPILE_ERROR,
-        E_COMPILE_WARNING
+        \E_PARSE,
+        \E_ERROR,
+        \E_USER_ERROR,
+        \E_CORE_ERROR,
+        \E_CORE_WARNING,
+        \E_COMPILE_ERROR,
+        \E_COMPILE_WARNING
     );
 
     /**
