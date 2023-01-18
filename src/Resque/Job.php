@@ -367,8 +367,7 @@ class Job
         if (!class_exists($this->class)) {
             throw new \RuntimeException('Could not find job class "'.$this->class.'"');
         }
-
-        if (!method_exists($this->class, $this->method) or !is_callable(array($this->class, $this->method))) {
+        if (!method_exists($this->class, $this->method)) {
             throw new \RuntimeException('Job class "'.$this->class.'" does not contain a public "'.$this->method.'" method');
         }
 
