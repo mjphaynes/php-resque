@@ -324,7 +324,7 @@ class Worker
                 Event::fire(Event::WORKER_FORK_PARENT, array($this, $job, $this->child));
 
                 $this->log('Forked process to run job on pid:'.$this->child, Logger::DEBUG);
-                $this->updateProcLine('Worker: forked '.$this->child.' at '.strftime('%F %T'));
+                $this->updateProcLine('Worker: forked '.$this->child.' at '.date('Y-m-d H:i:s'));
 
                 // Set the PID in redis
                 $this->redis->hset(self::redisKey($this), 'job_pid', $this->child);
@@ -348,7 +348,7 @@ class Worker
                 Event::fire(Event::WORKER_FORK_CHILD, array($this, $job, getmypid()));
 
                 $this->log('Running job <pop>'.$job.'</pop>', Logger::INFO);
-                $this->updateProcLine('Job: processing '.$job->getQueue().'#'.$job->getId().' since '.strftime('%F %T'));
+                $this->updateProcLine('Job: processing '.$job->getQueue().'#'.$job->getId().' since '.date('Y-m-d H:i:s'));
 
                 $this->perform($job);
                 exit(0);
