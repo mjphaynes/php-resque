@@ -143,8 +143,8 @@ class Job
     public static function createId($queue, $class, $data = null, $run_at = 0)
     {
         $id = dechex(crc32($queue)).
-            dechex(microtime(true) * 1000).
-            md5(json_encode($class).json_encode($data).$run_at.uniqid('', true));
+            dechex((int)(microtime(true) * 1000)).
+            md5(json_encode($class).json_encode($data).$run_at);
 
         return substr($id, 0, self::ID_LENGTH);
     }
