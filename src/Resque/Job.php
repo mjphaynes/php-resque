@@ -144,7 +144,7 @@ class Job
     {
         $id = dechex(crc32($queue)).
             dechex((int)(microtime(true) * 1000)).
-            md5(json_encode($class).json_encode($data).$run_at);
+            md5(json_encode($class).json_encode($data).$run_at.uniqid('', true));
 
         return substr($id, 0, self::ID_LENGTH);
     }
