@@ -57,7 +57,7 @@ class ConsoleProcessor
     {
         if ($this->command->pollingConsoleOutput()) {
             if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $record['message'] = sprintf('** [%s] %s', strftime('%T %Y-%m-%d'), $record['message']);
+                $record['message'] = sprintf('** [%s] %s', date('H:i:s Y-m-d'), $record['message']);
             } else {
                 $record['message'] = sprintf('** %s', $record['message']);
             }

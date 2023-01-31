@@ -121,26 +121,26 @@ class Worker
      * @var array Signal handler method name mapping
      */
     protected $signalHandlerMapping = array(
-        SIGTERM => 'sigForceShutdown',
-        SIGINT  => 'sigForceShutdown',
-        SIGQUIT => 'sigShutdown',
-        SIGUSR1 => 'sigCancelJob',
-        SIGUSR2 => 'sigPause',
-        SIGCONT => 'sigResume',
-        SIGPIPE => 'sigWakeUp',
+        \SIGTERM => 'sigForceShutdown',
+        \SIGINT  => 'sigForceShutdown',
+        \SIGQUIT => 'sigShutdown',
+        \SIGUSR1 => 'sigCancelJob',
+        \SIGUSR2 => 'sigPause',
+        \SIGCONT => 'sigResume',
+        \SIGPIPE => 'sigWakeUp',
     );
 
     /**
      * @var array List of shutdown errors to catch
      */
     protected $shutdownErrors = array(
-        E_PARSE,
-        E_ERROR,
-        E_USER_ERROR,
-        E_CORE_ERROR,
-        E_CORE_WARNING,
-        E_COMPILE_ERROR,
-        E_COMPILE_WARNING
+        \E_PARSE,
+        \E_ERROR,
+        \E_USER_ERROR,
+        \E_CORE_ERROR,
+        \E_CORE_WARNING,
+        \E_COMPILE_ERROR,
+        \E_COMPILE_WARNING
     );
 
     /**
@@ -324,7 +324,7 @@ class Worker
                 Event::fire(Event::WORKER_FORK_PARENT, array($this, $job, $this->child));
 
                 $this->log('Forked process to run job on pid:'.$this->child, Logger::DEBUG);
-                $this->updateProcLine('Worker: forked '.$this->child.' at '.strftime('%F %T'));
+                $this->updateProcLine('Worker: forked '.$this->child.' at '.date('Y-m-d H:i:s'));
 
                 // Set the PID in redis
                 $this->redis->hset(self::redisKey($this), 'job_pid', $this->child);
@@ -348,7 +348,7 @@ class Worker
                 Event::fire(Event::WORKER_FORK_CHILD, array($this, $job, getmypid()));
 
                 $this->log('Running job <pop>'.$job.'</pop>', Logger::INFO);
-                $this->updateProcLine('Job: processing '.$job->getQueue().'#'.$job->getId().' since '.strftime('%F %T'));
+                $this->updateProcLine('Job: processing '.$job->getQueue().'#'.$job->getId().' since '.date('Y-m-d H:i:s'));
 
                 $this->perform($job);
                 exit(0);

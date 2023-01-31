@@ -141,7 +141,7 @@ class Command extends \Symfony\Component\Console\Command\Command
         unset($logs, $handlerConnector, $handlers);
 
         // Include file?
-        if (array_key_exists('include', $config) and strlen($include = $config['include'])) {
+        if (array_key_exists('include', $config) and !empty($include = $config['include'])) {
             if (
                 !($includeFile = realpath(dirname($include).'/'.basename($include))) or
                 !is_readable($includeFile) or !is_file($includeFile) or
