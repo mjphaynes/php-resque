@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.1] - 2023-01-31
+- Improve PHP8 compatibility
+
+## [3.1.0] - 2023-01-04
+- Allow to cancel delayed jobs (PR [#99](https://github.com/mjphaynes/php-resque/pull/99))
+- Remove proctitle extension suggestion, as it is not needed on PHP7+
+
+## [3.0.0] - 2023-01-03
+- Reduce dependency coupling (PR [#94](https://github.com/mjphaynes/php-resque/pull/94))
+- Clean up code
+- Support Symfony components v4 and v5
+- Bump minimum PHP version to 7.1
+
 ## [2.2.0] - 2019-04-22
 - Make signals configurable by event callback (PR [#85](https://github.com/mjphaynes/php-resque/pull/85))
 - Provide predis native configuration (PR [#88](https://github.com/mjphaynes/php-resque/pull/88))
@@ -70,7 +83,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.0.0 - 2013-10-09
 - First public release of php-resque
 
-[Unreleased]: https://github.com/mjphaynes/php-resque/compare/2.2.0...HEAD
+[Unreleased]: https://github.com/mjphaynes/php-resque/compare/3.1.1...HEAD
+[3.1.1]: https://github.com/mjphaynes/php-resque/compare/3.1.0...3.1.1
+[3.1.0]: https://github.com/mjphaynes/php-resque/compare/3.0.0...3.1.0
+[3.0.0]: https://github.com/mjphaynes/php-resque/compare/2.2.0...3.0.0
 [2.2.0]: https://github.com/mjphaynes/php-resque/compare/2.1.2...2.2.0
 [2.1.2]: https://github.com/mjphaynes/php-resque/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/mjphaynes/php-resque/compare/2.1.0...2.1.1
