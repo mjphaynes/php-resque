@@ -64,7 +64,7 @@ class Logger
     /**
      * @var array List of valid log levels
      */
-    protected $logTypes = array(
+    protected $logTypes = [
         self::DEBUG     => 'debug',
         self::INFO      => 'info',
         self::NOTICE    => 'notice',
@@ -73,7 +73,7 @@ class Logger
         self::CRITICAL  => 'critical',
         self::ALERT     => 'alert',
         self::EMERGENCY => 'emergency'
-    );
+    ];
 
     /**
      * @var \Monolog\Logger The monolog instance
@@ -117,17 +117,17 @@ class Logger
     {
         if (is_int($context) and is_null($logType)) {
             $logType = $context;
-            $context = array();
+            $context = [];
         }
 
         if (!is_array($context)) {
-            $context = is_null($context) ? array() : array($context);
+            $context = is_null($context) ? [] : [$context];
         }
 
         if (!is_int($logType)) {
             $logType = self::INFO;
         }
 
-        return call_user_func(array($this->instance, $this->logTypes[$logType]), $message, $context);
+        return call_user_func([$this->instance, $this->logTypes[$logType]], $message, $context);
     }
 }

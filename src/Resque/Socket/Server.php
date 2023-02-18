@@ -54,7 +54,7 @@ class Server
     /**
      * @var array Configuration information used by the server.
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * @var Logger Monolog logger interface
@@ -64,7 +64,7 @@ class Server
     /**
      * @var array Dictionary of events and the callbacks attached to them.
      */
-    protected $events = array();
+    protected $events = [];
 
     /**
      * @var resource The socket used by the server.
@@ -99,7 +99,7 @@ class Server
     /**
      * @var array The connected clients.
      */
-    protected $clients = array();
+    protected $clients = [];
 
     /**
      * Creates the socket and starts listening to it.
@@ -111,11 +111,11 @@ class Server
     {
         $this->logger = $logger;
 
-        $defaults = array(
+        $defaults = [
             'ip'       => self::DEFAULT_IP,
             'port'     => self::DEFAULT_PORT,
             'protocol' => self::PROTOCOL
-        );
+        ];
 
         $this->config = array_merge($defaults, $config);
     }
@@ -195,12 +195,12 @@ class Server
             } else {
                 declare(ticks = 1);
             }
-            pcntl_signal(SIGTERM, array($this, 'shutdown'));
-            pcntl_signal(SIGINT, array($this, 'shutdown'));
-            pcntl_signal(SIGQUIT, array($this, 'shutdown'));
+            pcntl_signal(SIGTERM, [$this, 'shutdown']);
+            pcntl_signal(SIGINT, [$this, 'shutdown']);
+            pcntl_signal(SIGQUIT, [$this, 'shutdown']);
         }
 
-        register_shutdown_function(array($this, 'close'));
+        register_shutdown_function([$this, 'close']);
 
         while (true) {
             if ($this->shutdown) {
@@ -208,7 +208,7 @@ class Server
                 break;
             }
 
-            $read = array($this->socket);
+            $read = [$this->socket];
             foreach ($this->clients as &$client) {
                 $read[] = $client->getSocket();
             }
@@ -365,7 +365,7 @@ class Server
     public function listen($event, $callback)
     {
         if (!isset($this->events[$event])) {
-            $this->events[$event] = array();
+            $this->events[$event] = [];
         }
 
         $this->events[$event][] = $callback;
@@ -429,7 +429,7 @@ class Server
      */
     public function log()
     {
-        return call_user_func_array(array($this->logger, 'log'), func_get_args());
+        return call_user_func_array([$this->logger, 'log'], func_get_args());
     }
 
     /**

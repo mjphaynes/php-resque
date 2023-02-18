@@ -35,12 +35,12 @@ class Receive extends Command
     protected function configure()
     {
         $this->setName('socket:receive')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputOption('listenhost', null, InputOption::VALUE_OPTIONAL, 'The host to listen on.', '0.0.0.0'),
                 new InputOption('listenport', null, InputOption::VALUE_OPTIONAL, 'The port to listen on.', Socket\Server::DEFAULT_PORT),
                 new InputOption('listenretry', null, InputOption::VALUE_NONE, 'If can\'t bind address or port then retry every <timeout> seconds until it can.'),
                 new InputOption('listentimeout', 't', InputOption::VALUE_OPTIONAL, 'The retry timeout time (seconds).', 10),
-            )))
+            ]))
             ->setDescription('Listens to socket in order to receive events')
             ->setHelp('Listens to socket in order to receive events')
         ;
@@ -52,7 +52,7 @@ class Receive extends Command
         $port    = $this->getConfig('listenport');
         $retry   = $this->getConfig('listenretry');
         $timeout = $this->getConfig('listentimeout');
-        $server  = new Socket\Server(array('ip' => $host, 'port' => $port), $this->logger);
+        $server  = new Socket\Server(['ip' => $host, 'port' => $port], $this->logger);
 
         do {
             try {
@@ -89,19 +89,19 @@ class Receive extends Command
                 unset($data['cmd']);
             } else {
                 try {
-                    $input = new StringInput($data, new InputDefinition(array(
+                    $input = new StringInput($data, new InputDefinition([
                         new InputArgument('cmd', InputArgument::REQUIRED),
                         new InputArgument('id', InputArgument::OPTIONAL),
                         new InputOption('force', 'f', InputOption::VALUE_NONE),
                         new InputOption('json', 'j', InputOption::VALUE_NONE),
-                    )));
+                    ]));
 
                     $cmd  = $input->getArgument('cmd');
-                    $data = array(
+                    $data = [
                         'id'    => $input->getArgument('id'),
                         'force' => $input->getOption('force'),
                         'json'  => $input->getOption('json'),
-                    );
+                    ];
                 } catch (\Exception $e) {
                     $server->send($client, 'Command error: '.$e->getMessage());
                     return;
@@ -117,13 +117,13 @@ class Receive extends Command
                     $workers = Worker::hostWorkers();
 
                     if (empty($workers)) {
-                        $response = array('ok' => 0, 'message' => 'There are no workers running on this host.');
+                        $response = ['ok' => 0, 'message' => 'There are no workers running on this host.'];
                         $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
                         return;
                     }
 
                     if ($data['json']) {
-                        $response = array('ok' => 1, 'data' => array());
+                        $response = ['ok' => 1, 'data' => []];
 
                         foreach ($workers as $i => $worker) {
                             $response['data'][] = $worker->getPacket();
@@ -132,12 +132,12 @@ class Receive extends Command
                         $server->send($client, json_encode($response));
                     } else {
                         $table = new Resque\Helpers\Table($command);
-                        $table->setHeaders(array('#', 'Status', 'ID', 'Running for', 'Running job', 'P', 'C', 'F', 'Interval', 'Timeout', 'Memory (Limit)'));
+                        $table->setHeaders(['#', 'Status', 'ID', 'Running for', 'Running job', 'P', 'C', 'F', 'Interval', 'Timeout', 'Memory (Limit)']);
 
                         foreach ($workers as $i => $worker) {
                             $packet = $worker->getPacket();
 
-                            $table->addRow(array(
+                            $table->addRow([
                                 $i + 1,
                                 Worker::$statusText[$packet['status']],
                                 (string)$worker,
@@ -149,7 +149,7 @@ class Receive extends Command
                                 $packet['interval'],
                                 $packet['timeout'],
                                 Util::bytes($packet['memory']).' ('.$packet['memory_limit'].' MB)',
-                            ));
+                            ]);
                         }
 
                         $server->send($client, (string)$table);
@@ -158,7 +158,7 @@ class Receive extends Command
                     break;
                 case 'worker:start':
                 case 'worker:restart':
-                    $response = array('ok' => 0, 'message' => 'This command is not yet supported remotely.');
+                    $response = ['ok' => 0, 'message' => 'This command is not yet supported remotely.'];
                     $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
                     break;
                 case 'worker:pause':
@@ -172,7 +172,7 @@ class Receive extends Command
                     if (!empty($id)) {
                         if (false === ($worker = Resque\Worker::hostWorker($id))) {
                             if ($data['json']) {
-                                $response = array('ok' => 0, 'message' => 'Invalid worker id.');
+                                $response = ['ok' => 0, 'message' => 'Invalid worker id.'];
                                 $server->send($client, json_encode($response));
                             } else {
                                 $server->send($client, "Usage:\n\t{$cmd} <worker_id>\n\n".
@@ -182,12 +182,12 @@ class Receive extends Command
                             return;
                         }
 
-                        $workers = array($worker);
+                        $workers = [$worker];
                     } else {
                         $workers = Resque\Worker::hostWorkers();
 
                         if (empty($workers)) {
-                            $response = array('ok' => 0, 'message' => 'There are no workers on this host.');
+                            $response = ['ok' => 0, 'message' => 'There are no workers on this host.'];
                             $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
                             return;
                         }
@@ -195,23 +195,23 @@ class Receive extends Command
 
                     $cmd = $data['force'] ? 'worker:term' : $cmd;
 
-                    $signals = array(
+                    $signals = [
                         'worker:pause'  => SIGUSR2,
                         'worker:resume' => SIGCONT,
                         'worker:stop'   => SIGQUIT,
                         'worker:term'   => SIGTERM,
                         'worker:cancel' => SIGUSR1,
-                    );
+                    ];
 
-                    $messages = array(
+                    $messages = [
                         'worker:pause'  => 'Paused worker %s',
                         'worker:resume' => 'Resumed worker %s',
                         'worker:stop'   => 'Stopped worker %s',
                         'worker:term'   => 'Force stopped worker %s',
                         'worker:cancel' => 'Cancelled running job on worker %s',
-                    );
+                    ];
 
-                    $response = array('ok' => 1, 'data' => array());
+                    $response = ['ok' => 1, 'data' => []];
 
                     foreach ($workers as $worker) {
                         $pid = $worker->getPid();
@@ -223,15 +223,15 @@ class Receive extends Command
                             if ($job_pid and posix_kill($job_pid, 0)) {
                                 $pid = $job_pid;
                             } else {
-                                $response['data'][] = array('ok' => 0, 'message' => 'The worker '.$worker.' has no running job to cancel.');
+                                $response['data'][] = ['ok' => 0, 'message' => 'The worker '.$worker.' has no running job to cancel.'];
                                 continue;
                             }
                         }
 
                         if (posix_kill($pid, $signals[$cmd])) {
-                            $response['data'][] = array('ok' => 1, 'message' => sprintf($messages[$cmd], $worker));
+                            $response['data'][] = ['ok' => 1, 'message' => sprintf($messages[$cmd], $worker)];
                         } else {
-                            $response['data'][] = array('ok' => 0, 'message' => 'There was an error sending the signal, please try again.');
+                            $response['data'][] = ['ok' => 0, 'message' => 'There was an error sending the signal, please try again.'];
                         }
                     }
 
@@ -241,7 +241,7 @@ class Receive extends Command
 
                     break;
                 case 'job:queue':
-                    $response = array('ok' => 0, 'message' => 'Cannot queue remotely as it makes no sense. Use command `resque job:queue <job> <args> [--queue=<queue> [--delay=<delay>]]` locally.');
+                    $response = ['ok' => 0, 'message' => 'Cannot queue remotely as it makes no sense. Use command `resque job:queue <job> <args> [--queue=<queue> [--delay=<delay>]]` locally.'];
                     $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
 
                     break;
@@ -256,7 +256,7 @@ class Receive extends Command
                     $cleaned_jobs = Job::cleanup();
 
                     if ($data['json']) {
-                        $response = array('ok' => 1, 'data' => array_merge($cleaned_hosts, $cleaned_workers, $cleaned_jobs));
+                        $response = ['ok' => 1, 'data' => array_merge($cleaned_hosts, $cleaned_workers, $cleaned_jobs)];
                         $server->send($client, json_encode($response));
                     } else {
                         $output = 'Cleaned hosts: '.json_encode($cleaned_hosts['hosts']).PHP_EOL.
@@ -276,7 +276,7 @@ class Receive extends Command
                     $server->disconnect($client);
                     break;
                 default:
-                    $response = array('ok' => 0, 'message' => 'Sorry, I don\'t know what to do with command "'.$cmd.'".');
+                    $response = ['ok' => 0, 'message' => 'Sorry, I don\'t know what to do with command "'.$cmd.'".'];
                     $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
                     break;
             }

@@ -41,7 +41,7 @@ class StripFormatProcessor
     /**
      * @var array list of formatting tags to strip out
      */
-    private $stripTags = array(
+    private $stripTags = [
         'info',
         'notice',
         'warning',
@@ -54,7 +54,7 @@ class StripFormatProcessor
         'warn',
         'comment',
         'question'
-    );
+    ];
 
     /**
      * Creates a new instance
@@ -72,7 +72,7 @@ class StripFormatProcessor
      */
     public function __invoke(array $record)
     {
-        static $find = array();
+        static $find = [];
 
         if (empty($find)) {
             foreach ($this->stripTags as $tag) {

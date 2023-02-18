@@ -8,45 +8,45 @@ use PHPUnit\Framework\TestCase;
 
 final class RedisTest extends TestCase
 {
-    private $legacyParameters = array(
+    private $legacyParameters = [
         'scheme'     => 'tcp',
         'host'       => 'redis_instance_01',
         'port'       => 6379,
         'namespace'  => 'some_namespace',
         'rw_timeout' => 123,
         'phpiredis'  => true,
-    );
+    ];
 
-    private $predisNativeParameters = array(
-        'config'  => array(
-            array(
+    private $predisNativeParameters = [
+        'config'  => [
+            [
                 'tcp://10.0.0.1',
                 'tcp://10.0.0.2',
                 'tcp://10.0.0.3',
-            ),
-        ),
-        'options' => array(
+            ],
+        ],
+        'options' => [
             'replication' => 'sentinel',
             'service'     => 'some_redis_cluster',
-            'parameters'  => array(
+            'parameters'  => [
                 'password' => 'some_secure_password',
                 'database' => 10,
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
     private $predisMock = null;
 
     private $redisMock = null;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
 
         $predisClassName = "\\Predis\\Client";
 
         $this->predisMock = $this->getMockBuilder($predisClassName)
             ->disableOriginalConstructor()
-            ->setMethods(array('connect'))
+            ->setMethods(['connect'])
             ->getMock()
         ;
 
@@ -54,13 +54,13 @@ final class RedisTest extends TestCase
 
         $this->redisMock = $this->getMockBuilder($className)
             ->disableOriginalConstructor()
-            ->setMethods(array('initializePredisClient'))
+            ->setMethods(['initializePredisClient'])
             ->getMock()
         ;
 
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->predisMock = null;
     }
@@ -71,18 +71,18 @@ final class RedisTest extends TestCase
         $this->redisMock->expects($this->once())
             ->method('initializePredisClient')
             ->with(
-                array(
+                [
                     'scheme'             => $this->legacyParameters['scheme'],
                     'host'               => $this->legacyParameters['host'],
                     'port'               => $this->legacyParameters['port'],
                     'read_write_timeout' => $this->legacyParameters['rw_timeout'],
-                ),
-                array(
-                    'connections' => array(
+                ],
+                [
+                    'connections' => [
                         'tcp'  => 'Predis\Connection\PhpiredisStreamConnection',
                         'unix' => 'Predis\Connection\PhpiredisSocketConnection',
-                    ),
-                )
+                    ],
+                ]
             )
             ->willReturn($this->predisMock)
         ;
@@ -98,7 +98,7 @@ final class RedisTest extends TestCase
 
         $this->redisMock = $this->getMockBuilder($className)
             ->disableOriginalConstructor()
-            ->setMethods(array('initializePredisClient'))
+            ->setMethods(['initializePredisClient'])
             ->getMock()
         ;
 
@@ -113,6 +113,6 @@ final class RedisTest extends TestCase
 
         $this->predisMock->expects($this->any())->method('connect');
 
-        $this->redisMock->__construct(array_merge($this->legacyParameters, array('predis' => $this->predisNativeParameters)));
+        $this->redisMock->__construct(array_merge($this->legacyParameters, ['predis' => $this->predisNativeParameters]));
     }
 }

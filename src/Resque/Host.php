@@ -106,7 +106,7 @@ class Host
     {
         $hosts   = $this->redis->smembers(self::redisKey());
         $workers = $this->redis->smembers(Worker::redisKey());
-        $cleaned = array('hosts' => array(), 'workers' => array());
+        $cleaned = ['hosts' => [], 'workers' => []];
 
         foreach ($hosts as $hostname) {
             $host = new static($hostname);

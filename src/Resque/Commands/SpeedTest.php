@@ -30,9 +30,9 @@ class SpeedTest extends Command
     protected function configure()
     {
         $this->setName('speed:test')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputOption('time', 't', InputOption::VALUE_REQUIRED, 'Length of time to run the test for', 10),
-            )))
+            ]))
             ->setDescription('Performs a speed test on php-resque to see how many jobs/second it can compute')
             ->setHelp('Performs a speed test on php-resque to see how many jobs/second it can compute')
         ;
@@ -44,7 +44,7 @@ class SpeedTest extends Command
             throw new Exception('The Symfony process component is required to run the speed test.');
         }
 
-        Resque\Redis::setConfig(array('namespace' => 'resque:speedtest'));
+        Resque\Redis::setConfig(['namespace' => 'resque:speedtest']);
 
         $testTime = (int)$input->getOption('time') ?: 5;
 
@@ -102,7 +102,7 @@ Speed:        <pop>%speed%</pop>%clr%
 Avg job time: <pop>%time%</pop>%clr%
 STATS;
 
-        $replace = array(
+        $replace = [
             '%title%'    => $exec_time == $testTime ? 'Finished' : 'Running',
             '%progress%' => $progress_bar,
             '%jobs%'     => @$stats['processed'].' job'.(@$stats['processed'] == 1 ? '' : 's'),
@@ -110,7 +110,7 @@ STATS;
             '%speed%'    => round($rate, 1).' jobs/s',
             '%time%'     => $rate > 0 ? round(1 / $rate * 1000, 1).' ms' : '-',
             '%clr%'      => "\033[K",
-        );
+        ];
 
         $output->writeln(($reset ? "\033[6A" : '').strtr($display, $replace));
 

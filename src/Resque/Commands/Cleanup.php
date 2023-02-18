@@ -27,8 +27,8 @@ class Cleanup extends Command
     protected function configure()
     {
         $this->setName('cleanup')
-            ->setDefinition($this->mergeDefinitions(array(
-            )))
+            ->setDefinition($this->mergeDefinitions([
+            ]))
             ->setDescription('Cleans up php-resque data, removing dead hosts, workers and jobs')
             ->setHelp('Cleans up php-resque data, removing dead hosts, workers and jobs')
         ;

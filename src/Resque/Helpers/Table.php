@@ -79,6 +79,6 @@ class Table
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(array($this->table, $method), $parameters);
+        return call_user_func_array([$this->table, $method], $parameters);
     }
 }

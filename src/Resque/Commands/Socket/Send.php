@@ -28,7 +28,7 @@ class Send extends Command
     protected function configure()
     {
         $this->setName('socket:send')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('cmd', InputArgument::REQUIRED, 'The command to send to the receiver.'),
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker (optional; required for worker: commands).'),
                 new InputOption('connecthost', null, InputOption::VALUE_OPTIONAL, 'The host to send to.', '127.0.0.1'),
@@ -36,7 +36,7 @@ class Send extends Command
                 new InputOption('connecttimeout', 't', InputOption::VALUE_OPTIONAL, 'The send request timeout time (seconds).', 10),
                 new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force the command.'),
                 new InputOption('json', 'j', InputOption::VALUE_NONE, 'Whether to return the response in JSON format.'),
-            )))
+            ]))
             ->setDescription('Sends a command to a php-resque receiver socket')
             ->setHelp('Sends a command to a php-resque receiver socket')
         ;
@@ -56,12 +56,12 @@ class Send extends Command
 
         stream_set_timeout($fh, 0, 500 * 1000);
 
-        $payload = array(
+        $payload = [
             'cmd'   => $cmd,
             'id'    => $input->getArgument('id'),
             'force' => $input->getOption('force'),
             'json'  => $this->getConfig('json'),
-        );
+        ];
 
         Resque\Socket\Server::fwrite($fh, json_encode($payload));
 

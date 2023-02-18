@@ -26,11 +26,11 @@ class RedisConnector extends AbstractConnector
 {
     public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
     {
-        $options = array(
+        $options = [
             'scheme' => 'tcp',
             'host'   => $args['host'],
             'port'   => $args['port']
-        );
+        ];
 
         $password = Resque::getConfig('redis.password', Resque\Redis::DEFAULT_PASSWORD);
         if ($password !== null && $password !== false && trim($password) !== '') {

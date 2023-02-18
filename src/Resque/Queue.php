@@ -98,7 +98,7 @@ class Queue
      * @param  string $queue The queue to add the job to
      * @return Job    job instance
      */
-    public function later($delay, $job, array $data = array(), $queue = null)
+    public function later($delay, $job, array $data = [], $queue = null)
     {
         // If it's a datetime object conver to unix time
         if ($delay instanceof \DateTime) {

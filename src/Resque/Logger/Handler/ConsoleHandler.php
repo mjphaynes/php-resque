@@ -32,7 +32,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * @var array Map log levels to output verbosity
      */
-    private $verbosityLevelMap = array(
+    private $verbosityLevelMap = [
         Logger::INFO      => OutputInterface::VERBOSITY_NORMAL,
         Logger::NOTICE    => OutputInterface::VERBOSITY_VERBOSE,
         Logger::WARNING   => OutputInterface::VERBOSITY_VERY_VERBOSE,
@@ -42,7 +42,7 @@ class ConsoleHandler extends AbstractProcessingHandler
         Logger::CRITICAL  => OutputInterface::VERBOSITY_NORMAL,
         Logger::ALERT     => OutputInterface::VERBOSITY_NORMAL,
         Logger::EMERGENCY => OutputInterface::VERBOSITY_NORMAL
-    );
+    ];
 
     /**
      * Colours: black, red, green, yellow, blue, magenta, cyan, white
@@ -50,21 +50,21 @@ class ConsoleHandler extends AbstractProcessingHandler
      *
      * @var array
      */
-    private $styleMap = array(
-        'info'      => array(),
-        'notice'    => array(),
-        'warning'   => array('yellow'),
-        'debug'     => array('blue'),
-        'error'     => array('white', 'red'),
-        'critical'  => array('white', 'red'),
-        'alert'     => array('white', 'red'),
-        'emergency' => array('white', 'red'),
+    private $styleMap = [
+        'info'      => [],
+        'notice'    => [],
+        'warning'   => ['yellow'],
+        'debug'     => ['blue'],
+        'error'     => ['white', 'red'],
+        'critical'  => ['white', 'red'],
+        'alert'     => ['white', 'red'],
+        'emergency' => ['white', 'red'],
 
-        'pop'       => array('green'),
-        'warn'      => array('yellow'),
-        'comment'   => array('yellow'),
-        'question'  => array('black', 'cyan')
-    );
+        'pop'       => ['green'],
+        'warn'      => ['yellow'],
+        'comment'   => ['yellow'],
+        'question'  => ['black', 'cyan']
+    ];
 
     /**
      * @param OutputInterface $output The output interface

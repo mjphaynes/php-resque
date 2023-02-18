@@ -49,13 +49,13 @@ abstract class AbstractConnector implements ConnectorInterface
      */
     public function replacePlaceholders($string)
     {
-        $placeholders = array(
+        $placeholders = [
             '%host%'   => new Resque\Host,
             '%worker%' => new Resque\Worker,
             '%pid%'    => getmypid(),
             '%date%'   => date('Y-m-d'),
             '%time%'   => date('H:i')
-        );
+        ];
 
         return strtr($string, $placeholders);
     }

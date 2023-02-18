@@ -28,12 +28,12 @@ class Queue extends Command
     protected function configure()
     {
         $this->setName('job:queue')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('job', InputArgument::REQUIRED, 'The job to run.'),
                 new InputArgument('args', InputArgument::OPTIONAL, 'The arguments to send with the job.'),
                 new InputOption('queue', 'Q', InputOption::VALUE_OPTIONAL, 'The queue to add the job to.'),
                 new InputOption('delay', 'D', InputOption::VALUE_OPTIONAL, 'The amount of time or a unix time to delay execution of job till.'),
-            )))
+            ]))
             ->setDescription('Queue a new job to run with optional delay')
             ->setHelp('Queue a new job to run')
         ;
@@ -50,7 +50,7 @@ class Queue extends Command
             $args = (array)json_decode($args, true);
         } else {
             if (is_null($args)) {
-                $args = array();
+                $args = [];
             } else {
                 $args = explode(',', $args);
 

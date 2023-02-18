@@ -36,12 +36,12 @@ class Util
 
         // IEC prefixes (binary)
         if ($si == false or strpos($force_unit, 'i') !== false) {
-            $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
+            $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
             $mod = 1024;
 
             // SI prefixes (decimal)
         } else {
-            $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
+            $units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
             $mod = 1000;
         }
 
@@ -78,19 +78,19 @@ class Util
         $diff = (int)abs($to - $from);
 
         if ($diff < self::MINUTE_IN_SECONDS) {
-            $since = array($diff, 'sec');
+            $since = [$diff, 'sec'];
         } elseif ($diff < self::HOUR_IN_SECONDS) {
-            $since = array(round($diff / self::MINUTE_IN_SECONDS), 'min');
+            $since = [round($diff / self::MINUTE_IN_SECONDS), 'min'];
         } elseif ($diff < self::DAY_IN_SECONDS and $diff >= self::HOUR_IN_SECONDS) {
-            $since = array(round($diff / self::HOUR_IN_SECONDS), 'hour');
+            $since = [round($diff / self::HOUR_IN_SECONDS), 'hour'];
         } elseif ($diff < self::WEEK_IN_SECONDS and $diff >= self::DAY_IN_SECONDS) {
-            $since = array(round($diff / self::DAY_IN_SECONDS), 'day');
+            $since = [round($diff / self::DAY_IN_SECONDS), 'day'];
         } elseif ($diff < 30 * self::DAY_IN_SECONDS and $diff >= self::WEEK_IN_SECONDS) {
-            $since = array(round($diff / self::WEEK_IN_SECONDS), 'week');
+            $since = [round($diff / self::WEEK_IN_SECONDS), 'week'];
         } elseif ($diff < self::YEAR_IN_SECONDS and $diff >= 30 * self::DAY_IN_SECONDS) {
-            $since = array(round($diff / (30 * self::DAY_IN_SECONDS)), 'month');
+            $since = [round($diff / (30 * self::DAY_IN_SECONDS)), 'month'];
         } elseif ($diff >= self::YEAR_IN_SECONDS) {
-            $since = array(round($diff / self::YEAR_IN_SECONDS), 'year');
+            $since = [round($diff / self::YEAR_IN_SECONDS), 'year'];
         }
 
         if ($since[0] <= 1) {

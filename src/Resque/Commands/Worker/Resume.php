@@ -27,9 +27,9 @@ class Resume extends Command
     protected function configure()
     {
         $this->setName('worker:resume')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to resume (optional; if not present resumes all workers).'),
-            )))
+            ]))
             ->setDescription('Resume a running worker. If no worker id set then resumes all workers')
             ->setHelp('Resume a running worker. If no worker id set then resumes all workers')
         ;
@@ -49,7 +49,7 @@ class Resume extends Command
                 return;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }

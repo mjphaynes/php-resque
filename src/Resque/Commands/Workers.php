@@ -27,9 +27,9 @@ class Workers extends Command
     protected function configure()
     {
         $this->setName('workers')
-            ->setAliases(array('worker:list'))
-            ->setDefinition($this->mergeDefinitions(array(
-            )))
+            ->setAliases(['worker:list'])
+            ->setDefinition($this->mergeDefinitions([
+            ]))
             ->setDescription('List all running workers on host')
             ->setHelp('List all running workers on host')
         ;
@@ -45,12 +45,12 @@ class Workers extends Command
         }
 
         $table = new Resque\Helpers\Table($this);
-        $table->setHeaders(array('#', 'Status', 'ID', 'Running for', 'Running job', 'P', 'C', 'F', 'Interval', 'Timeout', 'Memory (Limit)'));
+        $table->setHeaders(['#', 'Status', 'ID', 'Running for', 'Running job', 'P', 'C', 'F', 'Interval', 'Timeout', 'Memory (Limit)']);
 
         foreach ($workers as $i => $worker) {
             $packet = $worker->getPacket();
 
-            $table->addRow(array(
+            $table->addRow([
                 $i + 1,
                 Resque\Worker::$statusText[$packet['status']],
                 (string)$worker,
@@ -62,7 +62,7 @@ class Workers extends Command
                 $packet['interval'],
                 $packet['timeout'],
                 Resque\Helpers\Util::bytes($packet['memory']).' ('.$packet['memory_limit'].' MB)',
-            ));
+            ]);
         }
 
         $this->log((string)$table);

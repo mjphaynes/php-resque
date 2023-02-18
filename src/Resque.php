@@ -40,7 +40,7 @@ class Resque
     /**
      * @var array Configuration settings array.
      */
-    protected static $config = array();
+    protected static $config = [];
 
     /**
      * @var \Resque\Queue The queue instance.
@@ -70,7 +70,7 @@ class Resque
      */
     public static function __callStatic($method, $parameters)
     {
-        $callable = array(static::queue(), $method);
+        $callable = [static::queue(), $method];
 
         return call_user_func_array($callable, $parameters);
     }
@@ -85,7 +85,7 @@ class Resque
     {
         self::readConfigFile($file);
 
-        Redis::setConfig(array(
+        Redis::setConfig([
             'scheme'     => static::getConfig('redis.scheme', Redis::DEFAULT_SCHEME),
             'host'       => static::getConfig('redis.host', Redis::DEFAULT_HOST),
             'port'       => static::getConfig('redis.port', Redis::DEFAULT_PORT),
@@ -94,7 +94,7 @@ class Resque
             'rw_timeout' => static::getConfig('redis.rw_timeout', Redis::DEFAULT_RW_TIMEOUT),
             'phpiredis'  => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS),
             'predis'     => static::getConfig('predis'),
-        ));
+        ]);
 
         return true;
     }
@@ -112,14 +112,14 @@ class Resque
         }
 
         $baseDir = realpath(dirname($file));
-        $searchDirs = array(
+        $searchDirs = [
             $baseDir.'/',
             $baseDir.'/../',
             $baseDir.'/../../',
             $baseDir.'/config/',
             $baseDir.'/../config/',
             $baseDir.'/../../config/'
-        );
+        ];
 
         $filename = basename($file);
 

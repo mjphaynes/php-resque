@@ -27,8 +27,8 @@ class Hosts extends Command
     protected function configure()
     {
         $this->setName('hosts')
-            ->setDefinition($this->mergeDefinitions(array(
-            )))
+            ->setDefinition($this->mergeDefinitions([
+            ]))
             ->setDescription('List hosts with running workers')
             ->setHelp('List hosts with running workers')
         ;
@@ -44,13 +44,13 @@ class Hosts extends Command
         }
 
         $table = new Resque\Helpers\Table($this);
-        $table->setHeaders(array('#', 'Hostname', '# workers'));
+        $table->setHeaders(['#', 'Hostname', '# workers']);
 
         foreach ($hosts as $i => $hostname) {
             $host = new Resque\Host($hostname);
             $workers = Resque\Redis::instance()->scard(Resque\Host::redisKey($host));
 
-            $table->addRow(array($i + 1, $hostname, $workers));
+            $table->addRow([$i + 1, $hostname, $workers]);
         }
 
         $this->log((string)$table);

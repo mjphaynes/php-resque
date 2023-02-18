@@ -59,7 +59,7 @@ class Redis
     /**
      * @var array Default configuration
      */
-    protected static $config = array(
+    protected static $config = [
         'scheme'     => self::DEFAULT_SCHEME,
         'host'       => self::DEFAULT_HOST,
         'port'       => self::DEFAULT_PORT,
@@ -67,7 +67,7 @@ class Redis
         'password'   => self::DEFAULT_PASSWORD,
         'rw_timeout' => self::DEFAULT_RW_TIMEOUT,
         'phpiredis'  => self::DEFAULT_PHPIREDIS,
-    );
+    ];
 
     /**
      * @var Redis Redis instance
@@ -112,7 +112,7 @@ class Redis
      * @var array List of all commands in Redis that supply a key as their
      *            first argument. Used to prefix keys with the Resque namespace.
      */
-    protected $keyCommands = array(
+    protected $keyCommands = [
         'exists',
         'del',
         'type',
@@ -183,7 +183,7 @@ class Redis
         // msetnx
         // mset
         // renamenx
-    );
+    ];
 
     /**
      * Establish a Redis connection.
@@ -191,26 +191,26 @@ class Redis
      * @param  array $config Array of configuration settings
      * @return Redis
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
-        $predisParams  = array();
-        $predisOptions = array();
+        $predisParams  = [];
+        $predisOptions = [];
         if (!empty($config['predis'])) {
             $predisParams  = $config['predis']['config'];
             $predisOptions = $config['predis']['options'];
         } else {
-            foreach (array('scheme', 'host', 'port') as $key) {
+            foreach (['scheme', 'host', 'port'] as $key) {
                 if (!isset($config[$key])) {
                     throw new \InvalidArgumentException("key '{$key}' is missing in redis configuration");
                 }
             }
 
             // non-optional configuration parameters
-            $predisParams = array(
+            $predisParams = [
                 'scheme' => $config['scheme'],
                 'host'   => $config['host'],
                 'port'   => $config['port'],
-            );
+            ];
 
             // setup password
             if (!empty($config['password'])) {
@@ -224,12 +224,12 @@ class Redis
 
             // setup predis client options
             if (!empty($config['phpiredis'])) {
-                $predisOptions = array(
-                    'connections' => array(
+                $predisOptions = [
+                    'connections' => [
                         'tcp'  => 'Predis\Connection\PhpiredisStreamConnection',
                         'unix' => 'Predis\Connection\PhpiredisSocketConnection',
-                    ),
-                );
+                    ],
+                ];
             }
         }
 
@@ -337,7 +337,7 @@ class Redis
         }
 
         // try {
-        return call_user_func_array(array($this->redis, $method), $parameters);
+        return call_user_func_array([$this->redis, $method], $parameters);
 
         // } catch (\Exception $e) {
         //     return false;

@@ -28,9 +28,9 @@ class Clear extends Command
     protected function configure()
     {
         $this->setName('clear')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force without asking.'),
-            )))
+            ]))
             ->setDescription('Clears all php-resque data from Redis')
             ->setHelp('Clears all php-resque data from Redis')
         ;

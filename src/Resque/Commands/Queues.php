@@ -27,8 +27,8 @@ class Queues extends Command
     protected function configure()
     {
         $this->setName('queues')
-            ->setDefinition($this->mergeDefinitions(array(
-            )))
+            ->setDefinition($this->mergeDefinitions([
+            ]))
             ->setDescription('Get queue statistics')
             ->setHelp('Get queue statistics')
         ;
@@ -44,12 +44,12 @@ class Queues extends Command
         }
 
         $table = new Resque\Helpers\Table($this);
-        $table->setHeaders(array('#', 'Name', 'Queued', 'Delayed', 'Processed', 'Failed', 'Cancelled', 'Total'));
+        $table->setHeaders(['#', 'Name', 'Queued', 'Delayed', 'Processed', 'Failed', 'Cancelled', 'Total']);
 
         foreach ($queues as $i => $queue) {
             $stats = Resque\Redis::instance()->hgetall(Resque\Queue::redisKey($queue, 'stats'));
 
-            $table->addRow(array(
+            $table->addRow([
                 $i + 1, $queue,
                 (int)@$stats['queued'],
                 (int)@$stats['delayed'],
@@ -57,7 +57,7 @@ class Queues extends Command
                 (int)@$stats['failed'],
                 (int)@$stats['cancelled'],
                 (int)@$stats['total']
-            ));
+            ]);
         }
 
         $this->log((string)$table);

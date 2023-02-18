@@ -36,12 +36,12 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * @var array Config array
      */
-    protected $config = array();
+    protected $config = [];
 
     /**
      * @var array Config to options mapping
      */
-    protected $configOptionMap = array(
+    protected $configOptionMap = [
         'include'        => 'include',
         'scheme'         => 'redis.scheme',
         'host'           => 'redis.host',
@@ -65,7 +65,7 @@ class Command extends \Symfony\Component\Console\Command\Command
         'connectport'    => 'socket.connect.port',
         'connecttimeout' => 'socket.connect.timeout',
         'json'           => 'socket.json',
-    );
+    ];
 
     /**
      * Globally sets some input options that are available for all commands
@@ -77,7 +77,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     {
         return array_merge(
             $definitions,
-            array(
+            [
                 new InputOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Path to config file. Inline options override.', Resque::DEFAULT_CONFIG_FILE),
                 new InputOption('include', 'I', InputOption::VALUE_OPTIONAL, 'Path to include php file'),
                 new InputOption('host', 'H', InputOption::VALUE_OPTIONAL, 'The Redis hostname.', Resque\Redis::DEFAULT_HOST),
@@ -87,7 +87,7 @@ class Command extends \Symfony\Component\Console\Command\Command
                 new InputOption('password', null, InputOption::VALUE_OPTIONAL, 'The Redis AUTH password.'),
                 new InputOption('log', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify the handler(s) to use for logging.'),
                 new InputOption('events', 'e', InputOption::VALUE_NONE, 'Outputs all events to the console, for debugging.'),
-            )
+            ]
         );
     }
 
@@ -107,13 +107,13 @@ class Command extends \Symfony\Component\Console\Command\Command
         $config = $this->getConfig();
 
         // Configure Redis
-        Resque\Redis::setConfig(array(
+        Resque\Redis::setConfig([
             'scheme'    => $config['scheme'],
             'host'      => $config['host'],
             'port'      => $config['port'],
             'namespace' => $config['namespace'],
             'password'  => $config['password']
-        ));
+        ]);
 
         // Set the verbosity
         if (array_key_exists('verbose', $config)) {
@@ -125,12 +125,12 @@ class Command extends \Symfony\Component\Console\Command\Command
         }
 
         // Set the monolog loggers, it's possible to speficfy multiple handlers
-        $logs = array_key_exists('log', $config) ? array_unique($config['log']) : array();
+        $logs = array_key_exists('log', $config) ? array_unique($config['log']) : [];
         empty($logs) and $logs[] = 'console';
 
         $handlerConnector = new Resque\Logger\Handler\Connector($this, $input, $output);
 
-        $handlers = array();
+        $handlers = [];
         foreach ($logs as $log) {
             $handlers[] = $handlerConnector->resolve($log);
         }
@@ -194,7 +194,7 @@ class Command extends \Symfony\Component\Console\Command\Command
      */
     public function log()
     {
-        return call_user_func_array(array($this->logger, 'log'), func_get_args());
+        return call_user_func_array([$this->logger, 'log'], func_get_args());
     }
 
     /**
@@ -223,14 +223,14 @@ class Command extends \Symfony\Component\Console\Command\Command
                     switch ($key) {
                         // Need to make sure the log handlers are in the correct format
                         case 'log':
-                            $value = array();
+                            $value = [];
                             foreach ((array)$found as $handler => $target) {
                                 $handler = strtolower($handler);
 
                                 if ($target !== true) {
                                     $handler .= ':';
 
-                                    if (in_array($handler, array('redis:', 'mongodb:', 'couchdb:', 'amqp:'))) {
+                                    if (in_array($handler, ['redis:', 'mongodb:', 'couchdb:', 'amqp:'])) {
                                         $handler .= '//';
                                     }
 

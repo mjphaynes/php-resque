@@ -27,9 +27,9 @@ class Restart extends Command
     protected function configure()
     {
         $this->setName('worker:restart')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to restart (optional; if not present restarts all workers).'),
-            )))
+            ]))
             ->setDescription('Restart a running worker. If no worker id set then restarts all workers')
             ->setHelp('Restart a running worker. If no worker id set then restarts all workers')
         ;
@@ -49,7 +49,7 @@ class Restart extends Command
                 return self::FAILURE;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }

@@ -28,9 +28,9 @@ class Cancel extends Command
     protected function configure()
     {
         $this->setName('worker:cancel')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to cancel it\'s running job (optional; if not present cancels all workers).'),
-            )))
+            ]))
             ->setDescription('Cancel job on a running worker. If no worker id set then cancels all workers')
             ->setHelp('Cancel job on a running worker. If no worker id set then cancels all workers')
         ;
@@ -50,7 +50,7 @@ class Cancel extends Command
                 return self::FAILURE;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }

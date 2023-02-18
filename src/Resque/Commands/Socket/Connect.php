@@ -27,11 +27,11 @@ class Connect extends Command
     protected function configure()
     {
         $this->setName('socket:connect')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputOption('connecthost', null, InputOption::VALUE_OPTIONAL, 'The host to connect to.', '127.0.0.1'),
                 new InputOption('connectport', null, InputOption::VALUE_OPTIONAL, 'The port to connect to.', Resque\Socket\Server::DEFAULT_PORT),
                 new InputOption('connecttimeout', 't', InputOption::VALUE_OPTIONAL, 'The connection timeout time (seconds).', 10),
-            )))
+            ]))
             ->setDescription('Connects to a php-resque receiver socket')
             ->setHelp('Connects to a php-resque receiver socket')
         ;
@@ -68,7 +68,7 @@ class Connect extends Command
                 break;
             }
 
-            $read   = array($fh, $stdin);
+            $read   = [$fh, $stdin];
             $write  = null;
             $except = null;
 

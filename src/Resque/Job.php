@@ -83,11 +83,11 @@ class Job
     /**
      * @var array of statuses that are considered final/complete
      */
-    protected static $completeStatuses = array(
+    protected static $completeStatuses = [
         self::STATUS_FAILED,
         self::STATUS_COMPLETE,
         self::STATUS_CANCELLED
-    );
+    ];
 
     /**
      * Get the Redis key
@@ -274,7 +274,7 @@ class Job
      */
     public function delay($time)
     {
-        if (Event::fire(Event::JOB_DELAY, array($this, $time)) === false) {
+        if (Event::fire(Event::JOB_DELAY, [$this, $time]) === false) {
             return false;
         }
 
@@ -291,7 +291,7 @@ class Job
         Stats::incr('delayed', 1);
         Stats::incr('delayed', 1, Queue::redisKey($this->queue, 'stats'));
 
-        Event::fire(Event::JOB_DELAYED, array($this, $time));
+        Event::fire(Event::JOB_DELAYED, [$this, $time]);
 
         return true;
     }
@@ -324,7 +324,7 @@ class Job
                 $instance->setUp();
             }
 
-            call_user_func_array(array($instance, $this->method), array($this->data, $this));
+            call_user_func_array([$instance, $this->method], [$this->data, $this]);
 
             if (method_exists($instance, 'tearDown')) {
                 $instance->tearDown();
@@ -453,18 +453,18 @@ class Job
 
         // For the failed jobs we store a lot more data for debugging
         $packet = $this->getPacket();
-        $failed_payload = array_merge(json_decode($this->payload, true), array(
+        $failed_payload = array_merge(json_decode($this->payload, true), [
             'worker'    => $packet['worker'],
             'started'   => $packet['started'],
             'finished'  => $packet['finished'],
             'output'    => $packet['output'],
             'exception' => (array)json_decode($packet['exception'], true),
-        ));
+        ]);
         $this->redis->zadd(Queue::redisKey($this->queue, 'failed'), time(), json_encode($failed_payload));
         Stats::incr('failed', 1);
         Stats::incr('failed', 1, Queue::redisKey($this->queue, 'stats'));
 
-        Event::fire(Event::JOB_FAILURE, array($this, $e));
+        Event::fire(Event::JOB_FAILURE, [$this, $e]);
     }
 
     /**
@@ -501,7 +501,7 @@ class Job
             $data = $this->data;
         }
 
-        return json_encode(array('id' => $this->id, 'class' => $this->class, 'data' => $data));
+        return json_encode(['id' => $this->id, 'class' => $this->class, 'data' => $data]);
     }
 
     /**
@@ -513,7 +513,7 @@ class Job
     public function setStatus($status, \Exception $e = null)
     {
         if (!($packet = $this->getPacket())) {
-            $packet = array(
+            $packet = [
                 'id'        => $this->id,
                 'queue'     => $this->queue,
                 'payload'   => $this->payload,
@@ -526,7 +526,7 @@ class Job
                 'finished'  => 0,
                 'output'    => '',
                 'exception' => null,
-            );
+            ];
         }
 
         $packet['worker']  = (string)$this->worker;
@@ -542,11 +542,11 @@ class Job
         }
 
         if ($e) {
-            $packet['exception'] = json_encode(array(
+            $packet['exception'] = json_encode([
                 'class'     => get_class($e),
                 'error'     => sprintf('%s in %s on line %d', $e->getMessage(), $e->getFile(), $e->getLine()),
                 'backtrace' => explode("\n", $e->getTraceAsString())
-            ));
+            ]);
         }
 
         $this->redis->hmset(self::redisKey($this), $packet);
@@ -744,7 +744,7 @@ class Job
     {
         $packet = $this->getPacket();
 
-        return array(
+        return [
             'id'        => (string)$this->id,
             'queue'     => (string)$this->queue,
             'class'     => (string)$this->class,
@@ -758,7 +758,7 @@ class Job
             'finished'  => (float)$packet['finished'],
             'output'    => $packet['output'],
             'exception' => $packet['exception']
-        );
+        ];
     }
 
     /**
@@ -771,9 +771,9 @@ class Job
      *
      * @param array $queues list of queues to check
      */
-    public static function cleanup(array $queues = array('*'))
+    public static function cleanup(array $queues = ['*'])
     {
-        $cleaned = array('zombie' => 0, 'processed' => 0);
+        $cleaned = ['zombie' => 0, 'processed' => 0];
         $redis = Redis::instance();
 
         if (in_array('*', $queues)) {

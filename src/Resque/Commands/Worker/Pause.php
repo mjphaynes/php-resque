@@ -27,9 +27,9 @@ class Pause extends Command
     protected function configure()
     {
         $this->setName('worker:pause')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to pause (optional; if not present pauses all workers).'),
-            )))
+            ]))
             ->setDescription('Pause a running worker. If no worker id set then pauses all workers')
             ->setHelp('Pause a running worker. If no worker id set then pauses all workers')
         ;
@@ -49,7 +49,7 @@ class Pause extends Command
                 return self::FAILURE;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }

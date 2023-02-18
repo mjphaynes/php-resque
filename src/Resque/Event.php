@@ -61,7 +61,7 @@ class Event
     /**
      * @var array containing all registered callbacks, indexed by event name
      */
-    protected static $events = array();
+    protected static $events = [];
 
     /**
      * Listen in on a given event to have a specified callback fired.
@@ -84,7 +84,7 @@ class Event
         }
 
         if (!isset(self::$events[$event])) {
-            self::$events[$event] = array();
+            self::$events[$event] = [];
         }
 
         self::$events[$event][] = $callback;
@@ -100,13 +100,13 @@ class Event
     public static function fire($event, $data = null)
     {
         if (!is_array($data)) {
-            $data = array($data);
+            $data = [$data];
         }
         array_unshift($data, $event);
 
         $retval = true;
 
-        foreach (array('*', $event) as $e) {
+        foreach (['*', $event] as $e) {
             if (!array_key_exists($e, self::$events)) {
                 continue;
             }
@@ -152,7 +152,7 @@ class Event
      */
     public static function clear()
     {
-        self::$events = array();
+        self::$events = [];
     }
 
     /**
@@ -168,7 +168,7 @@ class Event
         if (is_null($constants)) {
             $class = new \ReflectionClass('Resque\Event');
 
-            $constants = array();
+            $constants = [];
             foreach ($class->getConstants() as $name => $value) {
                 $constants[$value] = strtolower($name);
             }

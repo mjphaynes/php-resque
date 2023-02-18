@@ -39,11 +39,11 @@ class Worker
     /**
      * Worker status constants as text
      */
-    public static $statusText = array(
+    public static $statusText = [
         self::STATUS_NEW     => 'Not started',
         self::STATUS_RUNNING => 'Running',
         self::STATUS_PAUSED  => 'Paused'
-    );
+    ];
 
     /**
      * The Redis instance.
@@ -55,7 +55,7 @@ class Worker
     /**
      * @var array Array of all associated queues for this worker.
      */
-    protected $queues = array();
+    protected $queues = [];
 
     /**
      * @var Host The host of this worker.
@@ -120,7 +120,7 @@ class Worker
     /**
      * @var array Signal handler method name mapping
      */
-    protected $signalHandlerMapping = array(
+    protected $signalHandlerMapping = [
         \SIGTERM => 'sigForceShutdown',
         \SIGINT  => 'sigForceShutdown',
         \SIGQUIT => 'sigShutdown',
@@ -128,12 +128,12 @@ class Worker
         \SIGUSR2 => 'sigPause',
         \SIGCONT => 'sigResume',
         \SIGPIPE => 'sigWakeUp',
-    );
+    ];
 
     /**
      * @var array List of shutdown errors to catch
      */
-    protected $shutdownErrors = array(
+    protected $shutdownErrors = [
         \E_PARSE,
         \E_ERROR,
         \E_USER_ERROR,
@@ -141,7 +141,7 @@ class Worker
         \E_CORE_WARNING,
         \E_COMPILE_ERROR,
         \E_COMPILE_WARNING
-    );
+    ];
 
     /**
      * @var Logger logger instance
@@ -302,14 +302,14 @@ class Worker
 
             $this->workingOn($job);
 
-            Event::fire(Event::WORKER_FORK, array($this, $job));
+            Event::fire(Event::WORKER_FORK, [$this, $job]);
 
             // Fork into another process
             $this->child = pcntl_fork();
 
             // Returning -1 means error in forking
             if ($this->child == -1) {
-                Event::fire(Event::WORKER_FORK_ERROR, array($this, $job));
+                Event::fire(Event::WORKER_FORK_ERROR, [$this, $job]);
 
                 $this->log('Unable to fork process, this is a fatal error, aborting worker', Logger::ALERT);
                 $this->log('Re-queuing job <pop>'.$job.'</pop>', Logger::INFO);
@@ -321,7 +321,7 @@ class Worker
                 $this->shutdown();
             } elseif ($this->child > 0) {
                 // In parent if $pid > 0 since pcntl_fork returns process id of child
-                Event::fire(Event::WORKER_FORK_PARENT, array($this, $job, $this->child));
+                Event::fire(Event::WORKER_FORK_PARENT, [$this, $job, $this->child]);
 
                 $this->log('Forked process to run job on pid:'.$this->child, Logger::DEBUG);
                 $this->updateProcLine('Worker: forked '.$this->child.' at '.date('Y-m-d H:i:s'));
@@ -345,7 +345,7 @@ class Worker
                 $this->redis->disconnect();
                 $this->redis->connect();
 
-                Event::fire(Event::WORKER_FORK_CHILD, array($this, $job, getmypid()));
+                Event::fire(Event::WORKER_FORK_CHILD, [$this, $job, getmypid()]);
 
                 $this->log('Running job <pop>'.$job.'</pop>', Logger::INFO);
                 $this->updateProcLine('Job: processing '.$job->getQueue().'#'.$job->getId().' since '.date('Y-m-d H:i:s'));
@@ -471,7 +471,7 @@ class Worker
             throw new Exception\Shutdown('Job forced shutdown');
         }
 
-        Event::fire(Event::WORKER_KILLCHILD, array($this, $this->child));
+        Event::fire(Event::WORKER_KILLCHILD, [$this, $this->child]);
 
         if (posix_kill($this->child, 0)) {
             $this->log('Killing child process at pid:'.$this->child, Logger::DEBUG);
@@ -495,7 +495,7 @@ class Worker
         $this->log('Registering worker <pop>'.$this.'</pop>', Logger::NOTICE);
 
         $this->redis->sadd(self::redisKey(), $this->id);
-        $this->redis->hmset(self::redisKey($this), array(
+        $this->redis->hmset(self::redisKey($this), [
             'started'      => microtime(true),
             'hostname'     => (string)$this->host,
             'pid'          => getmypid(),
@@ -513,7 +513,7 @@ class Worker
             'job_id'       => '',
             'job_pid'      => 0,
             'job_started'  => 0
-        ));
+        ]);
 
         if (function_exists('pcntl_signal')) {
             $this->log('Registering sig handlers for worker '.$this, Logger::DEBUG);
@@ -525,11 +525,11 @@ class Worker
                 declare(ticks = 1);
             }
             foreach ($this->signalHandlerMapping as $signalName => $signalHandler) {
-                pcntl_signal($signalName, array($this, $signalHandler));
+                pcntl_signal($signalName, [$this, $signalHandler]);
             }
         }
 
-        register_shutdown_function(array($this, 'unregister'));
+        register_shutdown_function([$this, 'unregister']);
 
         Event::fire(Event::WORKER_REGISTER, $this);
     }
@@ -656,12 +656,12 @@ class Worker
         $this->job = $job;
         $job->setWorker($this);
 
-        Event::fire(Event::WORKER_WORKING_ON, array($this, $job));
+        Event::fire(Event::WORKER_WORKING_ON, [$this, $job]);
 
-        $this->redis->hmset(self::redisKey($this), array(
+        $this->redis->hmset(self::redisKey($this), [
             'job_id'      => $job->getId(),
             'job_started' => microtime(true)
-        ));
+        ]);
     }
 
     /**
@@ -670,13 +670,13 @@ class Worker
      */
     public function doneWorking()
     {
-        Event::fire(Event::WORKER_DONE_WORKING, array($this, $this->job));
+        Event::fire(Event::WORKER_DONE_WORKING, [$this, $this->job]);
 
-        $this->redis->hmset(self::redisKey($this), array(
+        $this->redis->hmset(self::redisKey($this), [
             'job_id'      => '',
             'job_pid'     => 0,
             'job_started' => 0
-        ));
+        ]);
 
         switch ($this->job->getStatus()) {
             case Job::STATUS_COMPLETE:
@@ -764,7 +764,7 @@ class Worker
         }
 
         if (!is_array($queues)) {
-            $queues = array();
+            $queues = [];
         }
 
         return $queues;
@@ -819,7 +819,7 @@ class Worker
     {
         $workers = self::allWorkers();
         $hosts   = $this->redis->smembers(Host::redisKey());
-        $cleaned = array();
+        $cleaned = [];
 
         foreach ($workers as $worker) {
             list($host, $pid) = explode(':', (string)$worker, 2);
@@ -858,7 +858,7 @@ class Worker
             }
         }
 
-        Event::fire(Event::WORKER_CLEANUP, array($this, $cleaned));
+        Event::fire(Event::WORKER_CLEANUP, [$this, $cleaned]);
 
         return $cleaned;
     }
@@ -871,10 +871,10 @@ class Worker
     public static function allWorkers(Logger $logger = null)
     {
         if (!($ids = Redis::instance()->smembers(self::redisKey()))) {
-            return array();
+            return [];
         }
 
-        $workers = array();
+        $workers = [];
         foreach ($ids as $id) {
             if (($worker = self::fromId($id, $logger)) !== false) {
                 $workers[] = $worker;
@@ -915,12 +915,12 @@ class Worker
     public static function hostWorkers($host = null, Logger $logger = null)
     {
         if (!($ids = Redis::instance()->smembers(self::redisKey()))) {
-            return array();
+            return [];
         }
 
         $host = $host ?: gethostname();
 
-        $workers = array();
+        $workers = [];
         foreach ($ids as $id) {
             if (
                 (strpos($id, $host.':') !== false) and
@@ -1104,7 +1104,7 @@ class Worker
     public function log()
     {
         if ($this->logger !== null) {
-            return call_user_func_array(array($this->logger, 'log'), func_get_args());
+            return call_user_func_array([$this->logger, 'log'], func_get_args());
         }
 
         return false;
@@ -1216,15 +1216,15 @@ class Worker
     {
         $packet = $this->getPacket();
 
-        return array(
+        return [
             'id'           => (string)$this->id,
             'hostname'     => (string)$packet['hostname'],
             'pid'          => (int)$packet['pid'],
 
-            'queues'       => array(
+            'queues'       => [
                 'selected' => (array)explode(',', $packet['queues']),
                 'resolved' => (array)$this->resolveQueues()
-            ),
+            ],
             'shutdown'     => (bool)$packet['shutdown'],
             'blocking'     => (bool)$packet['blocking'],
             'status'       => (int)$packet['status'],
@@ -1241,7 +1241,7 @@ class Worker
             'job_id'       => (string)$packet['job_id'],
             'job_pid'      => (int)$packet['job_pid'],
             'job_started'  => (float)$packet['job_started'],
-        );
+        ];
     }
 
     /**

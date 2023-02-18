@@ -41,7 +41,7 @@ class Connector
     /**
      * @var array output instance
      */
-    private $connectionMap = array(
+    private $connectionMap = [
         'Redis'    => 'redis://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<key>.+)',               // redis://127.0.0.1:6379/log:%worker$
         'MongoDB'  => 'mongodb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)/(?P<collection>.+)',  // mongodb://127.0.0.1:27017/dbname/log:%worker%
         'CouchDB'  => 'couchdb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)',  // couchdb://127.0.0.1:27017/dbname
@@ -54,7 +54,7 @@ class Connector
         'Console'  => '(console|echo)(?P<ignore>\b)',                        // console
         'Off'      => '(off|null)(?P<ignore>\b)',                            // off
         'Stream'   => '(?:stream:)?(?P<stream>[a-z0-9/\\\[\]\(\)\~%\._-]+)'   // stream:path/to/output.log | path/to/output.log
-    );
+    ];
 
     /**
      * Creates a new Connector instance
@@ -94,7 +94,7 @@ class Connector
                     );
 
                     // Tell them the error of their ways
-                    $format = str_replace(array('(?:', ')?', '\)'), '', $this->connectionMap[$handler]);
+                    $format = str_replace(['(?:', ')?', '\)'], '', $this->connectionMap[$handler]);
 
                     $cb = function ($m) {
                         return ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
@@ -130,7 +130,7 @@ class Connector
     private function matches($pattern, $subject)
     {
         if (preg_match($pattern, $subject, $matches)) {
-            $args = array();
+            $args = [];
 
             foreach ($matches as $key => $value) {
                 if (!is_int($key)) {

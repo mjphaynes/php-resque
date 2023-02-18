@@ -115,7 +115,7 @@ class SerializableClosure implements Serializable
     public function getVariables()
     {
         if (!$this->getUseIndex()) {
-            return array();
+            return [];
         }
 
         $staticVariables = $this->reflection->getStaticVariables();
@@ -123,7 +123,7 @@ class SerializableClosure implements Serializable
         // When looping through the variables, we will only take the variables that are
         // specified in the use clause, and will not take any other static variables
         // that may be used by the Closures, allowing this to re-create its state.
-        $usedVariables = array();
+        $usedVariables = [];
 
         foreach ($this->getUseClauseVariables() as $variable) {
             $variable = trim($variable, ' $&');
@@ -163,9 +163,9 @@ class SerializableClosure implements Serializable
      */
     public function serialize()
     {
-        return serialize(array(
+        return serialize([
             'code' => $this->getCode(), 'variables' => $this->getVariables()
-        ));
+        ]);
     }
 
     /**

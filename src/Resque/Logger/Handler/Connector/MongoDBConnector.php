@@ -27,7 +27,7 @@ class MongoDBConnector extends AbstractConnector
     {
         $mongodb = null;
         $dsn     = strtr('mongodb://host:port', $args);
-        $options = array();
+        $options = [];
 
         if (class_exists('MongoClient')) {
             $mongodb = new \MongoClient($dsn, $options);
