@@ -1,3 +1,5 @@
+* text=auto
+* eol=lf
 
 # do not deploy docker testing stuff
 /docker export-ignore

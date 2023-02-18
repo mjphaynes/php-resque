@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Tests\Helpers;
+declare(strict_types=1);
+
+namespace Tests\Unit;
 
 use Resque\Helpers\Util;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +21,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Romain DARY <romain.dary@eoko.fr>
  */
-class UtilTest extends TestCase
+final class UtilTest extends TestCase
 {
     /**
      * @param string $expected   expected readable sizes

@@ -1,0 +1,49 @@
+FROM composer:2 AS build
+
+WORKDIR /build
+
+COPY composer.* ./
+
+RUN composer install --no-dev --no-scripts --no-autoloader --ignore-platform-reqs
+
+COPY . .
+
+RUN composer dump-autoload -o
+
+FROM php:7-fpm-alpine
+
+RUN apk add --no-cache -t .production-deps \
+    hiredis libzip
+
+RUN set -xe \
+    && apk add --no-cache -t .build-deps $PHPIZE_DEPS linux-headers git \
+    hiredis-dev libzip-dev \
+    && pecl install -f apcu-5.1.22 redis-5.3.7 \
+    && git clone https://github.com/nrk/phpiredis.git \
+    && ( \
+        cd phpiredis \
+        && git checkout v1.1 \
+        && phpize \
+        && ./configure --enable-phpiredis \
+        && make \
+        && make install \
+    ) \
+    && rm -r phpiredis \
+    && docker-php-source extract \
+    && docker-php-ext-configure pcntl --enable-pcntl \
+    && docker-php-ext-install -j$(nproc) pcntl zip \
+    && docker-php-ext-enable apcu redis phpiredis \
+    && docker-php-source delete \
+    && pecl clear-cache \
+    && rm -rf /tmp/* \
+    && apk del --purge .build-deps
+
+COPY --from=build --chown=www-data:www-data /build /var/www/resque
+
+RUN chmod -R +x /var/www/resque/bin
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY --from=build /usr/bin/composer /usr/local/bin/composer
+
+EXPOSE 80
+WORKDIR /var/www/resque

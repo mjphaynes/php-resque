@@ -1,12 +1,13 @@
 <?php
 
-namespace Resque\Tests;
+declare(strict_types=1);
+
+namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-class RedisTest extends TestCase
+final class RedisTest extends TestCase
 {
-
     private $legacyParameters = array(
         'scheme'     => 'tcp',
         'host'       => 'redis_instance_01',
@@ -38,7 +39,7 @@ class RedisTest extends TestCase
 
     private $redisMock = null;
 
-    public function setUp()
+    public function setUp(): void
     {
 
         $predisClassName = "\\Predis\\Client";
@@ -59,7 +60,7 @@ class RedisTest extends TestCase
 
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->predisMock = null;
     }
@@ -114,5 +115,4 @@ class RedisTest extends TestCase
 
         $this->redisMock->__construct(array_merge($this->legacyParameters, array('predis' => $this->predisNativeParameters)));
     }
-
 }
