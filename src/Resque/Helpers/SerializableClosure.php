@@ -23,7 +23,6 @@ use ReflectionFunction;
  */
 class SerializableClosure implements Serializable
 {
-
     /**
      * The Closure instance.
      *

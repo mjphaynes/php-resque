@@ -20,7 +20,6 @@ use Resque\Logger;
  */
 class Server
 {
-
     /**
      * Default IP to use
      */
@@ -136,18 +135,32 @@ class Server
     public function start()
     {
         if (false === ($this->socket = @socket_create(AF_INET, SOCK_STREAM, getprotobyname($this->config['protocol'])))) {
-            throw new Exception(sprintf('socket_create(AF_INET, SOCK_STREAM, <%s>) failed: [%d] %s',
-                $this->config['protocol'], $code = socket_last_error(), socket_strerror($code)));
+            throw new Exception(sprintf(
+                'socket_create(AF_INET, SOCK_STREAM, <%s>) failed: [%d] %s',
+                $this->config['protocol'],
+                $code = socket_last_error(),
+                socket_strerror($code)
+            ));
         }
 
         if (false === @socket_bind($this->socket, $this->config['ip'], $this->config['port'])) {
-            throw new Exception(sprintf('socket_bind($socket, "%s", %d) failed: [%d] %s',
-                $this->config['ip'], $this->config['port'], $code = socket_last_error(), socket_strerror($code)));
+            throw new Exception(sprintf(
+                'socket_bind($socket, "%s", %d) failed: [%d] %s',
+                $this->config['ip'],
+                $this->config['port'],
+                $code = socket_last_error(),
+                socket_strerror($code)
+            ));
         }
 
         if (false === @socket_getsockname($this->socket, $this->config['ip'], $this->config['port'])) {
-            throw new Exception(sprintf('socket_getsockname($socket, "%s", %d) failed: [%d] %s',
-                $this->config['ip'], $this->config['port'], $code = socket_last_error(), socket_strerror($code)));
+            throw new Exception(sprintf(
+                'socket_getsockname($socket, "%s", %d) failed: [%d] %s',
+                $this->config['ip'],
+                $this->config['port'],
+                $code = socket_last_error(),
+                socket_strerror($code)
+            ));
         }
 
         if (false === @socket_listen($this->socket)) {

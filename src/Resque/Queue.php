@@ -20,7 +20,6 @@ use Resque\Helpers\Stats;
  */
 class Queue
 {
-
     /**
      * @var Redis The Redis instance
      */

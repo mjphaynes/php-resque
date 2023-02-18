@@ -23,7 +23,6 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
  */
 class ConsoleHandler extends AbstractProcessingHandler
 {
-
     /**
      * @var OutputInterface The console output interface
      */

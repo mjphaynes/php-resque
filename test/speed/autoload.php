@@ -22,7 +22,7 @@ class TestJob
 }
 
 // Lets record the forking time
-Event::listen(array(Event::WORKER_FORK, Event::WORKER_FORK_CHILD), function ($event, $job) use ($logger) {
+Event::listen([Event::WORKER_FORK, Event::WORKER_FORK_CHILD], function ($event, $job) use ($logger) {
     static $start = 0;
 
     if ($event === Event::WORKER_FORK_CHILD) {

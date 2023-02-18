@@ -21,7 +21,6 @@ use Resque\Helpers\Output;
  */
 class Host
 {
-
     /**
      * @var Redis The Redis instance
      */

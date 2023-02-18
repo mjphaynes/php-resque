@@ -23,7 +23,6 @@ use Symfony\Component\Console\Helper\TableStyle;
  */
 class Table
 {
-
     /**
      * @var TableHelper
      */

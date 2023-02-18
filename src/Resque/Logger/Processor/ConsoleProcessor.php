@@ -22,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ConsoleProcessor
 {
-
     /**
      * @var Command command instance
      */

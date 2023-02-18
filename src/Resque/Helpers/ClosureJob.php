@@ -18,7 +18,6 @@ namespace Resque\Helpers;
  */
 class ClosureJob
 {
-
     /**
      * Fire the Closure based queue job.
      *

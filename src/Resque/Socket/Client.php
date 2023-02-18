@@ -18,7 +18,6 @@ namespace Resque\Socket;
  */
 class Client
 {
-
     /**
      * @var socket The client's socket resource, for sending and receiving data with
      */

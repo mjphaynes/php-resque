@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the php-resque package.
+ *
+ * (c) Michael Haynes <mike@mjphaynes.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
@@ -41,7 +50,6 @@ final class RedisTest extends TestCase
 
     protected function setUp(): void
     {
-
         $predisClassName = "\\Predis\\Client";
 
         $this->predisMock = $this->getMockBuilder($predisClassName)
@@ -57,7 +65,6 @@ final class RedisTest extends TestCase
             ->setMethods(['initializePredisClient'])
             ->getMock()
         ;
-
     }
 
     protected function tearDown(): void
@@ -67,7 +74,6 @@ final class RedisTest extends TestCase
 
     public function testConstructorShouldDoTheLegacyStuff()
     {
-
         $this->redisMock->expects($this->once())
             ->method('initializePredisClient')
             ->with(

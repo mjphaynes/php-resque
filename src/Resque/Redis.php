@@ -20,7 +20,6 @@ use Predis;
  */
 class Redis
 {
-
     /**
      * Default Redis connection scheme
      */
@@ -250,8 +249,8 @@ class Redis
     /**
      * initialize the redis member with a predis client.
      * isolated call for testability
-     * @param array $config predis config parameters
-     * @param array $options predis optional parameters
+     * @param  array $config  predis config parameters
+     * @param  array $options predis optional parameters
      * @return null
      */
     public function initializePredisClient($config, $options)

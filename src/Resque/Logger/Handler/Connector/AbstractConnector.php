@@ -24,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 abstract class AbstractConnector implements ConnectorInterface
 {
-
     /**
      * The default processor is the StripFormatProcessor which
      * removes all the console colour formatting from the string

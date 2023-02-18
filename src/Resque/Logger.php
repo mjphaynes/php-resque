@@ -20,7 +20,6 @@ use Monolog;
  */
 class Logger
 {
-
     /**
      * Detailed debug information
      */

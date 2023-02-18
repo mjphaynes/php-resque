@@ -20,7 +20,6 @@ use Resque\Helpers\Stats;
  */
 class Event
 {
-
     // Worker event constants
     const WORKER_INSTANCE       = 100;
     const WORKER_STARTUP        = 101;

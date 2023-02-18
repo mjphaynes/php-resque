@@ -21,7 +21,6 @@ use Resque\Helpers\Stats;
  */
 class Job
 {
-
     // Job status constants
     const STATUS_WAITING   = 1;
     const STATUS_DELAYED   = 2;
@@ -808,8 +807,9 @@ class Job
      *
      * @param string $JobId
      */
-    public static function cancelJob($jobId) {
-        if($jobId != '') {
+    public static function cancelJob($jobId)
+    {
+        if ($jobId != '') {
             Redis::instance()->hset(self::redisKey($jobId), 'status', self::STATUS_CANCELLED);
         }
     }

@@ -66,12 +66,12 @@ class Restart extends Command
                 if ($child == -1) {
                     $this->log('Unable to fork, worker '.$worker.' has been stopped.', Resque\Logger::CRITICAL);
 
-                    // Parent
+                // Parent
                 } elseif ($child > 0) {
                     $this->log('Worker <pop>'.$worker.'</pop> restarted.');
                     continue;
 
-                    // Child
+                // Child
                 } else {
                     $new_worker = new Resque\Worker($worker->getQueues(), $worker->getBlocking());
                     $new_worker->setInterval($worker->getInterval());

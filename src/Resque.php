@@ -20,7 +20,6 @@ use Symfony\Component\Yaml;
  */
 class Resque
 {
-
     /**
      * php-resque version
      */

@@ -22,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 interface ConnectorInterface
 {
-
     /**
      * Resolves the handler class
      *

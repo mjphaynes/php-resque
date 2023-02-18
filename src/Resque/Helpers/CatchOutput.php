@@ -20,7 +20,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  */
 class CatchOutput extends \Symfony\Component\Console\Output\Output
 {
-
     /**
      * @var string Stored output string
      */

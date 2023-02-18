@@ -20,7 +20,6 @@ use Resque\Helpers\Stats;
  */
 class Worker
 {
-
     /**
      * New worker constant
      */
@@ -712,6 +711,8 @@ class Worker
      *
      * @param  int     Signal Identifier (ie. SIGTERM)
      * @param  string  Signal handler method name
+     * @param mixed $signal
+     * @param mixed $signalHandlerMethodName
      */
     public function setSignalHandler($signal, $signalHandlerMethodName)
     {
@@ -1262,7 +1263,7 @@ class Worker
     /**
      * Creates process title string from current version and status of worker
      *
-     * @param string $status
+     * @param  string $status
      * @return string
      */
     protected function getProcessTitle($status)

@@ -18,7 +18,6 @@ namespace Resque\Helpers;
  */
 class Util
 {
-
     /**
      * Returns human readable sizes. Based on original functions written by
      * [Aidan Lister](http://aidanlister.com/repos/v/function.size_readable.php)
@@ -39,7 +38,7 @@ class Util
             $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
             $mod = 1024;
 
-            // SI prefixes (decimal)
+        // SI prefixes (decimal)
         } else {
             $units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
             $mod = 1000;
