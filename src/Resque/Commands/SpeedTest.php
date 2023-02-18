@@ -49,7 +49,7 @@ class SpeedTest extends Command
         $testTime = (int)$input->getOption('time') ?: 5;
 
         @unlink(RESQUE_DIR.'/test/speed/output.log');
-        $process = new Process(RESQUE_BIN_DIR.'/resque worker:start -c '.RESQUE_DIR.'/test/speed/config.yml');
+        $process = new Process([RESQUE_BIN_DIR.'/resque', 'worker:start', '-c', RESQUE_DIR.'/test/speed/config.yml']);
 
         $start = microtime(true);
         $process->start();
