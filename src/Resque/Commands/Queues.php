@@ -40,7 +40,7 @@ class Queues extends Command
 
         if (empty($queues)) {
             $this->log('<warn>There are no queues.</warn>');
-            return;
+            return self::FAILURE;
         }
 
         $table = new Resque\Helpers\Table($this);

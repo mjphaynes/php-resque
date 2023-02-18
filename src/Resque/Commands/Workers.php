@@ -41,7 +41,7 @@ class Workers extends Command
 
         if (empty($workers)) {
             $this->log('<warn>There are no workers on this host.</warn>');
-            return;
+            return self::FAILURE;
         }
 
         $table = new Resque\Helpers\Table($this);

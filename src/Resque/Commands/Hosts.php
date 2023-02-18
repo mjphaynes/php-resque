@@ -40,7 +40,7 @@ class Hosts extends Command
 
         if (empty($hosts)) {
             $this->log('<warn>There are no hosts with running workers.</warn>');
-            return;
+            return self::FAILURE;
         }
 
         $table = new Resque\Helpers\Table($this);

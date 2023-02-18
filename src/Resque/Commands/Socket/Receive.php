@@ -104,7 +104,7 @@ class Receive extends Command
                     ];
                 } catch (\Exception $e) {
                     $server->send($client, 'Command error: '.$e->getMessage());
-                    return;
+                    return self::FAILURE;
                 }
             }
 
@@ -119,7 +119,7 @@ class Receive extends Command
                     if (empty($workers)) {
                         $response = ['ok' => 0, 'message' => 'There are no workers running on this host.'];
                         $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
-                        return;
+                        return self::FAILURE;
                     }
 
                     if ($data['json']) {
@@ -179,7 +179,7 @@ class Receive extends Command
                                     "Help: You must specify a valid worker id, to get a \n".
                                     "list of workers use the \"workers\" command.");
                             }
-                            return;
+                            return self::INVALID;
                         }
 
                         $workers = [$worker];
@@ -189,7 +189,7 @@ class Receive extends Command
                         if (empty($workers)) {
                             $response = ['ok' => 0, 'message' => 'There are no workers on this host.'];
                             $server->send($client, $data['json'] ? json_encode($response) : $response['message']);
-                            return;
+                            return self::FAILURE;
                         }
                     }
 
