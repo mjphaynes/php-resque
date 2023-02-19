@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class RedisTest extends TestCase
 {
-    private $legacyParameters = [
+    private array $legacyParameters = [
         'scheme'     => 'tcp',
         'host'       => 'redis_instance_01',
         'port'       => 6379,
@@ -26,7 +27,7 @@ final class RedisTest extends TestCase
         'phpiredis'  => true,
     ];
 
-    private $predisNativeParameters = [
+    private array $predisNativeParameters = [
         'config'  => [
             [
                 'tcp://10.0.0.1',
@@ -44,9 +45,9 @@ final class RedisTest extends TestCase
         ],
     ];
 
-    private $predisMock = null;
+    private ?MockObject $predisMock = null;
 
-    private $redisMock = null;
+    private ?MockObject $redisMock = null;
 
     protected function setUp(): void
     {
@@ -72,7 +73,7 @@ final class RedisTest extends TestCase
         $this->predisMock = null;
     }
 
-    public function testConstructorShouldDoTheLegacyStuff()
+    public function testConstructorShouldDoTheLegacyStuff(): void
     {
         $this->redisMock->expects($this->once())
             ->method('initializePredisClient')
@@ -98,7 +99,7 @@ final class RedisTest extends TestCase
         $this->redisMock->__construct($this->legacyParameters);
     }
 
-    public function testConstructorShouldAcceptPredisOverride()
+    public function testConstructorShouldAcceptPredisOverride(): void
     {
         $className = "\\Resque\\Redis";
 

@@ -30,7 +30,7 @@ class Util
      *
      * @return string
      */
-    public static function bytes(int $bytes, ?string $force_unit = null, ?string $format = null, bool $si = true): string
+    public static function bytes(int $bytes, ?string $force_unit = '', ?string $format = null, bool $si = true): string
     {
         $format = ($format === null) ? '%01.2f %s' : (string) $format;
 

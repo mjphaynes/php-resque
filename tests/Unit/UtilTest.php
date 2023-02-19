@@ -33,9 +33,9 @@ final class UtilTest extends TestCase
      *
      * @dataProvider getBytes
      */
-    public function testBytes($expected, $bytes, $force_unit = null, $format = null, $si = true)
+    public function testBytes($expected, $bytes): void
     {
-        $this->assertSame($expected, Util::bytes($bytes, $force_unit, $format, $si));
+        $this->assertSame($expected, Util::bytes($bytes, '', null, true));
     }
 
     /**
@@ -43,7 +43,7 @@ final class UtilTest extends TestCase
      *
      * @return array
      */
-    public function getBytes()
+    public function getBytes(): array
     {
         return [
             ['1.00 B', 1],

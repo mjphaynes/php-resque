@@ -8,6 +8,8 @@ services:
         build:
             context: .
             dockerfile: docker/Dockerfile
+            args:
+                - PHP_VERSION=7
         ports:
             - 8000:8000
         volumes:

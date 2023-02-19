@@ -1,3 +1,5 @@
+ARG PHP_VERSION=7
+
 FROM composer:2 AS build
 
 WORKDIR /build
@@ -10,7 +12,7 @@ COPY . .
 
 RUN composer dump-autoload -o
 
-FROM php:7-fpm-alpine
+FROM php:${PHP_VERSION}-fpm-alpine
 
 RUN apk add --no-cache -t .production-deps \
     hiredis libzip
