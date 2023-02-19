@@ -29,7 +29,7 @@ class RedisConnector extends AbstractConnector
         $options = [
             'scheme' => 'tcp',
             'host'   => $args['host'],
-            'port'   => $args['port']
+            'port'   => $args['port'],
         ];
 
         $password = Resque::getConfig('redis.password', Resque\Redis::DEFAULT_PASSWORD);

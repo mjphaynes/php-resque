@@ -25,7 +25,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  */
 final class Clear extends Command
 {
-    protected function configure() :void
+    protected function configure(): void
     {
         $this->setName('clear')
             ->setDefinition($this->mergeDefinitions([

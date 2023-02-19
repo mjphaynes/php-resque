@@ -81,7 +81,7 @@ class SerializableClosure
         }
 
         preg_match('/function\s*\(/', $code, $matches, PREG_OFFSET_CAPTURE);
-        $begin = isset($matches[0][1]) ? $matches[0][1] : 0;
+        $begin = $matches[0][1] ?? 0;
 
         return substr($code, $begin, strrpos($code, '}') - $begin + 1);
     }
@@ -157,7 +157,7 @@ class SerializableClosure
     public function __serialize(): array
     {
         return [
-            'code' => $this->getCode(), 'variables' => $this->getVariables()
+            'code' => $this->getCode(), 'variables' => $this->getVariables(),
         ];
     }
 

@@ -50,7 +50,7 @@ class CatchOutput extends \Symfony\Component\Console\Output\Output
      * @param string $message A message to write to the output
      * @param bool   $newline Whether to add a newline or not
      */
-    protected function doWrite(string $message, bool $newline)
+    protected function doWrite(string $message, bool $newline): void
     {
         $this->written .= $message.($newline ? PHP_EOL : '');
     }

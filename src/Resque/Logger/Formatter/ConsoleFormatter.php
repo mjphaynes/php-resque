@@ -20,7 +20,7 @@ use Monolog\Formatter\LineFormatter;
  */
 class ConsoleFormatter extends LineFormatter
 {
-    const SIMPLE_FORMAT = "%start_tag%%message%%end_tag%\n";
+    public const SIMPLE_FORMAT = "%start_tag%%message%%end_tag%\n";
 
     /**
      * {@inheritdoc}

@@ -55,11 +55,11 @@ class Util
     /**
      * Constants for human_time_diff()
      */
-    const MINUTE_IN_SECONDS = 60;
-    const HOUR_IN_SECONDS   = 3600;
-    const DAY_IN_SECONDS    = 86400;
-    const WEEK_IN_SECONDS   = 604800;
-    const YEAR_IN_SECONDS   = 3.15569e7;
+    public const MINUTE_IN_SECONDS = 60;
+    public const HOUR_IN_SECONDS   = 3600;
+    public const DAY_IN_SECONDS    = 86400;
+    public const WEEK_IN_SECONDS   = 604800;
+    public const YEAR_IN_SECONDS   = 3.15569e7;
 
     /**
      * Determines the difference between two timestamps.

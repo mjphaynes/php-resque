@@ -40,7 +40,7 @@ class ConsoleHandler extends AbstractProcessingHandler
         Logger::ERROR     => OutputInterface::VERBOSITY_NORMAL,
         Logger::CRITICAL  => OutputInterface::VERBOSITY_NORMAL,
         Logger::ALERT     => OutputInterface::VERBOSITY_NORMAL,
-        Logger::EMERGENCY => OutputInterface::VERBOSITY_NORMAL
+        Logger::EMERGENCY => OutputInterface::VERBOSITY_NORMAL,
     ];
 
     /**
@@ -62,7 +62,7 @@ class ConsoleHandler extends AbstractProcessingHandler
         'pop'       => ['green'],
         'warn'      => ['yellow'],
         'comment'   => ['yellow'],
-        'question'  => ['black', 'cyan']
+        'question'  => ['black', 'cyan'],
     ];
 
     /**
@@ -133,7 +133,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter(): Logger\Formatter\ConsoleFormatter
     {
-        $formatter = new Logger\Formatter\ConsoleFormatter;
+        $formatter = new Logger\Formatter\ConsoleFormatter();
         if (method_exists($formatter, 'allowInlineLineBreaks')) {
             $formatter->allowInlineLineBreaks(true);
         }

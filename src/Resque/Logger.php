@@ -23,42 +23,42 @@ class Logger
     /**
      * Detailed debug information
      */
-    const DEBUG = Monolog::DEBUG;
+    public const DEBUG = Monolog::DEBUG;
 
     /**
      * Interesting events e.g. User logs in, SQL logs.
      */
-    const INFO = Monolog::INFO;
+    public const INFO = Monolog::INFO;
 
     /**
      * Uncommon events
      */
-    const NOTICE = Monolog::NOTICE;
+    public const NOTICE = Monolog::NOTICE;
 
     /**
      * Exceptional occurrences that are not errors e.g. Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.
      */
-    const WARNING = Monolog::WARNING;
+    public const WARNING = Monolog::WARNING;
 
     /**
      * Runtime errors
      */
-    const ERROR = Monolog::ERROR;
+    public const ERROR = Monolog::ERROR;
 
     /**
      * Critical conditions e.g. Application component unavailable, unexpected exception.
      */
-    const CRITICAL = Monolog::CRITICAL;
+    public const CRITICAL = Monolog::CRITICAL;
 
     /**
      * Action must be taken immediately e.g. Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.
      */
-    const ALERT = Monolog::ALERT;
+    public const ALERT = Monolog::ALERT;
 
     /**
      * Urgent alert.
      */
-    const EMERGENCY = Monolog::EMERGENCY;
+    public const EMERGENCY = Monolog::EMERGENCY;
 
     /**
      * @var array List of valid log levels
@@ -71,7 +71,7 @@ class Logger
         self::ERROR     => 'error',
         self::CRITICAL  => 'critical',
         self::ALERT     => 'alert',
-        self::EMERGENCY => 'emergency'
+        self::EMERGENCY => 'emergency',
     ];
 
     /**

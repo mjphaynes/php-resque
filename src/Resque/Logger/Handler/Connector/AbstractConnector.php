@@ -55,7 +55,7 @@ abstract class AbstractConnector implements ConnectorInterface
             '%worker%' => new Resque\Worker(),
             '%pid%'    => getmypid(),
             '%date%'   => date('Y-m-d'),
-            '%time%'   => date('H:i')
+            '%time%'   => date('H:i'),
         ];
 
         return strtr($string, $placeholders);

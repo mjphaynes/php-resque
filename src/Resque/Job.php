@@ -21,17 +21,17 @@ use Resque\Helpers\Stats;
 class Job
 {
     // Job status constants
-    const STATUS_WAITING   = 1;
-    const STATUS_DELAYED   = 2;
-    const STATUS_RUNNING   = 3;
-    const STATUS_COMPLETE  = 4;
-    const STATUS_CANCELLED = 5;
-    const STATUS_FAILED    = 6;
+    public const STATUS_WAITING   = 1;
+    public const STATUS_DELAYED   = 2;
+    public const STATUS_RUNNING   = 3;
+    public const STATUS_COMPLETE  = 4;
+    public const STATUS_CANCELLED = 5;
+    public const STATUS_FAILED    = 6;
 
     /**
      * Job ID length
      */
-    const ID_LENGTH = 22;
+    public const ID_LENGTH = 22;
 
     /**
      * @var Redis The Redis instance
@@ -84,7 +84,7 @@ class Job
     protected static array $completeStatuses = [
         self::STATUS_FAILED,
         self::STATUS_COMPLETE,
-        self::STATUS_CANCELLED
+        self::STATUS_CANCELLED,
     ];
 
     /**
@@ -213,7 +213,7 @@ class Job
         } else {
             $this->class = $class;
             if (strpos($this->class, '@')) {
-                list($this->class, $this->method) = explode('@', $this->class, 2);
+                [$this->class, $this->method] = explode('@', $this->class, 2);
             }
 
             // Remove any spaces or back slashes
@@ -547,7 +547,7 @@ class Job
             $packet['exception'] = json_encode([
                 'class'     => get_class($e),
                 'error'     => sprintf('%s in %s on line %d', $e->getMessage(), $e->getFile(), $e->getLine()),
-                'backtrace' => explode("\n", $e->getTraceAsString())
+                'backtrace' => explode("\n", $e->getTraceAsString()),
             ]);
         }
 
@@ -636,7 +636,7 @@ class Job
      *
      * @throws \RuntimeException
      */
-    public function setId()
+    public function setId(): void
     {
         throw new \RuntimeException('It is not possible to set job id, you must create a new job');
     }
@@ -656,7 +656,7 @@ class Job
      *
      * @throws \RuntimeException
      */
-    public function setQueue()
+    public function setQueue(): void
     {
         throw new \RuntimeException('It is not possible to set job queue, you must create a new job');
     }
@@ -676,7 +676,7 @@ class Job
      *
      * @throws \RuntimeException
      */
-    public function setClass()
+    public function setClass(): void
     {
         throw new \RuntimeException('It is not possible to set job class, you must create a new job');
     }
@@ -696,7 +696,7 @@ class Job
      *
      * @throws \RuntimeException
      */
-    public function setData()
+    public function setData(): void
     {
         throw new \RuntimeException('It is not possible to set job data, you must create a new job');
     }
@@ -759,7 +759,7 @@ class Job
             'started'   => (float)$packet['started'],
             'finished'  => (float)$packet['finished'],
             'output'    => $packet['output'],
-            'exception' => $packet['exception']
+            'exception' => $packet['exception'],
         ];
     }
 
@@ -793,7 +793,7 @@ class Job
                 $packet = $job->getPacket();
 
                 if (!in_array($packet['worker'], $workers)) {
-                    $job->fail(new Exception\Zombie);
+                    $job->fail(new Exception\Zombie());
 
                     $cleaned['zombie']++;
                 }

@@ -52,7 +52,7 @@ class Connector
         'Rotate'   => 'rotate:(?P<max_files>\d+):(?P<file>.+)',              // rotate:5:path/to/output.log
         'Console'  => '(console|echo)(?P<ignore>\b)',                        // console
         'Off'      => '(off|null)(?P<ignore>\b)',                            // off
-        'Stream'   => '(?:stream:)?(?P<stream>[a-z0-9/\\\[\]\(\)\~%\._-]+)'   // stream:path/to/output.log | path/to/output.log
+        'Stream'   => '(?:stream:)?(?P<stream>[a-z0-9/\\\[\]\(\)\~%\._-]+)',   // stream:path/to/output.log | path/to/output.log
     ];
 
     /**
@@ -94,9 +94,7 @@ class Connector
                     // Tell them the error of their ways
                     $format = str_replace(['(?:', ')?', '\)'], '', $this->connectionMap[$handler]);
 
-                    $cb = function ($m) {
-                        return ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
-                    };
+                    $cb = fn ($m) => ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
                     $format = preg_replace_callback('/\(\?P<([a-z_]+)>(?:.+?)\)/', $cb, $format);
 
                     throw new \InvalidArgumentException('Invalid format "'.$logFormat.'" for "'.$handler.'" handler. Should be of format "'.$format.'"');

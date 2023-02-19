@@ -23,17 +23,17 @@ class Worker
     /**
      * New worker constant
      */
-    const STATUS_NEW = 1;
+    public const STATUS_NEW = 1;
 
     /**
      * Running worker constant
      */
-    const STATUS_RUNNING = 2;
+    public const STATUS_RUNNING = 2;
 
     /**
      * Paused worker constant
      */
-    const STATUS_PAUSED = 3;
+    public const STATUS_PAUSED = 3;
 
     /**
      * Worker status constants as text
@@ -41,7 +41,7 @@ class Worker
     public static array $statusText = [
         self::STATUS_NEW     => 'Not started',
         self::STATUS_RUNNING => 'Running',
-        self::STATUS_PAUSED  => 'Paused'
+        self::STATUS_PAUSED  => 'Paused',
     ];
 
     /**
@@ -139,7 +139,7 @@ class Worker
         \E_CORE_ERROR,
         \E_CORE_WARNING,
         \E_COMPILE_ERROR,
-        \E_COMPILE_WARNING
+        \E_COMPILE_WARNING,
     ];
 
     /**
@@ -187,7 +187,7 @@ class Worker
         $worker->setTimeout($packet['timeout']);
         $worker->setMemoryLimit($packet['memory_limit']);
         $worker->setHost(new Host($packet['hostname']));
-        $worker->shutdown = isset($packet['shutdown']) ? $packet['shutdown'] : null;
+        $worker->shutdown = $packet['shutdown'] ?? null;
         $worker->setLogger($logger);
 
         return $worker;
@@ -513,7 +513,7 @@ class Worker
             'failed'       => 0,
             'job_id'       => '',
             'job_pid'      => 0,
-            'job_started'  => 0
+            'job_started'  => 0,
         ]);
 
         if (function_exists('pcntl_signal')) {
@@ -523,7 +523,7 @@ class Worker
             if (function_exists('pcntl_async_signals')) {
                 pcntl_async_signals(true);
             } else {
-                declare(ticks = 1);
+                declare(ticks=1);
             }
             foreach ($this->signalHandlerMapping as $signalName => $signalHandler) {
                 pcntl_signal($signalName, [$this, $signalHandler]);
@@ -556,7 +556,7 @@ class Worker
         }
 
         if (is_object($this->job)) {
-            $this->job->fail(new Exception\Cancel);
+            $this->job->fail(new Exception\Cancel());
             $this->log('Failing running job <pop>'.$this->job.'</pop>', Logger::NOTICE);
         }
 
@@ -661,7 +661,7 @@ class Worker
 
         $this->redis->hmset(self::redisKey($this), [
             'job_id'      => $job->getId(),
-            'job_started' => microtime(true)
+            'job_started' => microtime(true),
         ]);
     }
 
@@ -676,7 +676,7 @@ class Worker
         $this->redis->hmset(self::redisKey($this), [
             'job_id'      => '',
             'job_pid'     => 0,
-            'job_started' => 0
+            'job_started' => 0,
         ]);
 
         switch ($this->job->getStatus()) {
@@ -786,7 +786,7 @@ class Worker
             $this->redis->multi();
             $jobs = $this->redis->zrangebyscore(Queue::redisKey($queue, 'delayed'), $startTime, $endTime);
             $this->redis->zremrangebyscore(Queue::redisKey($queue, 'delayed'), $startTime, $endTime);
-            list($jobs, $found) = $this->redis->exec();
+            [$jobs, $found] = $this->redis->exec();
 
             if ($found > 0) {
                 foreach ($jobs as $payload) {
@@ -823,7 +823,7 @@ class Worker
         $cleaned = [];
 
         foreach ($workers as $worker) {
-            list($host, $pid) = explode(':', (string)$worker, 2);
+            [$host, $pid] = explode(':', (string)$worker, 2);
 
             if (
                 ($host != (string)$this->host and in_array($host, $hosts)) or
@@ -839,9 +839,7 @@ class Worker
         }
 
         $workerIds = array_map(
-            function ($w) {
-                return (string)$w;
-            },
+            fn ($w) => (string)$w,
             $workers
         );
         $keys = (array)$this->redis->keys('worker:'.$this->host.':*');
@@ -1037,7 +1035,7 @@ class Worker
             throw new \RuntimeException('The pid file directory "'.$dir.'" does not exist');
         }
 
-        if (!is_writeable($dir)) {
+        if (!is_writable($dir)) {
             throw new \RuntimeException('The pid file directory "'.$dir.'" is not writeable');
         }
 
@@ -1224,7 +1222,7 @@ class Worker
 
             'queues'       => [
                 'selected' => (array)explode(',', $packet['queues']),
-                'resolved' => (array)$this->resolveQueues()
+                'resolved' => (array)$this->resolveQueues(),
             ],
             'shutdown'     => (bool)$packet['shutdown'],
             'blocking'     => (bool)$packet['blocking'],

@@ -24,18 +24,18 @@ class Resque
     /**
      * php-resque version
      */
-    const VERSION = '3.2.0';
+    public const VERSION = '3.2.0';
 
     /**
      * How long the job and worker data will remain in Redis for
      * after completion/shutdown in seconds. Default is one week.
      */
-    const DEFAULT_EXPIRY_TIME = 604800;
+    public const DEFAULT_EXPIRY_TIME = 604800;
 
     /**
      * Default config file name
      */
-    const DEFAULT_CONFIG_FILE = 'config.yml';
+    public const DEFAULT_CONFIG_FILE = 'config.yml';
 
     /**
      * @var array Configuration settings array.
@@ -121,7 +121,7 @@ class Resque
             $baseDir.'/../../',
             $baseDir.'/config/',
             $baseDir.'/../config/',
-            $baseDir.'/../../config/'
+            $baseDir.'/../../config/',
         ];
 
         $filename = basename($file);

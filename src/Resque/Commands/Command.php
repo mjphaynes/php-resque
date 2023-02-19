@@ -114,7 +114,7 @@ class Command extends \Symfony\Component\Console\Command\Command
             'host'      => $config['host'],
             'port'      => $config['port'],
             'namespace' => $config['namespace'],
-            'password'  => $config['password']
+            'password'  => $config['password'],
         ]);
 
         // Set the verbosity
@@ -162,7 +162,7 @@ class Command extends \Symfony\Component\Console\Command\Command
         // This outputs all the events that are fired, useful for learning
         // about when events are fired in the command flow
         if (array_key_exists('events', $config) and $config['events'] === true) {
-            Resque\Event::listen('*', function ($event) use ($output) {
+            Resque\Event::listen('*', function ($event) use ($output): void {
                 $data = array_map(
                     function ($d) {
                         /** @var mixed $d */

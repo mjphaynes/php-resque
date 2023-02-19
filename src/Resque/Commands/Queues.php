@@ -53,7 +53,7 @@ final class Queues extends Command
                 (int)@$stats['processed'],
                 (int)@$stats['failed'],
                 (int)@$stats['cancelled'],
-                (int)@$stats['total']
+                (int)@$stats['total'],
             ]);
         }
 

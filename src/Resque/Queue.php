@@ -137,7 +137,7 @@ class Queue
         }
 
         if ($blocking) {
-            list($queue, $payload) = $this->redis->blpop($queues, $timeout);
+            [$queue, $payload] = $this->redis->blpop($queues, $timeout);
             if ($queue) {
                 $queue = $this->redis->removeNamespace($queue);
             }

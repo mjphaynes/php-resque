@@ -26,7 +26,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__);
 
 return (new PhpCsFixer\Config())->setRules([
-        '@PSR2' => true,
+        '@PSR12' => true,
         'phpdoc_add_missing_param_annotation' => true,
         'phpdoc_order' => true,
         'phpdoc_types' => true,

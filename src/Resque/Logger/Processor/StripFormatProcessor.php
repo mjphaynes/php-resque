@@ -52,7 +52,7 @@ class StripFormatProcessor
         'pop',
         'warn',
         'comment',
-        'question'
+        'question',
     ];
 
     /**

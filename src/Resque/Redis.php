@@ -23,37 +23,37 @@ class Redis
     /**
      * Default Redis connection scheme
      */
-    const DEFAULT_SCHEME = 'tcp';
+    public const DEFAULT_SCHEME = 'tcp';
 
     /**
      * Default Redis connection host
      */
-    const DEFAULT_HOST = '127.0.0.1';
+    public const DEFAULT_HOST = '127.0.0.1';
 
     /**
      * Default Redis connection port
      */
-    const DEFAULT_PORT = 6379;
+    public const DEFAULT_PORT = 6379;
 
     /**
      * Default Redis namespace
      */
-    const DEFAULT_NS = 'resque';
+    public const DEFAULT_NS = 'resque';
 
     /**
      * Default Redis AUTH password
      */
-    const DEFAULT_PASSWORD = null;
+    public const DEFAULT_PASSWORD = null;
 
     /**
      * Default Redis Read Write Timeout
      */
-    const DEFAULT_RW_TIMEOUT = 60;
+    public const DEFAULT_RW_TIMEOUT = 60;
 
     /**
      * Default Redis option for using phpiredis or not
      */
-    const DEFAULT_PHPIREDIS = false;
+    public const DEFAULT_PHPIREDIS = false;
 
     /**
      * @var array Default configuration

@@ -23,32 +23,32 @@ class Server
     /**
      * Default IP to use
      */
-    const DEFAULT_IP = '0.0.0.0';
+    public const DEFAULT_IP = '0.0.0.0';
 
     /**
      * Which port to use
      */
-    const DEFAULT_PORT = 7370;
+    public const DEFAULT_PORT = 7370;
 
     /**
      * Which protocol to use
      */
-    const PROTOCOL = 'tcp';
+    public const PROTOCOL = 'tcp';
 
     /**
      * Client connect event
      */
-    const CLIENT_CONNECT = 1;
+    public const CLIENT_CONNECT = 1;
 
     /**
      * Client receive message event
      */
-    const CLIENT_RECEIVE = 2;
+    public const CLIENT_RECEIVE = 2;
 
     /**
      * Client disconnect event
      */
-    const CLIENT_DISCONNECT = 3;
+    public const CLIENT_DISCONNECT = 3;
 
     /**
      * @var array Configuration information used by the server.
@@ -113,7 +113,7 @@ class Server
         $defaults = [
             'ip'       => self::DEFAULT_IP,
             'port'     => self::DEFAULT_PORT,
-            'protocol' => self::PROTOCOL
+            'protocol' => self::PROTOCOL,
         ];
 
         $this->config = array_merge($defaults, $config);
@@ -201,7 +201,7 @@ class Server
             if (function_exists('pcntl_async_signals')) {
                 pcntl_async_signals(true);
             } else {
-                declare(ticks = 1);
+                declare(ticks=1);
             }
             pcntl_signal(SIGTERM, [$this, 'shutdown']);
             pcntl_signal(SIGINT, [$this, 'shutdown']);

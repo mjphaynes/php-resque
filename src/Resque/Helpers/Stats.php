@@ -20,7 +20,7 @@ use Resque\Redis;
  */
 class Stats
 {
-    const DEFAULT_KEY = 'stats';
+    public const DEFAULT_KEY = 'stats';
 
     /**
      * Get the value of the supplied statistic counter for the specified statistic

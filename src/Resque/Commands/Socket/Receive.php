@@ -71,11 +71,11 @@ final class Receive extends Command
 
         $command = $this;
 
-        $server->onConnect(function ($server, &$client, $input) {
+        $server->onConnect(function ($server, &$client, $input): void {
             //
         });
 
-        $server->onDisconnect(function ($server, &$client, $message) {
+        $server->onDisconnect(function ($server, &$client, $message): void {
             $server->send($client, $message);
         });
 
@@ -235,9 +235,7 @@ final class Receive extends Command
                         }
                     }
 
-                    $server->send($client, $data['json'] ? json_encode($response) : implode(PHP_EOL, array_map(function ($d) {
-                        return $d['message'];
-                    }, $response['data'])));
+                    $server->send($client, $data['json'] ? json_encode($response) : implode(PHP_EOL, array_map(fn ($d) => $d['message'], $response['data'])));
 
                     break;
                 case 'job:queue':

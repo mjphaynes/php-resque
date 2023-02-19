@@ -41,7 +41,7 @@ class Table
      */
     public function __construct()
     {
-        $this->output = new CatchOutput;
+        $this->output = new CatchOutput();
 
         $this->table = new TableHelper($this->output);
         $style = new TableStyle();
