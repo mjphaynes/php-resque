@@ -24,7 +24,7 @@
         "php": ">=7.4",
         "ext-pcntl": "*",
         "predis/predis": "1.1.*",
-        "monolog/monolog": "~1.7",
+        "monolog/monolog": "^2.5",
         "symfony/console": "^4.4|^5.4",
         "symfony/yaml": "^4.4|^5.4"
     },

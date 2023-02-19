@@ -109,14 +109,14 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record): bool
+    protected function write(array $record): void
     {
         if (
             null === $this->output or
             OutputInterface::VERBOSITY_QUIET === ($verbosity = $this->output->getVerbosity()) or
             $verbosity < $this->verbosityLevelMap[$record['level']]
         ) {
-            return false;
+            return;
         }
 
         if ($record['level'] >= Logger::ERROR and $this->output instanceof ConsoleOutputInterface) {
@@ -125,7 +125,7 @@ class ConsoleHandler extends AbstractProcessingHandler
             $this->output->write((string)$record['formatted']);
         }
 
-        return true;
+        return;
     }
 
     /**
