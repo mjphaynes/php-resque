@@ -11,7 +11,7 @@
 
 namespace Resque;
 
-use Predis;
+use Predis\Client;
 
 /**
  * Resque redis class
@@ -58,7 +58,7 @@ class Redis
     /**
      * @var array Default configuration
      */
-    protected static $config = [
+    protected static array $config = [
         'scheme'     => self::DEFAULT_SCHEME,
         'host'       => self::DEFAULT_HOST,
         'port'       => self::DEFAULT_PORT,
@@ -71,14 +71,14 @@ class Redis
     /**
      * @var Redis Redis instance
      */
-    protected static $instance = null;
+    protected static ?Redis $instance = null;
 
     /**
      * Establish a Redis connection
      *
      * @return Redis
      */
-    public static function instance()
+    public static function instance(): Redis
     {
         if (!static::$instance) {
             static::$instance = new static(static::$config);
@@ -92,26 +92,26 @@ class Redis
      *
      * @param array $config Array of configuration settings
      */
-    public static function setConfig(array $config)
+    public static function setConfig(array $config): void
     {
         static::$config = array_merge(static::$config, $config);
     }
 
     /**
-     * @var \Predis\Client The Predis instance
+     * @var Client The Predis instance
      */
-    protected $redis;
+    protected Client $redis;
 
     /**
      * @var string Redis namespace
      */
-    protected $namespace;
+    protected string $namespace;
 
     /**
      * @var array List of all commands in Redis that supply a key as their
      *            first argument. Used to prefix keys with the Resque namespace.
      */
-    protected $keyCommands = [
+    protected array $keyCommands = [
         'exists',
         'del',
         'type',
@@ -187,8 +187,7 @@ class Redis
     /**
      * Establish a Redis connection.
      *
-     * @param  array $config Array of configuration settings
-     * @return Redis
+     * @param array $config Array of configuration settings
      */
     public function __construct(array $config = [])
     {
@@ -249,13 +248,14 @@ class Redis
     /**
      * initialize the redis member with a predis client.
      * isolated call for testability
-     * @param  array $config  predis config parameters
-     * @param  array $options predis optional parameters
-     * @return null
+     * @param array $config  predis config parameters
+     * @param array $options predis optional parameters
+     *
+     * @return Client
      */
-    public function initializePredisClient($config, $options)
+    public function initializePredisClient(array $config, array $options): Client
     {
-        return new Predis\Client($config, $options);
+        return new Client($config, $options);
     }
 
     /**
@@ -263,7 +263,7 @@ class Redis
      *
      * @param string $namespace New namespace
      */
-    public function setNamespace($namespace)
+    public function setNamespace(string $namespace): void
     {
         if (substr($namespace, -1) !== ':') {
             $namespace .= ':';
@@ -277,7 +277,7 @@ class Redis
      *
      * @return string
      */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return $this->namespace;
     }
@@ -285,8 +285,8 @@ class Redis
     /**
      * Add Redis namespace to a string
      *
-     * @param  string $string String to namespace
-     * @return string
+     * @param  array|string $string String to namespace
+     * @return array|string
      */
     public function addNamespace($string)
     {
@@ -311,7 +311,7 @@ class Redis
      * @param  string $string String to de-namespace
      * @return string
      */
-    public function removeNamespace($string)
+    public function removeNamespace(string $string): string
     {
         $prefix = $this->namespace;
 
@@ -329,17 +329,12 @@ class Redis
      * @param  array  $parameters Arguments to send to method
      * @return mixed
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         if (in_array($method, $this->keyCommands)) {
             $parameters[0] = $this->addNamespace($parameters[0]);
         }
 
-        // try {
         return call_user_func_array([$this->redis, $method], $parameters);
-
-        // } catch (\Exception $e) {
-        //     return false;
-        // }
     }
 }

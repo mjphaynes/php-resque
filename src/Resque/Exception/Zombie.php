@@ -16,6 +16,6 @@ namespace Resque\Exception;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Zombie extends \Exception
+final class Zombie extends \Exception
 {
 }

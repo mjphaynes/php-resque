@@ -30,9 +30,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Receive extends Command
+final class Receive extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('socket:receive')
             ->setDefinition($this->mergeDefinitions([
@@ -46,7 +46,7 @@ class Receive extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $host    = $this->getConfig('listenhost');
         $port    = $this->getConfig('listenport');
@@ -57,7 +57,7 @@ class Receive extends Command
         do {
             try {
                 $server->start();
-            } catch (Socket\Exception $e) {
+            } catch (Socket\SocketException $e) {
                 if ($retry) {
                     $server->log('<error>Socket server failure: "'. $e->getMessage().'". Retrying in '.$timeout.' seconds...</error>');
                     sleep($timeout);
@@ -287,7 +287,7 @@ class Receive extends Command
         return self::SUCCESS;
     }
 
-    public function pollingConsoleOutput()
+    public function pollingConsoleOutput(): bool
     {
         return true;
     }

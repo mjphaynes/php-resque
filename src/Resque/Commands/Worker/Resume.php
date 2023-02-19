@@ -22,20 +22,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Resume extends Command
+final class Resume extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:resume')
             ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to resume (optional; if not present resumes all workers).'),
             ]))
             ->setDescription('Resume a running worker. If no worker id set then resumes all workers')
-            ->setHelp('Resume a running worker. If no worker id set then resumes all workers')
-        ;
+            ->setHelp('Resume a running worker. If no worker id set then resumes all workers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
 

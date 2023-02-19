@@ -8,6 +8,8 @@ services:
         build:
             context: .
             dockerfile: docker/Dockerfile
+        ports:
+            - 8000:8000
         volumes:
             - ./:/var/www/resque:rw
 

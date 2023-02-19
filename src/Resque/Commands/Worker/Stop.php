@@ -23,9 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Stop extends Command
+final class Stop extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:stop')
             ->setDefinition($this->mergeDefinitions([
@@ -33,11 +33,10 @@ class Stop extends Command
                 new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force worker to stop, cancelling any current job.'),
             ]))
             ->setDescription('Stop a running worker. If no worker id set then stops all workers')
-            ->setHelp('Stop a running worker. If no worker id set then stops all workers')
-        ;
+            ->setHelp('Stop a running worker. If no worker id set then stops all workers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
 

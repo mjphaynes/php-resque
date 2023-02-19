@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -11,8 +12,6 @@
 use Resque\Job;
 use Resque\Event;
 use Resque\Logger;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /*
   This is an example for a basic autoloader for the example jobs.
@@ -77,4 +76,4 @@ class ExampleAutoloader
     }
 }
 
-new ExampleAutoloader($logger);
+new ExampleAutoloader(new Logger([]));

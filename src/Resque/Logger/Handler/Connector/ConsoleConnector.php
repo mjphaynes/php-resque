@@ -24,12 +24,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ConsoleConnector extends AbstractConnector
 {
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): ConsoleHandler
     {
         return new ConsoleHandler($output);
     }
 
-    public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args): ConsoleProcessor
     {
         return new ConsoleProcessor($command, $input, $output);
     }

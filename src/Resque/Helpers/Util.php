@@ -23,13 +23,14 @@ class Util
      * [Aidan Lister](http://aidanlister.com/repos/v/function.size_readable.php)
      * and [Quentin Zervaas](http://www.phpriot.com/d/code/strings/filesize-format/).
      *
-     * @param  int    $bytes      size in bytes
-     * @param  string $force_unit a definitive unit
-     * @param  string $format     the return string format
-     * @param  bool   $si         whether to use SI prefixes or IEC
+     * @param int    $bytes      size in bytes
+     * @param string $force_unit a definitive unit
+     * @param string $format     the return string format
+     * @param bool   $si         whether to use SI prefixes or IEC
+     *
      * @return string
      */
-    public static function bytes($bytes, $force_unit = null, $format = null, $si = true)
+    public static function bytes(int $bytes, ?string $force_unit = null, ?string $format = null, bool $si = true): string
     {
         $format = ($format === null) ? '%01.2f %s' : (string) $format;
 
@@ -66,11 +67,12 @@ class Util
      * The difference is returned in a human readable format such as "1 hour",
      * "5 mins", "2 days".
      *
-     * @param  int    $from Unix timestamp from which the difference begins.
-     * @param  int    $to   Optional. Unix timestamp to end the time difference. Default becomes time() if not set.
+     * @param int $from Unix timestamp from which the difference begins.
+     * @param int $to   Optional. Unix timestamp to end the time difference. Default becomes time() if not set.
+     *
      * @return string Human readable time difference.
      */
-    public static function human_time_diff($from, $to = null)
+    public static function human_time_diff(int $from, ?int $to = null): string
     {
         $to = $to ?: time();
 
@@ -103,13 +105,14 @@ class Util
      * Gets a value from an array using a dot separated path.
      * Returns true if found and false if not.
      *
-     * @param  array  $array     array to search
-     * @param  mixed  $path      key path string (delimiter separated) or array of keys
-     * @param  mixed  $found     value that was found
-     * @param  string $delimiter key path delimiter
+     * @param array  $array     array to search
+     * @param mixed  $path      key path string (delimiter separated) or array of keys
+     * @param mixed  $found     value that was found
+     * @param string $delimiter key path delimiter
+     *
      * @return bool
      */
-    public static function path($array, $path, &$found, $delimiter = '.')
+    public static function path(array $array, $path, &$found, string $delimiter = '.'): bool
     {
         if (!is_array($array)) {
             return false;

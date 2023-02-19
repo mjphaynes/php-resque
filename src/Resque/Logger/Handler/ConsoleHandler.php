@@ -26,12 +26,12 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * @var OutputInterface The console output interface
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * @var array Map log levels to output verbosity
      */
-    private $verbosityLevelMap = [
+    private array $verbosityLevelMap = [
         Logger::INFO      => OutputInterface::VERBOSITY_NORMAL,
         Logger::NOTICE    => OutputInterface::VERBOSITY_VERBOSE,
         Logger::WARNING   => OutputInterface::VERBOSITY_VERY_VERBOSE,
@@ -49,7 +49,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      *
      * @var array
      */
-    private $styleMap = [
+    private array $styleMap = [
         'info'      => [],
         'notice'    => [],
         'warning'   => ['yellow'],
@@ -70,7 +70,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      * @param int             $level  The minimum logging level at which this handler will be triggered
      * @param bool            $bubble Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct(OutputInterface $output, $level = Logger::DEBUG, $bubble = true)
+    public function __construct(OutputInterface $output, int $level = Logger::DEBUG, bool $bubble = true)
     {
         parent::__construct($level, $bubble);
 
@@ -78,10 +78,12 @@ class ConsoleHandler extends AbstractProcessingHandler
 
         foreach ($this->styleMap as $name => $styles) {
             $style = new \ReflectionClass('Symfony\Component\Console\Formatter\OutputFormatterStyle');
-            $this->output->getFormatter()->setStyle($name, $style->newInstanceArgs($styles));
+            /** @var \Symfony\Component\Console\Formatter\OutputFormatterStyle */
+            $styleClass = $style->newInstanceArgs($styles);
+            $this->output->getFormatter()->setStyle($name, $styleClass);
 
             if ($this->output instanceof ConsoleOutputInterface) {
-                $this->output->getErrorOutput()->getFormatter()->setStyle($name, $style->newInstanceArgs($styles));
+                $this->output->getErrorOutput()->getFormatter()->setStyle($name, $styleClass);
             }
         }
     }
@@ -89,7 +91,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record)
+    public function isHandling(array $record): bool
     {
         return $this->updateLevel() and parent::isHandling($record);
     }
@@ -97,7 +99,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record)
+    public function handle(array $record): bool
     {
         // we have to update the logging level each time because the verbosity of the
         // console output might have changed in the meantime (it is not immutable)
@@ -107,7 +109,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): bool
     {
         if (
             null === $this->output or
@@ -122,12 +124,14 @@ class ConsoleHandler extends AbstractProcessingHandler
         } else {
             $this->output->write((string)$record['formatted']);
         }
+
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultFormatter()
+    protected function getDefaultFormatter(): Logger\Formatter\ConsoleFormatter
     {
         $formatter = new Logger\Formatter\ConsoleFormatter;
         if (method_exists($formatter, 'allowInlineLineBreaks')) {
@@ -141,7 +145,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      *
      * @return bool Whether the handler is enabled and verbosity is not set to quiet.
      */
-    private function updateLevel()
+    private function updateLevel(): bool
     {
         if (null === $this->output or OutputInterface::VERBOSITY_QUIET === ($verbosity = $this->output->getVerbosity())) {
             return false;

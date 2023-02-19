@@ -11,9 +11,6 @@
 
 namespace Resque;
 
-use Resque\Helpers\Stats;
-use Resque\Helpers\Output;
-
 /**
  * Resque host class
  *
@@ -24,17 +21,17 @@ class Host
     /**
      * @var Redis The Redis instance
      */
-    protected $redis;
+    protected Redis $redis;
 
     /**
      * @var string The hostname
      */
-    protected $hostname;
+    protected string $hostname;
 
     /**
      * @var int Host key timeout
      */
-    protected $timeout = 120;
+    protected int $timeout = 120;
 
     /**
      * Get the Redis key
@@ -43,7 +40,7 @@ class Host
      * @param  string $suffix To be appended to key
      * @return string
      */
-    public static function redisKey($host = null, $suffix = null)
+    public static function redisKey(?Host $host = null, ?string $suffix = null): string
     {
         if (is_null($host)) {
             return 'hosts';
@@ -55,9 +52,9 @@ class Host
 
     /**
      * Create a new host
-     * @param null|mixed $hostname
+     * @param null|string $hostname
      */
-    public function __construct($hostname = null)
+    public function __construct(?string $hostname = null)
     {
         $this->redis    = Redis::instance();
         $this->hostname = $hostname ?: gethostname();
@@ -78,7 +75,7 @@ class Host
      *
      * @param Worker $worker the worker instance
      */
-    public function working(Worker $worker)
+    public function working(Worker $worker): void
     {
         $this->redis->sadd(self::redisKey(), $this->hostname);
 
@@ -91,7 +88,7 @@ class Host
      *
      * @param Worker $worker The worker instance
      */
-    public function finished(Worker $worker)
+    public function finished(Worker $worker): void
     {
         $this->redis->srem(self::redisKey($this), (string)$worker);
     }
@@ -101,7 +98,7 @@ class Host
      *
      * @return array List of cleaned hosts
      */
-    public function cleanup()
+    public function cleanup(): array
     {
         $hosts   = $this->redis->smembers(self::redisKey());
         $workers = $this->redis->smembers(Worker::redisKey());

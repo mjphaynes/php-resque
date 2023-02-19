@@ -22,19 +22,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Cleanup extends Command
+final class Cleanup extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('cleanup')
-            ->setDefinition($this->mergeDefinitions([
-            ]))
+            ->setDefinition($this->mergeDefinitions([]))
             ->setDescription('Cleans up php-resque data, removing dead hosts, workers and jobs')
-            ->setHelp('Cleans up php-resque data, removing dead hosts, workers and jobs')
-        ;
+            ->setHelp('Cleans up php-resque data, removing dead hosts, workers and jobs');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $host = new Resque\Host();
         $cleaned_hosts = $host->cleanup();

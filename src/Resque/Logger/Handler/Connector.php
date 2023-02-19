@@ -25,22 +25,22 @@ class Connector
     /**
      * @var Command command instance
      */
-    protected $command;
+    protected Command $command;
 
     /**
      * @var InputInterface input instance
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * @var OutputInterface output instance
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * @var array output instance
      */
-    private $connectionMap = [
+    private array $connectionMap = [
         'Redis'    => 'redis://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<key>.+)',               // redis://127.0.0.1:6379/log:%worker$
         'MongoDB'  => 'mongodb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)/(?P<collection>.+)',  // mongodb://127.0.0.1:27017/dbname/log:%worker%
         'CouchDB'  => 'couchdb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)',  // couchdb://127.0.0.1:27017/dbname
@@ -56,9 +56,7 @@ class Connector
     ];
 
     /**
-     * Creates a new Connector instance
-     *
-     * @return void
+     * Create a new Connector instance
      */
     public function __construct(Command $command, InputInterface $input, OutputInterface $output)
     {
@@ -68,13 +66,14 @@ class Connector
     }
 
     /**
-     * Resolves a Monolog handler from string input
+     * Resolve a Monolog handler from string input
      *
-     * @param  mixed                            $logFormat
+     * @param  string                   $logFormat
      * @throws InvalidArgumentException
+     *
      * @return Monolog\Handler\HandlerInterface
      */
-    public function resolve($logFormat)
+    public function resolve(string $logFormat): \Monolog\Handler\HandlerInterface
     {
         // Loop over connectionMap and see if the log format matches any of them
         foreach ($this->connectionMap as $connection => $match) {
@@ -106,6 +105,7 @@ class Connector
 
             if ($args = $this->matches('~^'.$match.'$~i', $logFormat)) {
                 $connectorClass = new \ReflectionClass('Resque\Logger\Handler\Connector\\'.$connection.'Connector');
+                /** @var ConnectorInterface */
                 $connectorClass = $connectorClass->newInstance();
 
                 $handler = $connectorClass->resolve($this->command, $this->input, $this->output, $args);
@@ -122,11 +122,12 @@ class Connector
      * Performs a pattern match on a string and returns just
      * the named matches or false if no match
      *
-     * @param  mixed       $pattern
-     * @param  mixed       $subject
+     * @param string $pattern
+     * @param string $subject
+     *
      * @return array|false
      */
-    private function matches($pattern, $subject)
+    private function matches(string $pattern, string $subject)
     {
         if (preg_match($pattern, $subject, $matches)) {
             $args = [];

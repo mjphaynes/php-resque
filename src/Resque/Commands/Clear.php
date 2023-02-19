@@ -23,20 +23,19 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Clear extends Command
+final class Clear extends Command
 {
-    protected function configure()
+    protected function configure() :void
     {
         $this->setName('clear')
             ->setDefinition($this->mergeDefinitions([
                 new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force without asking.'),
             ]))
             ->setDescription('Clears all php-resque data from Redis')
-            ->setHelp('Clears all php-resque data from Redis')
-        ;
+            ->setHelp('Clears all php-resque data from Redis');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $helper = $this->getHelper('question');
 

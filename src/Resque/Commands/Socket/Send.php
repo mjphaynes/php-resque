@@ -23,9 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Send extends Command
+final class Send extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('socket:send')
             ->setDefinition($this->mergeDefinitions([
@@ -38,11 +38,10 @@ class Send extends Command
                 new InputOption('json', 'j', InputOption::VALUE_NONE, 'Whether to return the response in JSON format.'),
             ]))
             ->setDescription('Sends a command to a php-resque receiver socket')
-            ->setHelp('Sends a command to a php-resque receiver socket')
-        ;
+            ->setHelp('Sends a command to a php-resque receiver socket');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $cmd     = $input->getArgument('cmd');
         $host    = $this->getConfig('connecthost');

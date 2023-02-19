@@ -13,6 +13,7 @@ namespace Resque\Commands;
 
 use Resque;
 use Resque\Helpers\Util;
+use Resque\Logger;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,17 +32,17 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * @var Logger The logger instance
      */
-    protected $logger;
+    protected Logger $logger;
 
     /**
-     * @var array Config array
+     * @var array<string, string> Config array
      */
-    protected $config = [];
+    protected array $config = [];
 
     /**
      * @var array Config to options mapping
      */
-    protected $configOptionMap = [
+    protected array $configOptionMap = [
         'include'        => 'include',
         'scheme'         => 'redis.scheme',
         'host'           => 'redis.host',
@@ -73,7 +74,7 @@ class Command extends \Symfony\Component\Console\Command\Command
      * @param  array $definitions List of command definitions
      * @return array
      */
-    protected function mergeDefinitions(array $definitions)
+    protected function mergeDefinitions(array $definitions): array
     {
         return array_merge(
             $definitions,
@@ -97,11 +98,12 @@ class Command extends \Symfony\Component\Console\Command\Command
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialised based on the input arguments and options.
      *
-     * @param  InputInterface  $input  An InputInterface instance
-     * @param  OutputInterface $output An OutputInterface instance
+     * @param InputInterface  $input  An InputInterface instance
+     * @param OutputInterface $output An OutputInterface instance
+     *
      * @return void
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->parseConfig($input->getOptions(), $this->getNativeDefinition()->getOptionDefaults());
         $config = $this->getConfig();
@@ -135,7 +137,7 @@ class Command extends \Symfony\Component\Console\Command\Command
             $handlers[] = $handlerConnector->resolve($log);
         }
 
-        $this->logger = $logger = new Resque\Logger($handlers);
+        $this->logger = new Resque\Logger($handlers);
 
         // Unset some variables so as not to pass to include file
         unset($logs, $handlerConnector, $handlers);
@@ -163,6 +165,7 @@ class Command extends \Symfony\Component\Console\Command\Command
             Resque\Event::listen('*', function ($event) use ($output) {
                 $data = array_map(
                     function ($d) {
+                        /** @var mixed $d */
                         $d instanceof \Exception and ($d = '"'.$d->getMessage().'"');
                         is_array($d) and ($d = '['.implode(',', $d).']');
 
@@ -181,7 +184,7 @@ class Command extends \Symfony\Component\Console\Command\Command
      *
      * @return bool
      */
-    public function pollingConsoleOutput()
+    public function pollingConsoleOutput(): bool
     {
         return false;
     }
@@ -190,7 +193,7 @@ class Command extends \Symfony\Component\Console\Command\Command
      * Helper function that passes through to logger instance
      *
      * @see Logger::log
-     * @return bool
+     * @return mixed
      */
     public function log()
     {
@@ -200,11 +203,12 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Parses the configuration file
      *
-     * @param  mixed $config
-     * @param  mixed $defaults
+     * @param array $config
+     * @param array $defaults
+     *
      * @return bool
      */
-    protected function parseConfig($config, $defaults)
+    protected function parseConfig(array $config, array $defaults): bool
     {
         if (array_key_exists('config', $config)) {
             $configFileData = Resque::readConfigFile($config['config']);
@@ -259,10 +263,10 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Returns all config items or a specific one
      *
-     * @param  null|mixed $key
-     * @return mixed
+     * @param  string|null  $key
+     * @return array|string
      */
-    protected function getConfig($key = null)
+    protected function getConfig(?string $key = null)
     {
         if (!is_null($key)) {
             if (!array_key_exists($key, $this->config)) {

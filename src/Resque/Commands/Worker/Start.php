@@ -22,9 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Start extends Command
+final class Start extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:start')
             ->setDefinition($this->mergeDefinitions([
@@ -36,11 +36,10 @@ class Start extends Command
                 new InputOption('pid', 'P', InputOption::VALUE_OPTIONAL, 'Absolute path to PID file, must be writeable by worker.'),
             ]))
             ->setDescription('Polls for jobs on specified queues and executes job when found')
-            ->setHelp('Polls for jobs on specified queues and executes job when found')
-        ;
+            ->setHelp('Polls for jobs on specified queues and executes job when found');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $queue = $this->getConfig('queue');
         $blocking = filter_var($this->getConfig('blocking'), FILTER_VALIDATE_BOOLEAN);
@@ -73,7 +72,7 @@ class Start extends Command
         return self::SUCCESS;
     }
 
-    public function pollingConsoleOutput()
+    public function pollingConsoleOutput(): bool
     {
         return true;
     }

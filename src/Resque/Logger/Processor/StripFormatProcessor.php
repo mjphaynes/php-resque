@@ -25,22 +25,22 @@ class StripFormatProcessor
     /**
      * @var Command command instance
      */
-    protected $command;
+    protected Command $command;
 
     /**
      * @var InputInterface input instance
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * @var OutputInterface output instance
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * @var array list of formatting tags to strip out
      */
-    private $stripTags = [
+    private array $stripTags = [
         'info',
         'notice',
         'warning',
@@ -56,7 +56,7 @@ class StripFormatProcessor
     ];
 
     /**
-     * Creates a new instance
+     * Create a new instance
      */
     public function __construct(Command $command, InputInterface $input, OutputInterface $output)
     {
@@ -66,10 +66,11 @@ class StripFormatProcessor
     }
 
     /**
-     * @param  array $record
+     * @param array $record
+     *
      * @return array
      */
-    public function __invoke(array $record)
+    public function __invoke(array $record): array
     {
         static $find = [];
 

@@ -11,7 +11,6 @@
 
 namespace Resque;
 
-use Closure;
 use Resque\Helpers\Stats;
 
 /**
@@ -37,35 +36,35 @@ class Job
     /**
      * @var Redis The Redis instance
      */
-    protected $redis;
+    protected Redis $redis;
 
     /**
      * @var string The name of the queue that this job belongs to
      */
-    protected $queue;
+    protected string $queue;
 
     /**
-     * @var array The payload sent through for this job
+     * @var array|string The payload sent through for this job
      */
     protected $payload;
 
     /**
      * @var string The ID of this job
      */
-    protected $id;
+    protected string $id;
 
     /**
      * @var string The classname this job
      */
-    protected $class;
+    protected string $class;
 
     /**
      * @var string The method name for this job
      */
-    protected $method = 'perform';
+    protected string $method = 'perform';
 
     /**
-     * @var string The data/arguments for the job
+     * @var array|null|\Closure The data/arguments for the job
      */
     protected $data;
 
@@ -82,7 +81,7 @@ class Job
     /**
      * @var array of statuses that are considered final/complete
      */
-    protected static $completeStatuses = [
+    protected static array $completeStatuses = [
         self::STATUS_FAILED,
         self::STATUS_COMPLETE,
         self::STATUS_CANCELLED
@@ -91,11 +90,12 @@ class Job
     /**
      * Get the Redis key
      *
-     * @param  Job    $job    the job to get the key for
-     * @param  string $suffix to be appended to key
+     * @param Job|int $job    the job to get the key for
+     * @param string  $suffix to be appended to key
+     *
      * @return string
      */
-    public static function redisKey($job, $suffix = null)
+    public static function redisKey($job, ?string $suffix = null): string
     {
         $id = $job instanceof Job ? $job->id : $job;
         return 'job:'.$id.($suffix ? ':'.$suffix : '');
@@ -104,13 +104,14 @@ class Job
     /**
      * Create a new job and save it to the specified queue.
      *
-     * @param  string $queue  The name of the queue to place the job in
-     * @param  string $class  The name of the class that contains the code to execute the job
-     * @param  array  $data   Any optional arguments that should be passed when the job is executed
-     * @param  int    $run_at Unix timestamp of when to run the job to delay execution
-     * @return string
+     * @param string          $queue  The name of the queue to place the job in
+     * @param string|callable $class  The name of the class that contains the code to execute the job
+     * @param array           $data   Any optional arguments that should be passed when the job is executed
+     * @param int             $run_at Unix timestamp of when to run the job to delay execution
+     *
+     * @return Job
      */
-    public static function create($queue, $class, array $data = null, $run_at = 0)
+    public static function create(string $queue, $class, ?array $data = null, int $run_at = 0): Job
     {
         $id = static::createId($queue, $class, $data, $run_at);
 
@@ -133,13 +134,14 @@ class Job
     /**
      * Create a new job id
      *
-     * @param  string $queue  The name of the queue to place the job in
-     * @param  string $class  The name of the class that contains the code to execute the job
-     * @param  array  $data   Any optional arguments that should be passed when the job is executed
-     * @param  int    $run_at Unix timestamp of when to run the job to delay execution
+     * @param string          $queue  The name of the queue to place the job in
+     * @param string|callable $class  The name of the class that contains the code to execute the job
+     * @param array           $data   Any optional arguments that should be passed when the job is executed
+     * @param int             $run_at Unix timestamp of when to run the job to delay execution
+     *
      * @return string
      */
-    public static function createId($queue, $class, $data = null, $run_at = 0)
+    public static function createId(string $queue, $class, ?array $data = null, int $run_at = 0): string
     {
         $id = dechex(crc32($queue)).
             dechex((int)(microtime(true) * 1000)).
@@ -151,10 +153,11 @@ class Job
     /**
      * Load a job from id
      *
-     * @param  string $id The job id
-     * @return string
+     * @param string $id The job id
+     *
+     * @return static
      */
-    public static function load($id)
+    public static function load(string $id): self
     {
         $packet = Redis::instance()->hgetall(self::redisKey($id));
 
@@ -168,11 +171,12 @@ class Job
     /**
      * Load a job from the Redis payload
      *
-     * @param  string $queue   The name of the queue to place the job in
-     * @param  string $payload The payload that was stored in Redis
-     * @return string
+     * @param string $queue   The name of the queue to place the job in
+     * @param string $payload The payload that was stored in Redis
+     *
+     * @return static
      */
-    public static function loadPayload($queue, $payload)
+    public static function loadPayload(string $queue, string $payload): self
     {
         $payload = json_decode($payload, true);
 
@@ -186,12 +190,12 @@ class Job
     /**
      * Create a new job
      *
-     * @param string $queue Queue to add job to
-     * @param string $id    Job id
-     * @param string $class Job class to run
-     * @param array  $data  Any Job data
+     * @param string          $queue Queue to add job to
+     * @param string          $id    Job id
+     * @param string|callable $class Job class to run
+     * @param array|null      $data  Any Job data
      */
-    public function __construct($queue, $id, $class, array $data = null)
+    public function __construct(string $queue, string $id, $class, ?array $data = null)
     {
         $this->redis = Redis::instance();
 
@@ -203,7 +207,7 @@ class Job
         $this->id    = $id;
         $this->data  = $data;
 
-        if ($class instanceof Closure) {
+        if ($class instanceof \Closure) {
             $this->class = 'Resque\Helpers\ClosureJob';
             $this->data  = $class;
         } else {
@@ -242,7 +246,7 @@ class Job
      *
      * @return bool success
      */
-    public function queue()
+    public function queue(): bool
     {
         if (Event::fire(Event::JOB_QUEUE, $this) === false) {
             return false;
@@ -268,10 +272,11 @@ class Job
     /**
      * Save the job to Redis delayed queue
      *
-     * @param  int  $time unix time of when to perform job
+     * @param int $time unix time of when to perform job
+     *
      * @return bool success
      */
-    public function delay($time)
+    public function delay(int $time): bool
     {
         if (Event::fire(Event::JOB_DELAY, [$this, $time]) === false) {
             return false;
@@ -300,7 +305,7 @@ class Job
      *
      * @return bool
      */
-    public function perform()
+    public function perform(): bool
     {
         Stats::decr('queued', 1);
         Stats::decr('queued', 1, Queue::redisKey($this->queue, 'stats'));
@@ -357,7 +362,7 @@ class Job
      *
      * @return object Instance of the object that this job belongs to
      */
-    public function getInstance()
+    public function getInstance(): object
     {
         if (!is_null($this->instance)) {
             return $this->instance;
@@ -384,7 +389,7 @@ class Job
     /**
      * Mark the current job running
      */
-    public function run()
+    public function run(): void
     {
         $this->setStatus(Job::STATUS_RUNNING);
 
@@ -399,7 +404,7 @@ class Job
      * Mark the current job stopped
      * This is an internal function as the job is either completed, cancelled or failed
      */
-    protected function stopped()
+    protected function stopped(): void
     {
         $this->redis->zrem(Queue::redisKey($this->queue, 'running'), $this->payload);
 
@@ -410,7 +415,7 @@ class Job
     /**
      * Mark the current job as complete
      */
-    public function complete()
+    public function complete(): void
     {
         $this->stopped();
 
@@ -426,7 +431,7 @@ class Job
     /**
      * Mark the current job as cancelled
      */
-    public function cancel()
+    public function cancel(): void
     {
         $this->stopped();
 
@@ -444,7 +449,7 @@ class Job
      *
      * @param \Exception $e
      */
-    public function fail(\Exception $e)
+    public function fail(\Exception $e): void
     {
         $this->stopped();
 
@@ -469,9 +474,9 @@ class Job
     /**
      * Returns the fail error for the job
      *
-     * @return mixed
+     * @return string
      */
-    public function failError()
+    public function failError(): string
     {
         if (
             ($packet = $this->getPacket()) and
@@ -487,13 +492,11 @@ class Job
     /**
      * Create a payload string from the given job and data
      *
-     * @param  string $job
-     * @param  mixed  $data
      * @return string
      */
-    protected function createPayload()
+    protected function createPayload(): string
     {
-        if ($this->data instanceof Closure) {
+        if ($this->data instanceof \Closure) {
             $closure = serialize(new Helpers\SerializableClosure($this->data));
             $data = compact('closure');
         } else {
@@ -509,7 +512,7 @@ class Job
      * @param int        $status The status of the job
      * @param \Exception $e      If failed status it sends through exception
      */
-    public function setStatus($status, \Exception $e = null)
+    public function setStatus(int $status, ?\Exception $e = null): void
     {
         if (!($packet = $this->getPacket())) {
             $packet = [
@@ -559,7 +562,7 @@ class Job
     /**
      * Fetch the packet for the job being monitored.
      *
-     * @return array
+     * @return array|bool
      */
     public function getPacket()
     {
@@ -573,7 +576,7 @@ class Job
     /**
      * Fetch the status for the job
      *
-     * @return int Status as as an integer, based on the Job constants
+     * @return int|bool
      */
     public function getStatus()
     {
@@ -591,7 +594,7 @@ class Job
      *
      * @return string
      */
-    public function execTime()
+    public function execTime(): string
     {
         $packet = $this->getPacket();
 
@@ -607,7 +610,7 @@ class Job
      *
      * @return string
      */
-    public function execTimeStr()
+    public function execTimeStr(): string
     {
         $execTime = $this->execTime();
 
@@ -623,7 +626,7 @@ class Job
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -643,7 +646,7 @@ class Job
      *
      * @return string
      */
-    public function getQueue()
+    public function getQueue(): string
     {
         return $this->queue;
     }
@@ -663,7 +666,7 @@ class Job
      *
      * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -681,7 +684,7 @@ class Job
     /**
      * Get the job data.
      *
-     * @return array
+     * @return array|null|\Closure
      */
     public function getData()
     {
@@ -703,7 +706,7 @@ class Job
      *
      * @return int
      */
-    public function getDelayedTime()
+    public function getDelayedTime(): int
     {
         $packet = $this->getPacket();
 
@@ -719,7 +722,7 @@ class Job
      *
      * @return Worker
      */
-    public function getWorker()
+    public function getWorker(): Worker
     {
         return $this->worker;
     }
@@ -729,7 +732,7 @@ class Job
      *
      * @param Worker $worker
      */
-    public function setWorker(Worker $worker)
+    public function setWorker(Worker $worker): void
     {
         $this->worker = $worker;
     }
@@ -739,7 +742,7 @@ class Job
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $packet = $this->getPacket();
 
@@ -770,7 +773,7 @@ class Job
      *
      * @param array $queues list of queues to check
      */
-    public static function cleanup(array $queues = ['*'])
+    public static function cleanup(array $queues = ['*']): array
     {
         $cleaned = ['zombie' => 0, 'processed' => 0];
         $redis = Redis::instance();
@@ -805,9 +808,9 @@ class Job
     /**
      * Update the Delayed Job Status to STATUS_CANCELLED manually
      *
-     * @param string $JobId
+     * @param mixed $jobId
      */
-    public static function cancelJob($jobId)
+    public static function cancelJob($jobId): void
     {
         if ($jobId != '') {
             Redis::instance()->hset(self::redisKey($jobId), 'status', self::STATUS_CANCELLED);

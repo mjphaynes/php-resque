@@ -11,8 +11,6 @@
 
 namespace Resque;
 
-use Resque\Helpers\Stats;
-
 /**
  * Resque queue class
  *
@@ -23,21 +21,22 @@ class Queue
     /**
      * @var Redis The Redis instance
      */
-    protected $redis;
+    protected Redis $redis;
 
     /**
      * @var string The name of the default queue
      */
-    protected $default;
+    protected string $default;
 
     /**
      * Get the Queue key
      *
-     * @param  Queue|null  $queue  the worker to get the key for
-     * @param  string|null $suffix to be appended to key
+     * @param string|null $queue  the worker to get the key for
+     * @param string|null $suffix to be appended to key
+     *
      * @return string
      */
-    public static function redisKey($queue = null, $suffix = null)
+    public static function redisKey(?string $queue = null, ?string $suffix = null): string
     {
         if (is_null($queue)) {
             return 'queues';
@@ -51,7 +50,7 @@ class Queue
      *
      * @param string $default Name of default queue to add job to
      */
-    public function __construct($default = null)
+    public function __construct(?string $default = null)
     {
         $this->redis = Redis::instance();
 
@@ -61,10 +60,11 @@ class Queue
     /**
      * Get a job by id
      *
-     * @param  string $id Job id
-     * @return Job    job instance
+     * @param string $id Job id
+     *
+     * @return Job job instance
      */
-    public function job($id)
+    public function job(string $id): Job
     {
         return Job::load($id);
     }
@@ -72,12 +72,13 @@ class Queue
     /**
      * Push a new job onto the queue
      *
-     * @param  string $job   The job class
-     * @param  mixed  $data  The job data
-     * @param  string $queue The queue to add the job to
-     * @return Job    job instance
+     * @param string|callable $job   The job class
+     * @param array           $data  The job data
+     * @param string          $queue The queue to add the job to
+     *
+     * @return Job job instance
      */
-    public function push($job, array $data = null, $queue = null)
+    public function push($job, ?array $data = null, ?string $queue = null): Job
     {
         if (false !== ($delay = \Resque::getConfig('default.jobs.delay', false))) {
             return $this->later($delay, $job, $data, $queue);
@@ -91,13 +92,14 @@ class Queue
      * are deleted upon retrieval. If a given job (payload) already exists,
      * it is updated with the new delay.
      *
-     * @param  int    $delay This can be number of seconds or unix timestamp
-     * @param  string $job   The job class
-     * @param  mixed  $data  The job data
-     * @param  string $queue The queue to add the job to
-     * @return Job    job instance
+     * @param \DateTime|int   $delay This can be number of seconds or unix timestamp
+     * @param string|callable $job   The job class
+     * @param array           $data  The job data
+     * @param string          $queue The queue to add the job to
+     *
+     * @return Job job instance
      */
-    public function later($delay, $job, array $data = [], $queue = null)
+    public function later($delay, $job, array $data = [], ?string $queue = null)
     {
         // If it's a datetime object conver to unix time
         if ($delay instanceof \DateTime) {
@@ -120,12 +122,13 @@ class Queue
     /**
      * Pop the next job off of the queue.
      *
-     * @param  array     $queues   Queues to watch for new jobs
-     * @param  int       $timeout  Timeout if blocking
-     * @param  bool      $blocking Should Redis use blocking
+     * @param array $queues   Queues to watch for new jobs
+     * @param int   $timeout  Timeout if blocking
+     * @param bool  $blocking Should Redis use blocking
+     *
      * @return Job|false
      */
-    public function pop(array $queues, $timeout = 10, $blocking = true)
+    public function pop(array $queues, int $timeout = 10, bool $blocking = true)
     {
         $queue = $payload = null;
 
@@ -161,7 +164,7 @@ class Queue
      * @param  string $queue name of the queue to be checked for pending jobs
      * @return int    The size of the queue.
      */
-    public function size($queue)
+    public function size(string $queue): int
     {
         return $this->redis->llen(self::redisKey($this->getQueue($queue)));
     }
@@ -172,7 +175,7 @@ class Queue
      * @param  string $queue name of the queue to be checked for delayed jobs
      * @return int    The size of the delayed queue.
      */
-    public function sizeDelayed($queue)
+    public function sizeDelayed(string $queue): int
     {
         return $this->redis->zcard(self::redisKey($this->getQueue($queue), 'delayed'));
     }
@@ -183,7 +186,7 @@ class Queue
      * @param  string|null $queue Name of queue
      * @return string
      */
-    protected function getQueue($queue)
+    protected function getQueue(?string $queue): string
     {
         return $queue ?: $this->default;
     }

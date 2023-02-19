@@ -53,52 +53,52 @@ class Server
     /**
      * @var array Configuration information used by the server.
      */
-    protected $config = [];
+    protected array $config = [];
 
     /**
      * @var Logger Monolog logger interface
      */
-    protected $logger;
+    protected Logger $logger;
 
     /**
      * @var array Dictionary of events and the callbacks attached to them.
      */
-    protected $events = [];
+    protected array $events = [];
 
     /**
-     * @var resource The socket used by the server.
+     * @var \Socket The socket used by the server.
      */
-    protected $socket;
+    protected \Socket $socket;
 
     /**
      * @var int The maximum number of clients allowed to connect.
      */
-    protected $max_clients = 10;
+    protected int $max_clients = 10;
 
     /**
      * @var int The maximum number of bytes to read from a socket at a single time.
      */
-    protected $max_read = 1024;
+    protected int $max_read = 1024;
 
     /**
      * @var int Connection timeout
      */
-    protected $tv_sec = 5;
+    protected int $tv_sec = 5;
 
     /**
      * @var bool if the server has started
      */
-    protected $started = false;
+    protected bool $started = false;
 
     /**
      * @var bool True if on the next iteration, the server should shutdown.
      */
-    protected $shutdown = false;
+    protected bool $shutdown = false;
 
     /**
      * @var array The connected clients.
      */
-    protected $clients = [];
+    protected array $clients = [];
 
     /**
      * Creates the socket and starts listening to it.
@@ -119,11 +119,6 @@ class Server
         $this->config = array_merge($defaults, $config);
     }
 
-    /**
-     * Generate a string representation of this server.
-     *
-     * @return string String identifier for this server instance.
-     */
     public function __toString()
     {
         return $this->config['ip'].':'.$this->config['port'];
@@ -132,10 +127,10 @@ class Server
     /**
      * Starts the server
      */
-    public function start()
+    public function start(): void
     {
         if (false === ($this->socket = @socket_create(AF_INET, SOCK_STREAM, getprotobyname($this->config['protocol'])))) {
-            throw new Exception(sprintf(
+            throw new SocketException(sprintf(
                 'socket_create(AF_INET, SOCK_STREAM, <%s>) failed: [%d] %s',
                 $this->config['protocol'],
                 $code = socket_last_error(),
@@ -144,7 +139,7 @@ class Server
         }
 
         if (false === @socket_bind($this->socket, $this->config['ip'], $this->config['port'])) {
-            throw new Exception(sprintf(
+            throw new SocketException(sprintf(
                 'socket_bind($socket, "%s", %d) failed: [%d] %s',
                 $this->config['ip'],
                 $this->config['port'],
@@ -154,7 +149,7 @@ class Server
         }
 
         if (false === @socket_getsockname($this->socket, $this->config['ip'], $this->config['port'])) {
-            throw new Exception(sprintf(
+            throw new SocketException(sprintf(
                 'socket_getsockname($socket, "%s", %d) failed: [%d] %s',
                 $this->config['ip'],
                 $this->config['port'],
@@ -164,7 +159,7 @@ class Server
         }
 
         if (false === @socket_listen($this->socket)) {
-            throw new Exception(sprintf('socket_listen($socket) failed: [%d] %s', $code = socket_last_error(), socket_strerror($code)));
+            throw new SocketException(sprintf('socket_listen($socket) failed: [%d] %s', $code = socket_last_error(), socket_strerror($code)));
         }
 
         $this->started = true;
@@ -175,7 +170,7 @@ class Server
     /**
      * Schedule a shutdown. Will finish processing the current run.
      */
-    public function shutdown()
+    public function shutdown(): void
     {
         $this->shutdown = true;
     }
@@ -183,7 +178,7 @@ class Server
     /**
      * Closes the socket on shutdown
      */
-    public function close()
+    public function close(): void
     {
         foreach ($this->clients as &$client) {
             $this->disconnect($client, 'Receiver shutting down... Goodbye.');
@@ -195,7 +190,7 @@ class Server
     /**
      * Runs the server code until the server is shut down.
      */
-    public function run()
+    public function run(): void
     {
         if (!$this->started) {
             $this->start();
@@ -281,14 +276,14 @@ class Server
      * It is perfectly valid for socket_write to return zero which means no bytes have been written.
      * Be sure to use the === operator to check for FALSE in case of an error.
      *
-     * @param  Client $client  Connected client to write to
-     * @param  string $message Data to write to the socket.
-     * @param  string $end     Data to end the line with.  Specify false if you don't want a line end sent.
-     * @return mixed  Returns the number of bytes successfully written to the socket or FALSE on failure.
-     *                        The error code can be retrieved with socket_last_error(). This code may be passed to
-     *                        socket_strerror() to get a textual explanation of the error.
+     * @param  Client   $client  Connected client to write to
+     * @param  string   $message Data to write to the socket.
+     * @param  bool     $end     Whether to end the message with a newline
+     * @return int|bool Returns the number of bytes successfully written to the socket or FALSE on failure.
+     *                          The error code can be retrieved with socket_last_error(). This code may be passed to
+     *                          socket_strerror() to get a textual explanation of the error.
      */
-    public function send(&$client, $message, $end = true)
+    public function send(Client &$client, string $message, bool $end = true)
     {
         $this->log('Messaging client <pop>'.$client.'</pop> with "<comment>'.str_replace("\n", '\n', $message).'</comment>"');
 
@@ -319,11 +314,10 @@ class Server
     /**
      * Disconnect a client
      *
-     * @param  Client $client  The client to disconnect
-     * @param  string $message Data to write to the socket.
-     * @return mixed
+     * @param Client $client  The client to disconnect
+     * @param string $message Data to write to the socket.
      */
-    public function disconnect(Client $client, $message = 'Goodbye.')
+    public function disconnect(Client $client, string $message = 'Goodbye.'): void
     {
         $this->fire(self::CLIENT_DISCONNECT, $client, $message);
 
@@ -338,10 +332,11 @@ class Server
     /**
      * Helper function to make using connect event easier
      *
-     * @param  mixed $callback Any callback callable by call_user_func_array.
-     * @return mixed
+     * @param callable $callback Any callback callable by call_user_func_array.
+     *
+     * @return bool
      */
-    public function onConnect($callback)
+    public function onConnect(callable $callback): bool
     {
         return $this->listen(self::CLIENT_CONNECT, $callback);
     }
@@ -349,10 +344,11 @@ class Server
     /**
      * Helper function to make using receive event easier
      *
-     * @param  mixed $callback Any callback callable by call_user_func_array.
-     * @return mixed
+     * @param callable $callback Any callback callable by call_user_func_array.
+     *
+     * @return bool
      */
-    public function onReceive($callback)
+    public function onReceive(callable $callback): bool
     {
         return $this->listen(self::CLIENT_RECEIVE, $callback);
     }
@@ -360,10 +356,11 @@ class Server
     /**
      * Helper function to make using disconnect event easier
      *
-     * @param  mixed $callback Any callback callable by call_user_func_array.
-     * @return mixed
+     * @param callable $callback Any callback callable by call_user_func_array.
+     *
+     * @return bool
      */
-    public function onDisconnect($callback)
+    public function onDisconnect(callable $callback): bool
     {
         return $this->listen(self::CLIENT_DISCONNECT, $callback);
     }
@@ -371,11 +368,12 @@ class Server
     /**
      * Adds a function to be called whenever a certain action happens
      *
-     * @param  string $event    Name of event to listen on.
-     * @param  mixed  $callback Any callback callable by call_user_func_array.
+     * @param string $event    Name of event to listen on.
+     * @param mixed  $callback Any callback callable by call_user_func_array.
+     *
      * @return true
      */
-    public function listen($event, $callback)
+    public function listen(string $event, callable $callback): bool
     {
         if (!isset($this->events[$event])) {
             $this->events[$event] = [];
@@ -389,11 +387,12 @@ class Server
     /**
      * Deletes a function from the call list for a certain action
      *
-     * @param  string $event    Name of event.
-     * @param  mixed  $callback The callback as defined when listen() was called.
+     * @param string $event    Name of event.
+     * @param mixed  $callback The callback as defined when listen() was called.
+     *
      * @return true
      */
-    public function forget($event, $callback)
+    public function forget(string $event, callable $callback): bool
     {
         if (!isset($this->events[$event])) {
             return true;
@@ -411,17 +410,18 @@ class Server
     /**
      * Raise a given event with the supplied data.
      *
-     * @param  string $event  Name of event to be raised.
-     * @param  Client $client Connected client
-     * @param  mixed  $data   Optional, any data that should be passed to each callback.
+     * @param string $event  Name of event to be raised.
+     * @param Client $client Connected client
+     * @param mixed  $data   Optional, any data that should be passed to each callback.
+     *
      * @return true
      */
-    public function fire($event, &$client, $data = null)
+    public function fire(string $event, Client &$client, $data = null): bool
     {
         $retval = true;
 
         if (!array_key_exists($event, $this->events)) {
-            return;
+            return false;
         }
 
         foreach ($this->events[$event] as $callback) {
@@ -451,8 +451,10 @@ class Server
      * @param resource $fh     The resource to write to
      * @param string   $string The string to write
      */
-    public static function fwrite($fh, $string)
+    public static function fwrite($fh, string $string)
     {
+        $fwrite = 0;
+
         for ($written = 0; $written < strlen($string); $written += $fwrite) {
             if (($fwrite = fwrite($fh, substr($string, $written))) === false) {
                 return $written;

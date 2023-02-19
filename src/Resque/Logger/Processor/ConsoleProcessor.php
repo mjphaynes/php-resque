@@ -25,21 +25,20 @@ class ConsoleProcessor
     /**
      * @var Command command instance
      */
-    protected $command;
+    protected Command $command;
 
     /**
      * @var InputInterface input instance
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * @var OutputInterface output instance
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
-     * Creates a new instance
-     * @return void
+     * Create a new instance
      */
     public function __construct(Command $command, InputInterface $input, OutputInterface $output)
     {
@@ -49,10 +48,11 @@ class ConsoleProcessor
     }
 
     /**
-     * @param  array $record
+     * @param array $record
+     *
      * @return array
      */
-    public function __invoke(array $record)
+    public function __invoke(array $record): array
     {
         if ($this->command->pollingConsoleOutput()) {
             if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {

@@ -11,31 +11,26 @@
 
 namespace Resque\Helpers;
 
-use Closure;
-use Serializable;
-use SplFileObject;
-use ReflectionFunction;
-
 /**
  * Serializes job closure
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class SerializableClosure implements Serializable
+class SerializableClosure
 {
     /**
      * The Closure instance.
      *
      * @var \Closure
      */
-    protected $closure;
+    protected \Closure $closure;
 
     /**
      * The ReflectionFunction instance of the Closure.
      *
      * @var \ReflectionFunction
      */
-    protected $reflection;
+    protected \ReflectionFunction $reflection;
 
     /**
      * The code contained by the Closure.
@@ -47,14 +42,13 @@ class SerializableClosure implements Serializable
     /**
      * Create a new serializable Closure instance.
      *
-     * @param  \Closure $closure
-     * @return void
+     * @param \Closure $closure
      */
-    public function __construct(Closure $closure)
+    public function __construct(\Closure $closure)
     {
         $this->closure = $closure;
 
-        $this->reflection = new ReflectionFunction($closure);
+        $this->reflection = new \ReflectionFunction($closure);
     }
 
     /**
@@ -62,7 +56,7 @@ class SerializableClosure implements Serializable
      *
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code ?: $this->code = $this->getCodeFromFile();
     }
@@ -72,7 +66,7 @@ class SerializableClosure implements Serializable
      *
      * @return string
      */
-    protected function getCodeFromFile()
+    protected function getCodeFromFile(): string
     {
         $file = $this->getFile();
 
@@ -97,9 +91,9 @@ class SerializableClosure implements Serializable
      *
      * @return \SplFileObject
      */
-    protected function getFile()
+    protected function getFile(): \SplFileObject
     {
-        $file = new SplFileObject($this->reflection->getFileName());
+        $file = new \SplFileObject($this->reflection->getFileName());
 
         $file->seek($this->reflection->getStartLine() - 1);
 
@@ -111,7 +105,7 @@ class SerializableClosure implements Serializable
      *
      * @return array
      */
-    public function getVariables()
+    public function getVariables(): array
     {
         if (!$this->getUseIndex()) {
             return [];
@@ -138,7 +132,7 @@ class SerializableClosure implements Serializable
      *
      * @return array
      */
-    protected function getUseClauseVariables()
+    protected function getUseClauseVariables(): array
     {
         $begin = strpos($code = $this->getCode(), '(', $this->getUseIndex()) + 1;
 
@@ -150,7 +144,7 @@ class SerializableClosure implements Serializable
      *
      * @return int
      */
-    protected function getUseIndex()
+    protected function getUseIndex(): int
     {
         return stripos(strtok($this->getCode(), PHP_EOL), ' use ');
     }
@@ -158,25 +152,23 @@ class SerializableClosure implements Serializable
     /**
      * Serialize the Closure instance.
      *
-     * @return string
+     * @return array
      */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([
+        return [
             'code' => $this->getCode(), 'variables' => $this->getVariables()
-        ]);
+        ];
     }
 
     /**
      * Unserialize the Closure instance.
      *
-     * @param  string $serialized
+     * @param  array $payload
      * @return void
      */
-    public function unserialize($serialized)
+    public function __unserialize(array $payload): void
     {
-        $payload = unserialize($serialized);
-
         // We will extract the variables into the current scope so that as the Closure
         // is built it will inherit the scope it had before it was serialized which
         // will emulate the Closures existing in that scope instead of right now.
@@ -184,7 +176,7 @@ class SerializableClosure implements Serializable
 
         eval('$this->closure = '.$payload['code'].';');
 
-        $this->reflection = new ReflectionFunction($this->closure);
+        $this->reflection = new \ReflectionFunction($this->closure);
     }
 
     /**
@@ -192,7 +184,7 @@ class SerializableClosure implements Serializable
      *
      * @return \Closure
      */
-    public function getClosure()
+    public function getClosure(): \Closure
     {
         return $this->closure;
     }

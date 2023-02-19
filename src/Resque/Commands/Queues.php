@@ -14,7 +14,6 @@ namespace Resque\Commands;
 use Resque;
 use Resque\Commands\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -22,19 +21,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Queues extends Command
+final class Queues extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('queues')
-            ->setDefinition($this->mergeDefinitions([
-            ]))
+            ->setDefinition($this->mergeDefinitions([]))
             ->setDescription('Get queue statistics')
-            ->setHelp('Get queue statistics')
-        ;
+            ->setHelp('Get queue statistics');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $queues = Resque\Redis::instance()->smembers('queues');
 

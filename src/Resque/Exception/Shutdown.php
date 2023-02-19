@@ -16,6 +16,6 @@ namespace Resque\Exception;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Shutdown extends \RuntimeException
+final class Shutdown extends \RuntimeException
 {
 }

@@ -18,30 +18,27 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-use Exception;
-
 /**
  * Performs a raw speed test
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class SpeedTest extends Command
+final class SpeedTest extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('speed:test')
             ->setDefinition($this->mergeDefinitions([
                 new InputOption('time', 't', InputOption::VALUE_REQUIRED, 'Length of time to run the test for', 10),
             ]))
             ->setDescription('Performs a speed test on php-resque to see how many jobs/second it can compute')
-            ->setHelp('Performs a speed test on php-resque to see how many jobs/second it can compute')
-        ;
+            ->setHelp('Performs a speed test on php-resque to see how many jobs/second it can compute');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!class_exists(Process::class)) {
-            throw new Exception('The Symfony process component is required to run the speed test.');
+            throw new \Exception('The Symfony process component is required to run the speed test.');
         }
 
         Resque\Redis::setConfig(['namespace' => 'resque:speedtest']);
@@ -78,7 +75,7 @@ class SpeedTest extends Command
     }
 
     // http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html
-    public function setProgress(OutputInterface $output, $stats, $testTime, $start)
+    public function setProgress(OutputInterface $output, array $stats, float $testTime, float $start): void
     {
         static $reset = false;
 

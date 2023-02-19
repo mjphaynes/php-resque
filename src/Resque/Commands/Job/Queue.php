@@ -13,6 +13,7 @@ namespace Resque\Commands\Job;
 
 use Resque;
 use Resque\Commands\Command;
+use Resque\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,9 +24,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Queue extends Command
+final class Queue extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('job:queue')
             ->setDefinition($this->mergeDefinitions([
@@ -35,11 +36,10 @@ class Queue extends Command
                 new InputOption('delay', 'D', InputOption::VALUE_OPTIONAL, 'The amount of time or a unix time to delay execution of job till.'),
             ]))
             ->setDescription('Queue a new job to run with optional delay')
-            ->setHelp('Queue a new job to run')
-        ;
+            ->setHelp('Queue a new job to run');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $job   = $input->getArgument('job');
         $args  = $input->getArgument('args');

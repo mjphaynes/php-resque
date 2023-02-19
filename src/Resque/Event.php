@@ -11,8 +11,6 @@
 
 namespace Resque;
 
-use Resque\Helpers\Stats;
-
 /**
  * Resque event/hook system class
  *
@@ -60,16 +58,16 @@ class Event
     /**
      * @var array containing all registered callbacks, indexed by event name
      */
-    protected static $events = [];
+    protected static array $events = [];
 
     /**
      * Listen in on a given event to have a specified callback fired.
      *
-     * @param  string $event    Name of event to listen on.
-     * @param  mixed  $callback Any callback callable by call_user_func_array
-     * @return true
+     * @param  string|array $event    Name of event to listen on.
+     * @param  callable     $callback Any callback callable by call_user_func_array
+     * @return void
      */
-    public static function listen($event, $callback)
+    public static function listen($event, callable $callback): void
     {
         if (is_array($event)) {
             foreach ($event as $e) {
@@ -94,9 +92,9 @@ class Event
      *
      * @param  string $event Name of event to be raised
      * @param  mixed  $data  Data that should be passed to each callback (optional)
-     * @return true
+     * @return bool
      */
-    public static function fire($event, $data = null)
+    public static function fire(string $event, $data = null): bool
     {
         if (!is_array($data)) {
             $data = [$data];
@@ -127,11 +125,11 @@ class Event
     /**
      * Stop a given callback from listening on a specific event.
      *
-     * @param  string $event    Name of event
-     * @param  mixed  $callback The callback as defined when listen() was called
+     * @param  string   $event    Name of event
+     * @param  callable $callback The callback as defined when listen() was called
      * @return true
      */
-    public static function forget($event, $callback)
+    public static function forget(string $event, callable $callback)
     {
         if (!isset(self::$events[$event])) {
             return true;
@@ -149,7 +147,7 @@ class Event
     /**
      * Clear all registered listeners.
      */
-    public static function clear()
+    public static function clear(): void
     {
         self::$events = [];
     }
@@ -160,7 +158,7 @@ class Event
      * @param  int          $event Event constant
      * @return string|false
      */
-    public static function eventName($event)
+    public static function eventName(int $event)
     {
         static $constants = null;
 

@@ -23,8 +23,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class OffConnector extends AbstractConnector
 {
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): NullHandler
     {
-        return new NullHandler;
+        return new NullHandler();
     }
 }

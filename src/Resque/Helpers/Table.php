@@ -12,7 +12,6 @@
 namespace Resque\Helpers;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table as TableHelper;
 use Symfony\Component\Console\Helper\TableStyle;
 
@@ -26,12 +25,12 @@ class Table
     /**
      * @var TableHelper
      */
-    protected $table;
+    protected TableHelper $table;
 
     /**
      * @var CatchOutput
      */
-    protected $output;
+    protected CatchOutput $output;
 
     /**
      * Render the table and pass the output back.
@@ -39,11 +38,8 @@ class Table
      * helper dumps everything to the output and
      * there is no way to catch so have to override
      * with a special output.
-     *
-     * @param  Command $command
-     * @return void
      */
-    public function __construct(Command $command)
+    public function __construct()
     {
         $this->output = new CatchOutput;
 
@@ -62,7 +58,7 @@ class Table
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $this->table->render($this->output);
 
@@ -72,11 +68,12 @@ class Table
     /**
      * Pass all called functions to the table helper
      *
-     * @param  string $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         return call_user_func_array([$this->table, $method], $parameters);
     }

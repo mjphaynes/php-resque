@@ -27,9 +27,9 @@ class Stats
      *
      * @param  string $stat The name of the statistic to get the stats for
      * @param  string $key  The stat key to use
-     * @return mixed  Value of the statistic.
+     * @return int    Value of the statistic.
      */
-    public static function get($stat, $key = Stats::DEFAULT_KEY)
+    public static function get(string $stat, string $key = Stats::DEFAULT_KEY): int
     {
         return (int)Redis::instance()->hget($key, $stat);
     }
@@ -42,7 +42,7 @@ class Stats
      * @param  string $key  The stat key to use
      * @return bool   True if successful, false if not.
      */
-    public static function incr($stat, $by = 1, $key = Stats::DEFAULT_KEY)
+    public static function incr(string $stat, int $by = 1, string $key = Stats::DEFAULT_KEY): bool
     {
         return (bool)Redis::instance()->hincrby($key, $stat, $by);
     }
@@ -55,7 +55,7 @@ class Stats
      * @param  string $key  The stat key to use
      * @return bool   True if successful, false if not.
      */
-    public static function decr($stat, $by = 1, $key = Stats::DEFAULT_KEY)
+    public static function decr(string $stat, int $by = 1, string $key = Stats::DEFAULT_KEY): bool
     {
         return (bool)Redis::instance()->hincrby($key, $stat, -1 * $by);
     }
@@ -67,7 +67,7 @@ class Stats
      * @param  string $key  The stat key to use
      * @return bool   True if successful, false if not.
      */
-    public static function clear($stat, $key = Stats::DEFAULT_KEY)
+    public static function clear(string $stat, string $key = Stats::DEFAULT_KEY): bool
     {
         return (bool)Redis::instance()->hdel($key, $stat);
     }
