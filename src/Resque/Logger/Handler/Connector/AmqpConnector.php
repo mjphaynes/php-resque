@@ -23,14 +23,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class AmqpConnector extends AbstractConnector
 {
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): AmqpHandler
     {
-        $options = array_merge(array(
+        $options = array_merge([
             'host'     => 'localhost',
             'port'     => 5763,
             'login'    => null,
             'password' => null,
-        ), $args);
+        ], $args);
 
         $conn = new \AMQPConnection($options);
         $conn->connect();

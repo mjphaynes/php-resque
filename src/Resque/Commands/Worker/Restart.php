@@ -22,20 +22,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Restart extends Command
+final class Restart extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:restart')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to restart (optional; if not present restarts all workers).'),
-            )))
+            ]))
             ->setDescription('Restart a running worker. If no worker id set then restarts all workers')
-            ->setHelp('Restart a running worker. If no worker id set then restarts all workers')
-        ;
+            ->setHelp('Restart a running worker. If no worker id set then restarts all workers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
 
@@ -49,7 +48,7 @@ class Restart extends Command
                 return self::FAILURE;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }
@@ -66,12 +65,12 @@ class Restart extends Command
                 if ($child == -1) {
                     $this->log('Unable to fork, worker '.$worker.' has been stopped.', Resque\Logger::CRITICAL);
 
-                    // Parent
+                // Parent
                 } elseif ($child > 0) {
                     $this->log('Worker <pop>'.$worker.'</pop> restarted.');
                     continue;
 
-                    // Child
+                // Child
                 } else {
                     $new_worker = new Resque\Worker($worker->getQueues(), $worker->getBlocking());
                     $new_worker->setInterval($worker->getInterval());

@@ -14,7 +14,6 @@ namespace Resque\Commands;
 use Resque;
 use Resque\Commands\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -22,35 +21,33 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Workers extends Command
+final class Workers extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('workers')
-            ->setAliases(array('worker:list'))
-            ->setDefinition($this->mergeDefinitions(array(
-            )))
+            ->setAliases(['worker:list'])
+            ->setDefinition($this->mergeDefinitions([]))
             ->setDescription('List all running workers on host')
-            ->setHelp('List all running workers on host')
-        ;
+            ->setHelp('List all running workers on host');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $workers = Resque\Worker::hostWorkers();
 
         if (empty($workers)) {
             $this->log('<warn>There are no workers on this host.</warn>');
-            return;
+            return self::FAILURE;
         }
 
         $table = new Resque\Helpers\Table($this);
-        $table->setHeaders(array('#', 'Status', 'ID', 'Running for', 'Running job', 'P', 'C', 'F', 'Interval', 'Timeout', 'Memory (Limit)'));
+        $table->setHeaders(['#', 'Status', 'ID', 'Running for', 'Running job', 'P', 'C', 'F', 'Interval', 'Timeout', 'Memory (Limit)']);
 
         foreach ($workers as $i => $worker) {
             $packet = $worker->getPacket();
 
-            $table->addRow(array(
+            $table->addRow([
                 $i + 1,
                 Resque\Worker::$statusText[$packet['status']],
                 (string)$worker,
@@ -62,7 +59,7 @@ class Workers extends Command
                 $packet['interval'],
                 $packet['timeout'],
                 Resque\Helpers\Util::bytes($packet['memory']).' ('.$packet['memory_limit'].' MB)',
-            ));
+            ]);
         }
 
         $this->log((string)$table);

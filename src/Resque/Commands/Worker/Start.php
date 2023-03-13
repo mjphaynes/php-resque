@@ -22,25 +22,24 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Start extends Command
+final class Start extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:start')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputOption('queue', 'Q', InputOption::VALUE_OPTIONAL, 'The queue(s) to listen on, comma separated.', '*'),
                 new InputOption('blocking', 'b', InputOption::VALUE_OPTIONAL, 'Use Redis pop blocking or time interval.', true),
                 new InputOption('interval', 'i', InputOption::VALUE_OPTIONAL, 'Blocking timeout/interval speed in seconds.', 10),
                 new InputOption('timeout', 't', InputOption::VALUE_OPTIONAL, 'Seconds a job may run before timing out.', 60),
                 new InputOption('memory', 'm', InputOption::VALUE_OPTIONAL, 'The memory limit in megabytes.', 128),
                 new InputOption('pid', 'P', InputOption::VALUE_OPTIONAL, 'Absolute path to PID file, must be writeable by worker.'),
-            )))
+            ]))
             ->setDescription('Polls for jobs on specified queues and executes job when found')
-            ->setHelp('Polls for jobs on specified queues and executes job when found')
-        ;
+            ->setHelp('Polls for jobs on specified queues and executes job when found');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $queue = $this->getConfig('queue');
         $blocking = filter_var($this->getConfig('blocking'), FILTER_VALIDATE_BOOLEAN);
@@ -73,7 +72,7 @@ class Start extends Command
         return self::SUCCESS;
     }
 
-    public function pollingConsoleOutput()
+    public function pollingConsoleOutput(): bool
     {
         return true;
     }

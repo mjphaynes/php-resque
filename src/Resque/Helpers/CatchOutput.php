@@ -20,37 +20,26 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  */
 class CatchOutput extends \Symfony\Component\Console\Output\Output
 {
-
     /**
      * @var string Stored output string
      */
-    protected $written = '';
+    protected string $written = '';
 
     /**
-     * Constructor.
-     *
-     * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
-     * @param bool                          $decorated Whether to decorate messages
-     * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
+     * {@inheritdoc}
      */
     public function __construct(
-        $verbosity = self::VERBOSITY_NORMAL,
-        $decorated = true,
-        OutputFormatterInterface $formatter = null
+        int $verbosity = self::VERBOSITY_NORMAL,
+        bool $decorated = true,
+        ?OutputFormatterInterface $formatter = null
     ) {
         parent::__construct($verbosity, $decorated, $formatter);
     }
 
     /**
-     * Writes a message to the output.
-     *
-     * @param string|array $messages The message as an array of lines or a single string
-     * @param bool         $newline  Whether to add a newline
-     * @param int          $type     The type of output (one of the OUTPUT constants)
-     *
-     * @throws \InvalidArgumentException When unknown output type is given
+     * {@inheritdoc}
      */
-    public function write($messages, $newline = false, $type = self::OUTPUT_RAW)
+    public function write($messages, bool $newline = false, $type = self::OUTPUT_RAW): void
     {
         parent::write($messages, $newline, $type);
     }
@@ -61,7 +50,7 @@ class CatchOutput extends \Symfony\Component\Console\Output\Output
      * @param string $message A message to write to the output
      * @param bool   $newline Whether to add a newline or not
      */
-    protected function doWrite($message, $newline)
+    protected function doWrite(string $message, bool $newline): void
     {
         $this->written .= $message.($newline ? PHP_EOL : '');
     }
@@ -71,7 +60,7 @@ class CatchOutput extends \Symfony\Component\Console\Output\Output
      *
      * @return string
      */
-    public function written()
+    public function written(): string
     {
         return $this->written;
     }

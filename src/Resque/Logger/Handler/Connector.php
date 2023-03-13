@@ -22,26 +22,25 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Connector
 {
-
     /**
      * @var Command command instance
      */
-    protected $command;
+    protected Command $command;
 
     /**
      * @var InputInterface input instance
      */
-    protected $input;
+    protected InputInterface $input;
 
     /**
      * @var OutputInterface output instance
      */
-    protected $output;
+    protected OutputInterface $output;
 
     /**
      * @var array output instance
      */
-    private $connectionMap = array(
+    private array $connectionMap = [
         'Redis'    => 'redis://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<key>.+)',               // redis://127.0.0.1:6379/log:%worker$
         'MongoDB'  => 'mongodb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)/(?P<collection>.+)',  // mongodb://127.0.0.1:27017/dbname/log:%worker%
         'CouchDB'  => 'couchdb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)',  // couchdb://127.0.0.1:27017/dbname
@@ -53,13 +52,11 @@ class Connector
         'Rotate'   => 'rotate:(?P<max_files>\d+):(?P<file>.+)',              // rotate:5:path/to/output.log
         'Console'  => '(console|echo)(?P<ignore>\b)',                        // console
         'Off'      => '(off|null)(?P<ignore>\b)',                            // off
-        'Stream'   => '(?:stream:)?(?P<stream>[a-z0-9/\\\[\]\(\)\~%\._-]+)'   // stream:path/to/output.log | path/to/output.log
-    );
+        'Stream'   => '(?:stream:)?(?P<stream>[a-z0-9/\\\[\]\(\)\~%\._-]+)',   // stream:path/to/output.log | path/to/output.log
+    ];
 
     /**
-     * Creates a new Connector instance
-     *
-     * @return void
+     * Create a new Connector instance
      */
     public function __construct(Command $command, InputInterface $input, OutputInterface $output)
     {
@@ -69,13 +66,14 @@ class Connector
     }
 
     /**
-     * Resolves a Monolog handler from string input
+     * Resolve a Monolog handler from string input
      *
-     * @param  mixed                            $logFormat
+     * @param  string                   $logFormat
      * @throws InvalidArgumentException
+     *
      * @return Monolog\Handler\HandlerInterface
      */
-    public function resolve($logFormat)
+    public function resolve(string $logFormat): \Monolog\Handler\HandlerInterface
     {
         // Loop over connectionMap and see if the log format matches any of them
         foreach ($this->connectionMap as $connection => $match) {
@@ -94,11 +92,9 @@ class Connector
                     );
 
                     // Tell them the error of their ways
-                    $format = str_replace(array('(?:', ')?', '\)'), '', $this->connectionMap[$handler]);
+                    $format = str_replace(['(?:', ')?', '\)'], '', $this->connectionMap[$handler]);
 
-                    $cb = function ($m) {
-                        return ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
-                    };
+                    $cb = fn ($m) => ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
                     $format = preg_replace_callback('/\(\?P<([a-z_]+)>(?:.+?)\)/', $cb, $format);
 
                     throw new \InvalidArgumentException('Invalid format "'.$logFormat.'" for "'.$handler.'" handler. Should be of format "'.$format.'"');
@@ -107,6 +103,7 @@ class Connector
 
             if ($args = $this->matches('~^'.$match.'$~i', $logFormat)) {
                 $connectorClass = new \ReflectionClass('Resque\Logger\Handler\Connector\\'.$connection.'Connector');
+                /** @var ConnectorInterface */
                 $connectorClass = $connectorClass->newInstance();
 
                 $handler = $connectorClass->resolve($this->command, $this->input, $this->output, $args);
@@ -123,14 +120,15 @@ class Connector
      * Performs a pattern match on a string and returns just
      * the named matches or false if no match
      *
-     * @param  mixed       $pattern
-     * @param  mixed       $subject
+     * @param string $pattern
+     * @param string $subject
+     *
      * @return array|false
      */
-    private function matches($pattern, $subject)
+    private function matches(string $pattern, string $subject)
     {
         if (preg_match($pattern, $subject, $matches)) {
-            $args = array();
+            $args = [];
 
             foreach ($matches as $key => $value) {
                 if (!is_int($key)) {

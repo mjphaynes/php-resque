@@ -16,6 +16,6 @@ namespace Resque\Exception;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Dirty extends \RuntimeException
+final class Dirty extends \RuntimeException
 {
 }

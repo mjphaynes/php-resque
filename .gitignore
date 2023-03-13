@@ -1,4 +1,12 @@
-composer.lock
-vendor/
-test/speed/output.log
-.php_cs.cache
+# IDE
+/.idea
+/.vscode
+/.*.meta.*
+
+# Composer
+/vendor/
+/composer.lock
+
+# Misc
+*.cache
+*.log

@@ -22,20 +22,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Pause extends Command
+final class Pause extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:pause')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to pause (optional; if not present pauses all workers).'),
-            )))
+            ]))
             ->setDescription('Pause a running worker. If no worker id set then pauses all workers')
-            ->setHelp('Pause a running worker. If no worker id set then pauses all workers')
-        ;
+            ->setHelp('Pause a running worker. If no worker id set then pauses all workers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
 
@@ -49,7 +48,7 @@ class Pause extends Command
                 return self::FAILURE;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }

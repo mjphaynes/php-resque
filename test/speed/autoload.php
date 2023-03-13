@@ -15,14 +15,14 @@ use Resque\Logger;
 // Test job class
 class TestJob
 {
-    public function perform($args)
+    public function perform($args): void
     {
         // Don't do anything
     }
 }
 
 // Lets record the forking time
-Event::listen(array(Event::WORKER_FORK, Event::WORKER_FORK_CHILD), function ($event, $job) use ($logger) {
+Event::listen([Event::WORKER_FORK, Event::WORKER_FORK_CHILD], function ($event, $job) use ($logger): void {
     static $start = 0;
 
     if ($event === Event::WORKER_FORK_CHILD) {
@@ -34,7 +34,7 @@ Event::listen(array(Event::WORKER_FORK, Event::WORKER_FORK_CHILD), function ($ev
 });
 
 // When the job is about to be run, queue another one
-Event::listen(Event::JOB_PERFORM, function ($event, $job) use ($logger) {
+Event::listen(Event::JOB_PERFORM, function ($event, $job) use ($logger): void {
     Resque::push('TestJob');
 });
 

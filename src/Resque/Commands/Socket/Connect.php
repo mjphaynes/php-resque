@@ -22,22 +22,21 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Connect extends Command
+final class Connect extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('socket:connect')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputOption('connecthost', null, InputOption::VALUE_OPTIONAL, 'The host to connect to.', '127.0.0.1'),
                 new InputOption('connectport', null, InputOption::VALUE_OPTIONAL, 'The port to connect to.', Resque\Socket\Server::DEFAULT_PORT),
                 new InputOption('connecttimeout', 't', InputOption::VALUE_OPTIONAL, 'The connection timeout time (seconds).', 10),
-            )))
+            ]))
             ->setDescription('Connects to a php-resque receiver socket')
-            ->setHelp('Connects to a php-resque receiver socket')
-        ;
+            ->setHelp('Connects to a php-resque receiver socket');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $host    = $this->getConfig('connecthost');
         $port    = $this->getConfig('connectport');
@@ -50,7 +49,7 @@ class Connect extends Command
 
         if (!($fh = @fsockopen('tcp://'.$host, $port, $errno, $errstr, $timeout))) {
             $output->writeln('<error>['.$errno.'] '.$errstr.' host '.$conn.'</error>');
-            return;
+            return self::FAILURE;
         }
 
         // Set socket timeout to 200ms
@@ -68,7 +67,7 @@ class Connect extends Command
                 break;
             }
 
-            $read   = array($fh, $stdin);
+            $read   = [$fh, $stdin];
             $write  = null;
             $except = null;
 

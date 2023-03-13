@@ -13,6 +13,7 @@ namespace Resque\Commands;
 
 use Resque;
 use Resque\Helpers\Util;
+use Resque\Logger;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,17 +32,17 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * @var Logger The logger instance
      */
-    protected $logger;
+    protected Logger $logger;
 
     /**
-     * @var array Config array
+     * @var array<string, string> Config array
      */
-    protected $config = array();
+    protected array $config = [];
 
     /**
      * @var array Config to options mapping
      */
-    protected $configOptionMap = array(
+    protected array $configOptionMap = [
         'include'        => 'include',
         'scheme'         => 'redis.scheme',
         'host'           => 'redis.host',
@@ -65,7 +66,7 @@ class Command extends \Symfony\Component\Console\Command\Command
         'connectport'    => 'socket.connect.port',
         'connecttimeout' => 'socket.connect.timeout',
         'json'           => 'socket.json',
-    );
+    ];
 
     /**
      * Globally sets some input options that are available for all commands
@@ -73,11 +74,11 @@ class Command extends \Symfony\Component\Console\Command\Command
      * @param  array $definitions List of command definitions
      * @return array
      */
-    protected function mergeDefinitions(array $definitions)
+    protected function mergeDefinitions(array $definitions): array
     {
         return array_merge(
             $definitions,
-            array(
+            [
                 new InputOption('config', 'c', InputOption::VALUE_OPTIONAL, 'Path to config file. Inline options override.', Resque::DEFAULT_CONFIG_FILE),
                 new InputOption('include', 'I', InputOption::VALUE_OPTIONAL, 'Path to include php file'),
                 new InputOption('host', 'H', InputOption::VALUE_OPTIONAL, 'The Redis hostname.', Resque\Redis::DEFAULT_HOST),
@@ -87,7 +88,7 @@ class Command extends \Symfony\Component\Console\Command\Command
                 new InputOption('password', null, InputOption::VALUE_OPTIONAL, 'The Redis AUTH password.'),
                 new InputOption('log', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Specify the handler(s) to use for logging.'),
                 new InputOption('events', 'e', InputOption::VALUE_NONE, 'Outputs all events to the console, for debugging.'),
-            )
+            ]
         );
     }
 
@@ -97,23 +98,24 @@ class Command extends \Symfony\Component\Console\Command\Command
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialised based on the input arguments and options.
      *
-     * @param  InputInterface  $input  An InputInterface instance
-     * @param  OutputInterface $output An OutputInterface instance
+     * @param InputInterface  $input  An InputInterface instance
+     * @param OutputInterface $output An OutputInterface instance
+     *
      * @return void
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->parseConfig($input->getOptions(), $this->getNativeDefinition()->getOptionDefaults());
         $config = $this->getConfig();
 
         // Configure Redis
-        Resque\Redis::setConfig(array(
+        Resque\Redis::setConfig([
             'scheme'    => $config['scheme'],
             'host'      => $config['host'],
             'port'      => $config['port'],
             'namespace' => $config['namespace'],
-            'password'  => $config['password']
-        ));
+            'password'  => $config['password'],
+        ]);
 
         // Set the verbosity
         if (array_key_exists('verbose', $config)) {
@@ -125,17 +127,17 @@ class Command extends \Symfony\Component\Console\Command\Command
         }
 
         // Set the monolog loggers, it's possible to speficfy multiple handlers
-        $logs = array_key_exists('log', $config) ? array_unique($config['log']) : array();
+        $logs = array_key_exists('log', $config) ? array_unique($config['log']) : [];
         empty($logs) and $logs[] = 'console';
 
         $handlerConnector = new Resque\Logger\Handler\Connector($this, $input, $output);
 
-        $handlers = array();
+        $handlers = [];
         foreach ($logs as $log) {
             $handlers[] = $handlerConnector->resolve($log);
         }
 
-        $this->logger = $logger = new Resque\Logger($handlers);
+        $this->logger = new Resque\Logger($handlers);
 
         // Unset some variables so as not to pass to include file
         unset($logs, $handlerConnector, $handlers);
@@ -160,9 +162,10 @@ class Command extends \Symfony\Component\Console\Command\Command
         // This outputs all the events that are fired, useful for learning
         // about when events are fired in the command flow
         if (array_key_exists('events', $config) and $config['events'] === true) {
-            Resque\Event::listen('*', function ($event) use ($output) {
+            Resque\Event::listen('*', function ($event) use ($output): void {
                 $data = array_map(
                     function ($d) {
+                        /** @var mixed $d */
                         $d instanceof \Exception and ($d = '"'.$d->getMessage().'"');
                         is_array($d) and ($d = '['.implode(',', $d).']');
 
@@ -181,7 +184,7 @@ class Command extends \Symfony\Component\Console\Command\Command
      *
      * @return bool
      */
-    public function pollingConsoleOutput()
+    public function pollingConsoleOutput(): bool
     {
         return false;
     }
@@ -190,21 +193,22 @@ class Command extends \Symfony\Component\Console\Command\Command
      * Helper function that passes through to logger instance
      *
      * @see Logger::log
-     * @return bool
+     * @return mixed
      */
     public function log()
     {
-        return call_user_func_array(array($this->logger, 'log'), func_get_args());
+        return call_user_func_array([$this->logger, 'log'], func_get_args());
     }
 
     /**
      * Parses the configuration file
      *
-     * @param  mixed $config
-     * @param  mixed $defaults
+     * @param array $config
+     * @param array $defaults
+     *
      * @return bool
      */
-    protected function parseConfig($config, $defaults)
+    protected function parseConfig(array $config, array $defaults): bool
     {
         if (array_key_exists('config', $config)) {
             $configFileData = Resque::readConfigFile($config['config']);
@@ -223,14 +227,14 @@ class Command extends \Symfony\Component\Console\Command\Command
                     switch ($key) {
                         // Need to make sure the log handlers are in the correct format
                         case 'log':
-                            $value = array();
+                            $value = [];
                             foreach ((array)$found as $handler => $target) {
                                 $handler = strtolower($handler);
 
                                 if ($target !== true) {
                                     $handler .= ':';
 
-                                    if (in_array($handler, array('redis:', 'mongodb:', 'couchdb:', 'amqp:'))) {
+                                    if (in_array($handler, ['redis:', 'mongodb:', 'couchdb:', 'amqp:'])) {
                                         $handler .= '//';
                                     }
 
@@ -259,10 +263,10 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Returns all config items or a specific one
      *
-     * @param  null|mixed $key
-     * @return mixed
+     * @param  string|null  $key
+     * @return array|string
      */
-    protected function getConfig($key = null)
+    protected function getConfig(?string $key = null)
     {
         if (!is_null($key)) {
             if (!array_key_exists($key, $this->config)) {

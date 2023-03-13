@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CouchDBConnector extends AbstractConnector
 {
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): CouchDBHandler
     {
         return new CouchDBHandler($args);
     }

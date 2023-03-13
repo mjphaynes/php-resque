@@ -11,6 +11,7 @@
 
 namespace Resque\Logger\Handler\Connector;
 
+use Monolog\Handler\HandlerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,25 +23,26 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 interface ConnectorInterface
 {
-
     /**
      * Resolves the handler class
      *
-     * @param  Command          $command
-     * @param  InputInterface   $input
-     * @param  OutputInterface  $output
-     * @param  array            $args
+     * @param Command         $command
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param array           $args
+     *
      * @return HandlerInterface
      */
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args);
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): HandlerInterface;
 
     /**
      * Returns the processor for this handler
      *
-     * @param  Command         $command
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
-     * @param  array           $args
+     * @param Command         $command
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param array           $args
+     *
      * @return callable
      */
     public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args);
@@ -49,8 +51,9 @@ interface ConnectorInterface
      * Replaces all instances of [%host%, %worker%, %pid%, %date%, %time%]
      * in logger target key so can be unique log per worker
      *
-     * @param  string $string Input string
+     * @param string $string Input string
+     *
      * @return string
      */
-    public function replacePlaceholders($string);
+    public function replacePlaceholders(string $string): string;
 }

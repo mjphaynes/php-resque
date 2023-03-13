@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RotateConnector extends AbstractConnector
 {
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): RotatingFileHandler
     {
         return new RotatingFileHandler($this->replacePlaceholders($args['file']), $args['max_files']);
     }

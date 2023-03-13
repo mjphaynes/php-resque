@@ -15,7 +15,6 @@ use Resque;
 use Resque\Commands\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -23,20 +22,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Cancel extends Command
+final class Cancel extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:cancel')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to cancel it\'s running job (optional; if not present cancels all workers).'),
-            )))
+            ]))
             ->setDescription('Cancel job on a running worker. If no worker id set then cancels all workers')
-            ->setHelp('Cancel job on a running worker. If no worker id set then cancels all workers')
-        ;
+            ->setHelp('Cancel job on a running worker. If no worker id set then cancels all workers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
 
@@ -50,7 +48,7 @@ class Cancel extends Command
                 return self::FAILURE;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }

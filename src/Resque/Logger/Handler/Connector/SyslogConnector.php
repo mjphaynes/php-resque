@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class SyslogConnector extends AbstractConnector
 {
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): SyslogHandler
     {
         return new SyslogHandler($args['ident'], $args['facility']);
     }

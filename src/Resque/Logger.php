@@ -11,7 +11,7 @@
 
 namespace Resque;
 
-use Monolog;
+use Monolog\Logger as Monolog;
 
 /**
  * Resque logger class. Wrapper for Monolog (https://github.com/Seldaek/monolog)
@@ -20,51 +20,50 @@ use Monolog;
  */
 class Logger
 {
-
     /**
      * Detailed debug information
      */
-    const DEBUG = Monolog\Logger::DEBUG;
+    public const DEBUG = Monolog::DEBUG;
 
     /**
      * Interesting events e.g. User logs in, SQL logs.
      */
-    const INFO = Monolog\Logger::INFO;
+    public const INFO = Monolog::INFO;
 
     /**
      * Uncommon events
      */
-    const NOTICE = Monolog\Logger::NOTICE;
+    public const NOTICE = Monolog::NOTICE;
 
     /**
      * Exceptional occurrences that are not errors e.g. Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.
      */
-    const WARNING = Monolog\Logger::WARNING;
+    public const WARNING = Monolog::WARNING;
 
     /**
      * Runtime errors
      */
-    const ERROR = Monolog\Logger::ERROR;
+    public const ERROR = Monolog::ERROR;
 
     /**
      * Critical conditions e.g. Application component unavailable, unexpected exception.
      */
-    const CRITICAL = Monolog\Logger::CRITICAL;
+    public const CRITICAL = Monolog::CRITICAL;
 
     /**
      * Action must be taken immediately e.g. Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.
      */
-    const ALERT = Monolog\Logger::ALERT;
+    public const ALERT = Monolog::ALERT;
 
     /**
      * Urgent alert.
      */
-    const EMERGENCY = Monolog\Logger::EMERGENCY;
+    public const EMERGENCY = Monolog::EMERGENCY;
 
     /**
      * @var array List of valid log levels
      */
-    protected $logTypes = array(
+    protected array $logTypes = [
         self::DEBUG     => 'debug',
         self::INFO      => 'info',
         self::NOTICE    => 'notice',
@@ -72,23 +71,23 @@ class Logger
         self::ERROR     => 'error',
         self::CRITICAL  => 'critical',
         self::ALERT     => 'alert',
-        self::EMERGENCY => 'emergency'
-    );
+        self::EMERGENCY => 'emergency',
+    ];
 
     /**
-     * @var \Monolog\Logger The monolog instance
+     * @var Monolog The monolog instance
      */
-    protected $instance = null;
+    protected ?Monolog $instance = null;
 
     /**
-     * Create a Monolog\Logger instance and attach a handler
+     * Create a Monolog instance and attach a handler
      *
      * @see    https://github.com/Seldaek/monolog#handlers Monolog handlers documentation
      * @param array $handlers Array of Monolog handlers
      */
     public function __construct(array $handlers)
     {
-        $this->instance = new \Monolog\Logger('resque');
+        $this->instance = new Monolog('resque');
 
         foreach ($handlers as $handler) {
             $this->instance->pushHandler($handler);
@@ -98,9 +97,9 @@ class Logger
     /**
      * Return a Monolog Logger instance
      *
-     * @return \Monolog\Logger instance, ready to use
+     * @return Monolog instance, ready to use
      */
-    public function getInstance()
+    public function getInstance(): Monolog
     {
         return $this->instance;
     }
@@ -109,25 +108,22 @@ class Logger
      * Send log message to output interface
      *
      * @param string $message Message to output
-     * @param int    $context Some context around the log
+     * @param mixed  $context Some context around the log
      * @param int    $logType The log type
-     * @reutrn mixed
+     *
+     * @return mixed
      */
-    public function log($message, $context = null, $logType = null)
+    public function log(string $message, $context = null, int $logType = Monolog::INFO)
     {
         if (is_int($context) and is_null($logType)) {
             $logType = $context;
-            $context = array();
+            $context = [];
         }
 
         if (!is_array($context)) {
-            $context = is_null($context) ? array() : array($context);
+            $context = is_null($context) ? [] : [$context];
         }
 
-        if (!is_int($logType)) {
-            $logType = self::INFO;
-        }
-
-        return call_user_func(array($this->instance, $this->logTypes[$logType]), $message, $context);
+        return call_user_func([$this->instance, $this->logTypes[$logType]], $message, $context);
     }
 }

@@ -1,5 +1,15 @@
 <?php
-/**
+
+/*
+ * This file is part of the php-resque package.
+ *
+ * (c) Michael Haynes <mike@mjphaynes.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -44,28 +54,28 @@ if (isset($_GET['action'])) {
             break;
 
         case 'push':
-            $job = Resque::push('HelloWorld', array());
+            $job = Resque::push('HelloWorld', []);
             break;
         case 'delayed':
-            $job = Resque::later(mt_rand(0, 30), 'HelloWorld', array());
+            $job = Resque::later(mt_rand(0, 30), 'HelloWorld', []);
             break;
         case 'delayedat':
-            $job = Resque::later(new \DateTime('+2 mins'), 'HelloWorld', array());
+            $job = Resque::later(new \DateTime('+2 mins'), 'HelloWorld', []);
             break;
         case 'longrunning':
-            $job = Resque::push('LongRunning', array());
+            $job = Resque::push('LongRunning', []);
             break;
         case 'failnoclass':
-            $job = Resque::push('\Does\Not\Exist', array());
+            $job = Resque::push('\Does\Not\Exist', []);
             break;
         case 'faillong':
-            $job = Resque::push('FailLong', array());
+            $job = Resque::push('FailLong', []);
             break;
         case 'failexception':
-            $job = Resque::push('FailException', array());
+            $job = Resque::push('FailException', []);
             break;
         case 'failerror':
-            $job = Resque::push('FailError', array());
+            $job = Resque::push('FailError', []);
             break;
         case 'closure':
             $job = Resque::push(function ($job) {
@@ -107,7 +117,7 @@ echo 'Hosts:         ' . json_encode(Resque\Redis::instance()->smembers('hosts')
 echo 'Workers:       ' . json_encode(Resque\Redis::instance()->smembers('workers')) . PHP_EOL;
 echo 'Queues:        ' . json_encode(Resque\Redis::instance()->smembers('queues')) . PHP_EOL;
 echo 'Default queue: ' . json_encode(Resque\Redis::instance()->hgetall('queue:default:stats')) . PHP_EOL;
-echo 'Time:          ' . json_encode(array(time(), date('r'))) . PHP_EOL;
+echo 'Time:          ' . json_encode([time(), date('r')]) . PHP_EOL;
 
 echo str_repeat('=', $rep) . PHP_EOL;
 
@@ -122,7 +132,7 @@ if (!empty($id)) {
 }
 
 list_jobs('Default queue queued jobs', Resque\Redis::instance()->lrange('queue:default', 0, -1));
-foreach (array('delayed', 'running', 'processed', 'failed', 'cancelled') as $status) {
+foreach (['delayed', 'running', 'processed', 'failed', 'cancelled'] as $status) {
     list_jobs(
         'Default queue ' . $status . ' jobs',
         $djobs = Resque\Redis::instance()->zrevrangebyscore('queue:default:' . $status, strtotime('+1 year'), 0)

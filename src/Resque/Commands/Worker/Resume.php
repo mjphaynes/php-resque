@@ -22,20 +22,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class Resume extends Command
+final class Resume extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('worker:resume')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to resume (optional; if not present resumes all workers).'),
-            )))
+            ]))
             ->setDescription('Resume a running worker. If no worker id set then resumes all workers')
-            ->setHelp('Resume a running worker. If no worker id set then resumes all workers')
-        ;
+            ->setHelp('Resume a running worker. If no worker id set then resumes all workers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
 
@@ -46,10 +45,10 @@ class Resume extends Command
         if ($id) {
             if (false === ($worker = Resque\Worker::hostWorker($id))) {
                 $this->log('There is no worker with id "'.$id.'".', Resque\Logger::ERROR);
-                return;
+                return self::FAILURE;
             }
 
-            $workers = array($worker);
+            $workers = [$worker];
         } else {
             $workers = Resque\Worker::hostWorkers();
         }

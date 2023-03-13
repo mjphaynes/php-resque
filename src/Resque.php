@@ -10,6 +10,7 @@
  */
 
 use Resque\Redis;
+use Resque\Queue;
 use Resque\Helpers\Util;
 use Symfony\Component\Yaml;
 
@@ -20,42 +21,41 @@ use Symfony\Component\Yaml;
  */
 class Resque
 {
-
     /**
      * php-resque version
      */
-    const VERSION = '3.1.1';
+    public const VERSION = '3.2.0';
 
     /**
      * How long the job and worker data will remain in Redis for
      * after completion/shutdown in seconds. Default is one week.
      */
-    const DEFAULT_EXPIRY_TIME = 604800;
+    public const DEFAULT_EXPIRY_TIME = 604800;
 
     /**
      * Default config file name
      */
-    const DEFAULT_CONFIG_FILE = 'config.yml';
+    public const DEFAULT_CONFIG_FILE = 'config.yml';
 
     /**
      * @var array Configuration settings array.
      */
-    protected static $config = array();
+    protected static array $config = [];
 
     /**
-     * @var \Resque\Queue The queue instance.
+     * @var Queue The queue instance.
      */
-    protected static $queue = null;
+    protected static ?Queue $queue = null;
 
     /**
      * Create a queue instance.
      *
-     * @return \Resque\Queue
+     * @return Queue
      */
-    public static function queue()
+    public static function queue(): Queue
     {
         if (!static::$queue) {
-            static::$queue = new Resque\Queue();
+            static::$queue = new Queue();
         }
 
         return static::$queue;
@@ -64,13 +64,14 @@ class Resque
     /**
      * Dynamically pass calls to the default connection.
      *
-     * @param  string $method     The method to call
-     * @param  array  $parameters The parameters to pass
+     * @param string $method     The method to call
+     * @param array  $parameters The parameters to pass
+     *
      * @return mixed
      */
-    public static function __callStatic($method, $parameters)
+    public static function __callStatic(string $method, array $parameters)
     {
-        $callable = array(static::queue(), $method);
+        $callable = [static::queue(), $method];
 
         return call_user_func_array($callable, $parameters);
     }
@@ -78,14 +79,15 @@ class Resque
     /**
      * Reads and loads data from a config file
      *
-     * @param  string $file The config file path
+     * @param string $file The config file path
+     *
      * @return bool
      */
-    public static function loadConfig($file = self::DEFAULT_CONFIG_FILE)
+    public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): bool
     {
         self::readConfigFile($file);
 
-        Redis::setConfig(array(
+        Redis::setConfig([
             'scheme'     => static::getConfig('redis.scheme', Redis::DEFAULT_SCHEME),
             'host'       => static::getConfig('redis.host', Redis::DEFAULT_HOST),
             'port'       => static::getConfig('redis.port', Redis::DEFAULT_PORT),
@@ -94,7 +96,7 @@ class Resque
             'rw_timeout' => static::getConfig('redis.rw_timeout', Redis::DEFAULT_RW_TIMEOUT),
             'phpiredis'  => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS),
             'predis'     => static::getConfig('predis'),
-        ));
+        ]);
 
         return true;
     }
@@ -102,24 +104,25 @@ class Resque
     /**
      * Reads data from a config file
      *
-     * @param  string $file The config file path
+     * @param string $file The config file path
+     *
      * @return array
      */
-    public static function readConfigFile($file = self::DEFAULT_CONFIG_FILE)
+    public static function readConfigFile(string $file = self::DEFAULT_CONFIG_FILE): array
     {
         if (!is_string($file)) {
             throw new InvalidArgumentException('The config file path must be a string, type passed "'.gettype($file).'".');
         }
 
         $baseDir = realpath(dirname($file));
-        $searchDirs = array(
+        $searchDirs = [
             $baseDir.'/',
             $baseDir.'/../',
             $baseDir.'/../../',
             $baseDir.'/config/',
             $baseDir.'/../config/',
-            $baseDir.'/../../config/'
-        );
+            $baseDir.'/../../config/',
+        ];
 
         $filename = basename($file);
 
@@ -152,11 +155,12 @@ class Resque
     /**
      * Gets Resque config variable
      *
-     * @param  string $key     The key to search for (optional)
-     * @param  mixed  $default If key not found returns this (optional)
+     * @param string $key     The key to search for (optional)
+     * @param mixed  $default If key not found returns this (optional)
+     *
      * @return mixed
      */
-    public static function getConfig($key = null, $default = null)
+    public static function getConfig(?string $key = null, $default = null)
     {
         if (!is_null($key)) {
             if (false !== Util::path(static::$config, $key, $found)) {
@@ -174,7 +178,7 @@ class Resque
      *
      * @return array
      */
-    public static function stats()
+    public static function stats(): array
     {
         return Redis::instance()->hgetall('stats');
     }

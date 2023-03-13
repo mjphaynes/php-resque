@@ -18,15 +18,15 @@ namespace Resque\Helpers;
  */
 class ClosureJob
 {
-
     /**
      * Fire the Closure based queue job.
      *
-     * @param  array       $data
-     * @param  \Resque\Job $job
+     * @param array       $data
+     * @param \Resque\Job $job
+     *
      * @return void
      */
-    public function perform($data, $job)
+    public function perform(array $data, \Resque\Job $job): void
     {
         $closure = unserialize($data['closure']);
         $closure($job);

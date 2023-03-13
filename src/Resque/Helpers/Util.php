@@ -18,30 +18,30 @@ namespace Resque\Helpers;
  */
 class Util
 {
-
     /**
      * Returns human readable sizes. Based on original functions written by
      * [Aidan Lister](http://aidanlister.com/repos/v/function.size_readable.php)
      * and [Quentin Zervaas](http://www.phpriot.com/d/code/strings/filesize-format/).
      *
-     * @param  int    $bytes      size in bytes
-     * @param  string $force_unit a definitive unit
-     * @param  string $format     the return string format
-     * @param  bool   $si         whether to use SI prefixes or IEC
+     * @param int    $bytes      size in bytes
+     * @param string $force_unit a definitive unit
+     * @param string $format     the return string format
+     * @param bool   $si         whether to use SI prefixes or IEC
+     *
      * @return string
      */
-    public static function bytes($bytes, $force_unit = null, $format = null, $si = true)
+    public static function bytes(int $bytes, ?string $force_unit = '', ?string $format = null, bool $si = true): string
     {
         $format = ($format === null) ? '%01.2f %s' : (string) $format;
 
         // IEC prefixes (binary)
         if ($si == false or strpos($force_unit, 'i') !== false) {
-            $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
+            $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
             $mod = 1024;
 
-            // SI prefixes (decimal)
+        // SI prefixes (decimal)
         } else {
-            $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
+            $units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
             $mod = 1000;
         }
 
@@ -55,11 +55,11 @@ class Util
     /**
      * Constants for human_time_diff()
      */
-    const MINUTE_IN_SECONDS = 60;
-    const HOUR_IN_SECONDS   = 3600;
-    const DAY_IN_SECONDS    = 86400;
-    const WEEK_IN_SECONDS   = 604800;
-    const YEAR_IN_SECONDS   = 3.15569e7;
+    public const MINUTE_IN_SECONDS = 60;
+    public const HOUR_IN_SECONDS   = 3600;
+    public const DAY_IN_SECONDS    = 86400;
+    public const WEEK_IN_SECONDS   = 604800;
+    public const YEAR_IN_SECONDS   = 3.15569e7;
 
     /**
      * Determines the difference between two timestamps.
@@ -67,30 +67,31 @@ class Util
      * The difference is returned in a human readable format such as "1 hour",
      * "5 mins", "2 days".
      *
-     * @param  int    $from Unix timestamp from which the difference begins.
-     * @param  int    $to   Optional. Unix timestamp to end the time difference. Default becomes time() if not set.
+     * @param int $from Unix timestamp from which the difference begins.
+     * @param int $to   Optional. Unix timestamp to end the time difference. Default becomes time() if not set.
+     *
      * @return string Human readable time difference.
      */
-    public static function human_time_diff($from, $to = null)
+    public static function human_time_diff(int $from, ?int $to = null): string
     {
         $to = $to ?: time();
 
         $diff = (int)abs($to - $from);
 
         if ($diff < self::MINUTE_IN_SECONDS) {
-            $since = array($diff, 'sec');
+            $since = [$diff, 'sec'];
         } elseif ($diff < self::HOUR_IN_SECONDS) {
-            $since = array(round($diff / self::MINUTE_IN_SECONDS), 'min');
+            $since = [round($diff / self::MINUTE_IN_SECONDS), 'min'];
         } elseif ($diff < self::DAY_IN_SECONDS and $diff >= self::HOUR_IN_SECONDS) {
-            $since = array(round($diff / self::HOUR_IN_SECONDS), 'hour');
+            $since = [round($diff / self::HOUR_IN_SECONDS), 'hour'];
         } elseif ($diff < self::WEEK_IN_SECONDS and $diff >= self::DAY_IN_SECONDS) {
-            $since = array(round($diff / self::DAY_IN_SECONDS), 'day');
+            $since = [round($diff / self::DAY_IN_SECONDS), 'day'];
         } elseif ($diff < 30 * self::DAY_IN_SECONDS and $diff >= self::WEEK_IN_SECONDS) {
-            $since = array(round($diff / self::WEEK_IN_SECONDS), 'week');
+            $since = [round($diff / self::WEEK_IN_SECONDS), 'week'];
         } elseif ($diff < self::YEAR_IN_SECONDS and $diff >= 30 * self::DAY_IN_SECONDS) {
-            $since = array(round($diff / (30 * self::DAY_IN_SECONDS)), 'month');
+            $since = [round($diff / (30 * self::DAY_IN_SECONDS)), 'month'];
         } elseif ($diff >= self::YEAR_IN_SECONDS) {
-            $since = array(round($diff / self::YEAR_IN_SECONDS), 'year');
+            $since = [round($diff / self::YEAR_IN_SECONDS), 'year'];
         }
 
         if ($since[0] <= 1) {
@@ -104,13 +105,14 @@ class Util
      * Gets a value from an array using a dot separated path.
      * Returns true if found and false if not.
      *
-     * @param  array  $array     array to search
-     * @param  mixed  $path      key path string (delimiter separated) or array of keys
-     * @param  mixed  $found     value that was found
-     * @param  string $delimiter key path delimiter
+     * @param array  $array     array to search
+     * @param mixed  $path      key path string (delimiter separated) or array of keys
+     * @param mixed  $found     value that was found
+     * @param string $delimiter key path delimiter
+     *
      * @return bool
      */
-    public static function path($array, $path, &$found, $delimiter = '.')
+    public static function path(array $array, $path, &$found, string $delimiter = '.'): bool
     {
         if (!is_array($array)) {
             return false;

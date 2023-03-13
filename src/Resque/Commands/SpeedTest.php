@@ -18,38 +18,35 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-use Exception;
-
 /**
  * Performs a raw speed test
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-class SpeedTest extends Command
+final class SpeedTest extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('speed:test')
-            ->setDefinition($this->mergeDefinitions(array(
+            ->setDefinition($this->mergeDefinitions([
                 new InputOption('time', 't', InputOption::VALUE_REQUIRED, 'Length of time to run the test for', 10),
-            )))
+            ]))
             ->setDescription('Performs a speed test on php-resque to see how many jobs/second it can compute')
-            ->setHelp('Performs a speed test on php-resque to see how many jobs/second it can compute')
-        ;
+            ->setHelp('Performs a speed test on php-resque to see how many jobs/second it can compute');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!class_exists(Process::class)) {
-            throw new Exception('The Symfony process component is required to run the speed test.');
+            throw new \Exception('The Symfony process component is required to run the speed test.');
         }
 
-        Resque\Redis::setConfig(array('namespace' => 'resque:speedtest'));
+        Resque\Redis::setConfig(['namespace' => 'resque:speedtest']);
 
         $testTime = (int)$input->getOption('time') ?: 5;
 
         @unlink(RESQUE_DIR.'/test/speed/output.log');
-        $process = new Process(RESQUE_BIN_DIR.'/resque worker:start -c '.RESQUE_DIR.'/test/speed/config.yml');
+        $process = new Process([RESQUE_BIN_DIR.'/resque', 'worker:start', '-c', RESQUE_DIR.'/test/speed/config.yml']);
 
         $start = microtime(true);
         $process->start();
@@ -62,7 +59,7 @@ class SpeedTest extends Command
         $process->stop(0, SIGTERM);
 
         if (!$process->isSuccessful()) {
-            list($error) = explode('Exception trace:', $process->getErrorOutput());
+            [$error] = explode('Exception trace:', $process->getErrorOutput());
 
             $output->write('<error>'.$error.'</error>');
         }
@@ -78,7 +75,7 @@ class SpeedTest extends Command
     }
 
     // http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html
-    public function setProgress(OutputInterface $output, $stats, $testTime, $start)
+    public function setProgress(OutputInterface $output, array $stats, float $testTime, float $start): void
     {
         static $reset = false;
 
@@ -94,15 +91,15 @@ class SpeedTest extends Command
         $progress_bar .= $progress_complete_length == $progress_length ? '' : ' '.round($progress_percent * 100).'%';
 
         $display = <<<STATS
-<comment>%title% php-resque speed test</comment>%clr%
-%progress%%clr%
-Time:         <pop>%in%</pop>%clr%
-Processed:    <pop>%jobs%</pop>%clr%
-Speed:        <pop>%speed%</pop>%clr%
-Avg job time: <pop>%time%</pop>%clr%
-STATS;
+            <comment>%title% php-resque speed test</comment>%clr%
+            %progress%%clr%
+            Time:         <pop>%in%</pop>%clr%
+            Processed:    <pop>%jobs%</pop>%clr%
+            Speed:        <pop>%speed%</pop>%clr%
+            Avg job time: <pop>%time%</pop>%clr%
+            STATS;
 
-        $replace = array(
+        $replace = [
             '%title%'    => $exec_time == $testTime ? 'Finished' : 'Running',
             '%progress%' => $progress_bar,
             '%jobs%'     => @$stats['processed'].' job'.(@$stats['processed'] == 1 ? '' : 's'),
@@ -110,7 +107,7 @@ STATS;
             '%speed%'    => round($rate, 1).' jobs/s',
             '%time%'     => $rate > 0 ? round(1 / $rate * 1000, 1).' ms' : '-',
             '%clr%'      => "\033[K",
-        );
+        ];
 
         $output->writeln(($reset ? "\033[6A" : '').strtr($display, $replace));
 

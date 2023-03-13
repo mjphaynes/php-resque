@@ -8,7 +8,6 @@
 #
 # //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 
-
 include: examples/autoload.php  # A file to include on each command
 
 # # The legacy way, which only supports a subset of Redis options
@@ -48,7 +47,6 @@ include: examples/autoload.php  # A file to include on each command
 #         timeout: 60     # Job timeout (seconds)
 #         memory: 128     # Max worker memory
 
-
 # log:
 #     console: true                           # Output log to console
 #     off: true                               # Don't log
@@ -63,7 +61,6 @@ include: examples/autoload.php  # A file to include on each command
 #     errorlog: 0                             # Send to error_log
 #     cube: udp://localhost:5000              # Send to cube server
 
-
 # socket:
 #     listen:
 #         host: 0.0.0.0   #
@@ -75,6 +72,5 @@ include: examples/autoload.php  # A file to include on each command
 #         port: 7370      #
 #         timeout: 10     #
 #     json: false         #
-
 
 # That's all folks! \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\

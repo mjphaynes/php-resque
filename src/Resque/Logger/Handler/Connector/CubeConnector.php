@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CubeConnector extends AbstractConnector
 {
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args)
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): CubeHandler
     {
         return new CubeHandler($this->replacePlaceholders($args['url']));
     }
