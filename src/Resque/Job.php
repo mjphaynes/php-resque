@@ -111,7 +111,7 @@ class Job
      *
      * @return Job
      */
-    public static function create(string $queue, $class, ?array $data = null, int $run_at = 0): Job
+    public static function create(string $queue, $class, ?array $data = null, int $run_at = 0): ?self
     {
         $id = static::createId($queue, $class, $data, $run_at);
 
@@ -119,10 +119,10 @@ class Job
 
         if ($run_at > 0) {
             if (!$job->delay($run_at)) {
-                return false;
+                return null;
             }
         } elseif (!$job->queue()) {
-            return false;
+            return null;
         }
 
         Stats::incr('total', 1);
@@ -157,7 +157,7 @@ class Job
      *
      * @return static
      */
-    public static function load(string $id): self
+    public static function load(string $id): ?self
     {
         $packet = Redis::instance()->hgetall(self::redisKey($id));
 
