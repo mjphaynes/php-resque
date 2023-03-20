@@ -1,17 +1,18 @@
 version: "3.9"
 
 services:
-    app:
+    resque:
         container_name: resque
         image: resque:latest
         restart: unless-stopped
+        stdin_open: true
+        tty: true
         build:
             context: .
-            dockerfile: docker/Dockerfile
             args:
                 - PHP_VERSION=7
         ports:
-            - 8000:8000
+            - 8000:80
         volumes:
             - ./:/var/www/resque:rw
 

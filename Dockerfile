@@ -6,19 +6,19 @@ WORKDIR /build
 
 COPY composer.* ./
 
-RUN composer install --no-dev --no-scripts --no-autoloader --ignore-platform-reqs
+RUN composer install --no-dev --no-scripts --no-autoloader --ignore-platform-reqs --classmap-authoritative
 
 COPY . .
 
 RUN composer dump-autoload -o
 
-FROM php:${PHP_VERSION}-fpm-alpine
+FROM php:${PHP_VERSION}-cli-alpine
 
 RUN apk add --no-cache -t .production-deps \
     hiredis libzip
 
 RUN set -xe \
-    && apk add --no-cache -t .build-deps $PHPIZE_DEPS linux-headers git \
+    && apk add --no-cache -t .build-deps $PHPIZE_DEPS git \
     hiredis-dev libzip-dev \
     && pecl install -f apcu-5.1.22 redis-5.3.7 \
     && git clone https://github.com/nrk/phpiredis.git \
@@ -41,11 +41,9 @@ RUN set -xe \
     && apk del --purge .build-deps
 
 COPY --from=build --chown=www-data:www-data /build /var/www/resque
-
-RUN chmod -R +x /var/www/resque/bin
-
-ENV COMPOSER_ALLOW_SUPERUSER=1
 COPY --from=build /usr/bin/composer /usr/local/bin/composer
 
-EXPOSE 80
+RUN chmod -R +x /var/www/resque/bin
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 WORKDIR /var/www/resque
