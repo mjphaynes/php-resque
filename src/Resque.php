@@ -24,7 +24,7 @@ class Resque
     /**
      * php-resque version
      */
-    public const VERSION = '3.2.0';
+    public const VERSION = '4.0.0';
 
     /**
      * How long the job and worker data will remain in Redis for
@@ -35,7 +35,7 @@ class Resque
     /**
      * Default config file name
      */
-    public const DEFAULT_CONFIG_FILE = 'config.yml';
+    public const DEFAULT_CONFIG_FILE = 'resque.yml';
 
     /**
      * @var array Configuration settings array.
