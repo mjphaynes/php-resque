@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": "^7.4|^8.0",
         "ext-pcntl": "*",
         "predis/predis": "1.1.*",
         "monolog/monolog": "^2.5",
@@ -33,25 +33,25 @@
         "symfony/process": "To run the speed test command."
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.5",
         "symfony/process": "^5.4|^6.0"
     },
     "bin": [
         "bin/resque"
     ],
     "scripts": {
-        "cs-ci": "./vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose",
-        "cs-fix": "./vendor/bin/php-cs-fixer fix --using-cache=no --verbose",
-        "test": "./vendor/bin/phpunit"
+        "cs-ci": "tools/php-cs-fixer fix --verbose",
+        "cs-fix": "tools/php-cs-fixer fix --verbose",
+        "test": "phpunit"
     },
     "autoload": {
-        "psr-0": {
-            "Resque": "src"
+        "psr-4": {
+            "Resque\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/Resque"
+            "Tests\\": "tests"
         }
     }
 }
