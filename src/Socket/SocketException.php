@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -8,19 +9,14 @@
  * file that was distributed with this source code.
  */
 
+namespace Resque\Socket;
+
 /**
- * This job fails because of fatal error in script
+ * Socket Exceptions
  *
  * @package Resque
  * @author Michael Haynes
  */
-class FailError
+class SocketException extends \Exception
 {
-    // @codingStandardsIgnoreStart
-    public function perform($args)
-    {
-        }
-
-    }
-    // @codingStandardsIgnoreEnd
 }

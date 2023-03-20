@@ -11,7 +11,8 @@
 /**
  * This job prints out some text
  *
- * @author Michael Haynes <mike@mjphaynes.com>
+ * @package Resque
+ * @author Michael Haynes
  */
 class HelloWorld
 {

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -8,19 +9,24 @@
  * file that was distributed with this source code.
  */
 
+namespace Resque\Helpers;
+
 /**
- * This job fails because of fatal error in script
+ * Executes stored closure job
  *
  * @package Resque
  * @author Michael Haynes
  */
-class FailError
+class ClosureJob
 {
-    // @codingStandardsIgnoreStart
-    public function perform($args)
+    /**
+     * Fire the Closure based queue job.
+     *
+     * @return void
+     */
+    public function perform(array $data, \Resque\Job $job): void
     {
-        }
-
+        $closure = unserialize($data['closure']);
+        $closure($job);
     }
-    // @codingStandardsIgnoreEnd
 }

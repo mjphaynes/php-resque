@@ -12,7 +12,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Unit;
+namespace Tests;
 
 use Resque\Helpers\Util;
 use PHPUnit\Framework\TestCase;

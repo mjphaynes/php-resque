@@ -9,15 +9,6 @@
  * file that was distributed with this source code.
  */
 
-/*
- * This file is part of the php-resque package.
- *
- * (c) Michael Haynes <mike@mjphaynes.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 /**
  * This is a quick and dirty to give you something visual when getting started
  * with php-resque. Navigate to /path/to/php-resque/examples/ in your browser
@@ -26,6 +17,11 @@
  * Note that you will also have to run `/path/to/bin/resque worker:start` from
  * your command line in order for php-resque to process jobs.
  */
+
+use Resque\Config;
+use Resque\Redis;
+use Resque\Resque;
+
 if (!ini_get('date.timezone') or ! date_default_timezone_get()) {
     date_default_timezone_set('UTC');
 }
@@ -39,13 +35,13 @@ if (file_exists($file = __DIR__ . '/../vendor/autoload.php')) {
     exit(1);
 }
 
-Resque::loadConfig();
+Config::loadConfig();
 
 $job = false;
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'reset':
-            $redis = Resque\Redis::instance();
+            $redis = Redis::instance();
             $keys = $redis->keys('*');
             foreach ($keys as $key) {
                 $redis->del($key);
@@ -113,10 +109,10 @@ $rep = 150;
 echo str_repeat('=', $rep) . PHP_EOL;
 
 echo 'Resque stats:  ' . json_encode(Resque::stats()) . PHP_EOL;
-echo 'Hosts:         ' . json_encode(Resque\Redis::instance()->smembers('hosts')) . PHP_EOL;
-echo 'Workers:       ' . json_encode(Resque\Redis::instance()->smembers('workers')) . PHP_EOL;
-echo 'Queues:        ' . json_encode(Resque\Redis::instance()->smembers('queues')) . PHP_EOL;
-echo 'Default queue: ' . json_encode(Resque\Redis::instance()->hgetall('queue:default:stats')) . PHP_EOL;
+echo 'Hosts:         ' . json_encode(Redis::instance()->smembers('hosts')) . PHP_EOL;
+echo 'Workers:       ' . json_encode(Redis::instance()->smembers('workers')) . PHP_EOL;
+echo 'Queues:        ' . json_encode(Redis::instance()->smembers('queues')) . PHP_EOL;
+echo 'Default queue: ' . json_encode(Redis::instance()->hgetall('queue:default:stats')) . PHP_EOL;
 echo 'Time:          ' . json_encode([time(), date('r')]) . PHP_EOL;
 
 echo str_repeat('=', $rep) . PHP_EOL;
@@ -131,11 +127,11 @@ if (!empty($id)) {
     }
 }
 
-list_jobs('Default queue queued jobs', Resque\Redis::instance()->lrange('queue:default', 0, -1));
+list_jobs('Default queue queued jobs', Redis::instance()->lrange('queue:default', 0, -1));
 foreach (['delayed', 'running', 'processed', 'failed', 'cancelled'] as $status) {
     list_jobs(
         'Default queue ' . $status . ' jobs',
-        $djobs = Resque\Redis::instance()->zrevrangebyscore('queue:default:' . $status, strtotime('+1 year'), 0)
+        $djobs = Redis::instance()->zrevrangebyscore('queue:default:' . $status, strtotime('+1 year'), 0)
     );
 }
 

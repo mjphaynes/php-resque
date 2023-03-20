@@ -11,7 +11,8 @@
 /**
  * This job waits for 30 seconds
  *
- * @author Michael Haynes <mike@mjphaynes.com>
+ * @package Resque
+ * @author Michael Haynes
  */
 class LongRunning
 {

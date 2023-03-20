@@ -8,16 +8,16 @@
 #
 # //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
 
-include: examples/autoload.php  # A file to include on each command
+include: examples/autoload.php # A file to include on each command
 
 # # The legacy way, which only supports a subset of Redis options
 # redis:
-#     scheme: tcp         # The connection scheme
-#     host: 127.0.0.1     # The hostname to connect to
-#     port: 6379          # The port to connect to
-#     namespace: resque   # The key prefix in Redis
-#     rw_timeout: 60      # Redis read/write timeout
-#     phpiredis: false    # Should use phpiredis php extension (must be installed)
+#   scheme: tcp         # The connection scheme
+#   host: 127.0.0.1     # The hostname to connect to
+#   port: 6379          # The port to connect to
+#   namespace: resque   # The key prefix in Redis
+#   rw_timeout: 60      # Redis read/write timeout
+#   phpiredis: false    # Should use phpiredis php extension (must be installed)
 
 # # the predis native way (sentinel example)
 # # "config" is the first parameter to Predis\Client
@@ -35,42 +35,40 @@ include: examples/autoload.php  # A file to include on each command
 #       database: 12
 
 # default:
-#    expiry_time: 604800 # Default expiry time of Redis keys
-#    verbose: 1          # quiet=0, normal=1, verbose=2, very_verbose=3, debug=4
-#     jobs:
-#         queue: default  # Default queue to add a job to
-#         delay: false    # Default delay to add to jobs false=no delay
-#     workers:
-#         queue: "*"      # Default queue to watch, *=all queues
-#         blocking: true  # Use Redis blocking
-#         interval: 10    # Worker interval (seconds)
-#         timeout: 60     # Job timeout (seconds)
-#         memory: 128     # Max worker memory
+#   expiry_time: 604800 # Default expiry time of Redis keys
+#   verbose: 1 # quiet=0, normal=1, verbose=2, very_verbose=3, debug=4
+#   jobs:
+#     queue: default # Default queue to add a job to
+#     delay: false # Default delay to add to jobs false=no delay
+#   workers:
+#     queue: "*" # Default queue to watch, *=all queues
+#     blocking: true # Use Redis blocking
+#     interval: 10 # Worker interval (seconds)
+#     timeout: 60 # Job timeout (seconds)
+#     memory: 128 # Max worker memory
 
 # log:
-#     console: true                           # Output log to console
-#     off: true                               # Don't log
-#     stream: output.log                      # Log to file
-#     rotate: 5:output.log                    # Log to file and rotate files
-#     redis: 127.0.0.1:6379/resque            # Store in Redis
-#     mongodb: 127.0.0.1:27017/dbname/resque  # Store in MongoDB
-#     couchdb: 127.0.0.1:27017/dbname         # Store in CouchDB
-#     amqp: 127.0.0.1:5763/name               # Send to AMQP
-#     socket: udp://127.0.0.1:80              # Send to socket
-#     syslog: myfacility/local6               # Send to Syslog
-#     errorlog: 0                             # Send to error_log
-#     cube: udp://localhost:5000              # Send to cube server
+#   console: true # Output log to console
+#   off: true # Don't log
+#   stream: output.log # Log to file
+#   rotate: 5:output.log # Log to file and rotate files
+#   redis: 127.0.0.1:6379/resque # Store in Redis
+#   mongodb: 127.0.0.1:27017/dbname/resque # Store in MongoDB
+#   couchdb: 127.0.0.1:27017/dbname # Store in CouchDB
+#   amqp: 127.0.0.1:5763/name # Send to AMQP
+#   socket: udp://127.0.0.1:80 # Send to socket
+#   syslog: myfacility/local6 # Send to Syslog
+#   errorlog: 0 # Send to error_log
+#   cube: udp://localhost:5000 # Send to cube server
 
 # socket:
-#     listen:
-#         host: 0.0.0.0   #
-#         port: 7370      #
-#         timeout: 10     #
-#         retry: 10       #
-#     connect:
-#         host: 127.0.0.1 #
-#         port: 7370      #
-#         timeout: 10     #
-#     json: false         #
-
-# That's all folks! \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+#   listen:
+#     host: 0.0.0.0
+#     port: 7370
+#     timeout: 10
+#     retry: 10
+#   connect:
+#     host: 127.0.0.1
+#     port: 7370
+#     timeout: 10
+#   json: false

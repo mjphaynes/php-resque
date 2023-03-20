@@ -44,5 +44,4 @@ if (!$loaded) {
 }
 
 $application = new Resque\Console\ResqueApplication();
-
 $application->run();

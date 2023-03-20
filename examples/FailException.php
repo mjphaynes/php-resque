@@ -11,7 +11,8 @@
 /**
  * This job fails because exception is thrown
  *
- * @author Michael Haynes <mike@mjphaynes.com>
+ * @package Resque
+ * @author Michael Haynes
  */
 class FailException
 {

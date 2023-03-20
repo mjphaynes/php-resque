@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -8,19 +9,14 @@
  * file that was distributed with this source code.
  */
 
+namespace Resque\Exception;
+
 /**
- * This job fails because of fatal error in script
+ * Resque dirty job fail exception
  *
  * @package Resque
  * @author Michael Haynes
  */
-class FailError
+final class Dirty extends \RuntimeException
 {
-    // @codingStandardsIgnoreStart
-    public function perform($args)
-    {
-        }
-
-    }
-    // @codingStandardsIgnoreEnd
 }
