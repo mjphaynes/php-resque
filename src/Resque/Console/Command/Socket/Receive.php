@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Commands\Socket;
+namespace Resque\Command\Socket;
 
 use Resque;
 use Resque\Job;
@@ -17,7 +17,7 @@ use Resque\Host;
 use Resque\Worker;
 use Resque\Socket;
 use Resque\Helpers\Util;
-use Resque\Commands\Command;
+use Resque\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputDefinition;

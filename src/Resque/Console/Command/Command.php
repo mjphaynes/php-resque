@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Commands;
+namespace Resque\Command;
 
 use Resque;
 use Resque\Helpers\Util;

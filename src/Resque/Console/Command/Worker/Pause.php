@@ -9,29 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Commands\Worker;
+namespace Resque\Command\Worker;
 
 use Resque;
-use Resque\Commands\Command;
+use Resque\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Worker cancel command class
+ * Worker pause command class
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-final class Cancel extends Command
+final class Pause extends Command
 {
     protected function configure(): void
     {
-        $this->setName('worker:cancel')
+        $this->setName('worker:pause')
             ->setDefinition($this->mergeDefinitions([
-                new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to cancel it\'s running job (optional; if not present cancels all workers).'),
+                new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to pause (optional; if not present pauses all workers).'),
             ]))
-            ->setDescription('Cancel job on a running worker. If no worker id set then cancels all workers')
-            ->setHelp('Cancel job on a running worker. If no worker id set then cancels all workers');
+            ->setDescription('Pause a running worker. If no worker id set then pauses all workers')
+            ->setHelp('Pause a running worker. If no worker id set then pauses all workers');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -54,21 +54,14 @@ final class Cancel extends Command
         }
 
         if (!count($workers)) {
-            $this->log('<warn>There are no workers on this host</warn>');
+            $this->log('<warn>There are no workers on this host.<warn>');
         }
 
         foreach ($workers as $worker) {
-            $packet  = $worker->getPacket();
-            $job_pid = (int)$packet['job_pid'];
-
-            if ($job_pid and posix_kill($job_pid, 0)) {
-                if (posix_kill($job_pid, SIGUSR1)) {
-                    $this->log('Worker <pop>'.$worker.'</pop> running job SIGUSR1 signal sent.');
-                } else {
-                    $this->log('Worker <pop>'.$worker.'</pop> <error>running job SIGUSR1 signal could not be sent.</error>');
-                }
+            if (posix_kill($worker->getPid(), SIGUSR2)) {
+                $this->log('Worker <pop>'.$worker.'</pop> USR2 signal sent.');
             } else {
-                $this->log('Worker <pop>'.$worker.'</pop> has no running job.');
+                $this->log('Worker <pop>'.$worker.'</pop> <error>could not send USR2 signal.</error>');
             }
         }
 

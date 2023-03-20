@@ -9,29 +9,31 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Commands\Worker;
+namespace Resque\Command\Worker;
 
 use Resque;
-use Resque\Commands\Command;
+use Resque\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Worker pause command class
+ * Worker stop command class
  *
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-final class Pause extends Command
+final class Stop extends Command
 {
     protected function configure(): void
     {
-        $this->setName('worker:pause')
+        $this->setName('worker:stop')
             ->setDefinition($this->mergeDefinitions([
-                new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to pause (optional; if not present pauses all workers).'),
+                new InputArgument('id', InputArgument::OPTIONAL, 'The id of the worker to stop (optional; if not present stops all workers).'),
+                new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force worker to stop, cancelling any current job.'),
             ]))
-            ->setDescription('Pause a running worker. If no worker id set then pauses all workers')
-            ->setHelp('Pause a running worker. If no worker id set then pauses all workers');
+            ->setDescription('Stop a running worker. If no worker id set then stops all workers')
+            ->setHelp('Stop a running worker. If no worker id set then stops all workers');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -54,14 +56,16 @@ final class Pause extends Command
         }
 
         if (!count($workers)) {
-            $this->log('<warn>There are no workers on this host.<warn>');
+            $this->log('<warn>There are no workers on this host</warn>');
         }
 
+        $sig = $input->getOption('force') ? 'TERM' : 'QUIT';
+
         foreach ($workers as $worker) {
-            if (posix_kill($worker->getPid(), SIGUSR2)) {
-                $this->log('Worker <pop>'.$worker.'</pop> USR2 signal sent.');
+            if (posix_kill($worker->getPid(), constant('SIG'.$sig))) {
+                $this->log('Worker <pop>'.$worker.'</pop> '.$sig.' signal sent.');
             } else {
-                $this->log('Worker <pop>'.$worker.'</pop> <error>could not send USR2 signal.</error>');
+                $this->log('Worker <pop>'.$worker.'</pop> <error>could not send '.$sig.' signal.</error>');
             }
         }
 

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Commands\Job;
+namespace Resque\Command\Job;
 
 use Resque;
-use Resque\Commands\Command;
+use Resque\Command\Command;
 use Resque\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

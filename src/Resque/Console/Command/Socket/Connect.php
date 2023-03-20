@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Resque\Commands\Socket;
+namespace Resque\Command\Socket;
 
 use Resque;
-use Resque\Commands\Command;
+use Resque\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
