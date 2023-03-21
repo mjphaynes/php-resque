@@ -42,12 +42,26 @@ final class SpeedTest extends Command
             throw new \Exception('The Symfony process component is required to run the speed test.');
         }
 
-        Redis::setConfig(['namespace' => 'resque:speedtest']);
+        $redisNamespace = 'resque:speedtest';
+        $logFile = RESQUE_DIR.'/speed.log';
+
+        Redis::setConfig(['namespace' => $redisNamespace]);
 
         $testTime = (int)$input->getOption('time') ?: 5;
 
-        @unlink(RESQUE_DIR.'/test/speed/output.log');
-        $process = new Process([RESQUE_BIN_DIR.'/resque', 'worker:start', '-c', RESQUE_DIR.'/test/speed/config.yml']);
+        @unlink($logFile);
+        $process = new Process([
+            RESQUE_BIN_DIR.'/resque', 'worker:start',
+            '-I', RESQUE_DIR.'/autoload.php',
+            '--scheme', $this->config['scheme'],
+            '-H', $this->config['host'],
+            '-p', $this->config['port'],
+            '--namespace', $redisNamespace,
+            '--log', $logFile,
+            '-b', true,
+            '-i', 1,
+            '-vv',
+        ]);
 
         $start = microtime(true);
         $process->start();

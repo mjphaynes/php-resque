@@ -9,8 +9,13 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * Autoload file for php-resque speedtest feature.
+ */
+
 use Resque\Event;
 use Resque\Logger;
+use Resque\Resque;
 
 // Test job class
 class TestJob

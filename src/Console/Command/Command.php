@@ -38,7 +38,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     protected Logger $logger;
 
     /**
-     * @var array<string, string> Config array
+     * @var array<string, mixed> Config array
      */
     protected array $config = [];
 

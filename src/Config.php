@@ -168,7 +168,7 @@ class Config
      */
     protected static function fromYaml(string $configFilePath): array
     {
-        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
+        if (!class_exists(Yaml::class)) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException('Missing yaml parser, symfony/yaml package is not installed.');
             // @codeCoverageIgnoreEnd
