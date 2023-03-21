@@ -11,7 +11,6 @@
 
 namespace Resque\Console\Command\Socket;
 
-use Resque\Resque;
 use Resque\Job;
 use Resque\Host;
 use Resque\Worker;

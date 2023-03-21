@@ -13,7 +13,6 @@ namespace Resque;
 
 use InvalidArgumentException;
 use Resque\Helpers\Util;
-use Resque\Redis;
 use RuntimeException;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
@@ -24,7 +23,7 @@ use Symfony\Component\Yaml\Yaml;
  * @package Resque
  * @author Paul Litovka
  */
-class Config
+final class Config
 {
     /**
      * Default config file name
@@ -51,10 +50,8 @@ class Config
      * Reads and loads data from a config file
      *
      * @param string $file The config file path
-     *
-     * @return bool
      */
-    public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): bool
+    public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): void
     {
         static::$config = static::parseConfig($file);
 
@@ -68,8 +65,6 @@ class Config
             'phpiredis'  => static::read('redis.phpiredis', Redis::DEFAULT_PHPIREDIS),
             'predis'     => static::read('predis'),
         ]);
-
-        return true;
     }
 
     /**

@@ -17,7 +17,7 @@ namespace Resque;
  * @package Resque
  * @author Michael Haynes
  */
-class Event
+final class Event
 {
     // Worker event constants
     public const WORKER_INSTANCE       = 100;

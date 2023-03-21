@@ -19,7 +19,7 @@ use Resque\Redis;
  * @package Resque
  * @author Michael Haynes
  */
-class Stats
+final class Stats
 {
     public const DEFAULT_KEY = 'stats';
 

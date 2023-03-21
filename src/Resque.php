@@ -11,9 +11,6 @@
 
 namespace Resque;
 
-use Resque\Redis;
-use Resque\Queue;
-
 /**
  * Main Resque class
  *

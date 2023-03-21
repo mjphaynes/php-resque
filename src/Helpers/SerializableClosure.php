@@ -17,7 +17,7 @@ namespace Resque\Helpers;
  * @package Resque
  * @author Michael Haynes
  */
-class SerializableClosure
+final class SerializableClosure
 {
     /**
      * The Closure instance.

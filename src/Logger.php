@@ -19,7 +19,7 @@ use Monolog\Logger as Monolog;
  * @package Resque
  * @author Michael Haynes
  */
-class Logger
+final class Logger
 {
     /**
      * Detailed debug information

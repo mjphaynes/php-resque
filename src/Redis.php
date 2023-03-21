@@ -19,7 +19,7 @@ use Predis\Client;
  * @package Resque
  * @author Michael Haynes
  */
-class Redis
+final class Redis
 {
     /**
      * Default Redis connection scheme

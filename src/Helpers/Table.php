@@ -20,7 +20,7 @@ use Symfony\Component\Console\Helper\TableStyle;
  * @package Resque
  * @author Michael Haynes
  */
-class Table
+final class Table
 {
     /**
      * @var TableHelper

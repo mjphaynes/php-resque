@@ -11,7 +11,6 @@
 
 namespace Resque\Console\Command\Worker;
 
-use Resque\Resque;
 use Resque\Console\Command\Command;
 use Resque\Worker;
 use Symfony\Component\Console\Input\InputArgument;

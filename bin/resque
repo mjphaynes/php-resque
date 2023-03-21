@@ -10,9 +10,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * The main point of entry for the php-resque commands
- */
 if (!ini_get('date.timezone') or ! date_default_timezone_get()) {
     date_default_timezone_set('UTC');
 }

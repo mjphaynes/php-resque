@@ -11,8 +11,6 @@
 
 namespace Resque\Console\Command;
 
-use Resque\Resque;
-use Resque\Console\Command\Command;
 use Resque\Host;
 use Resque\Redis;
 use Symfony\Component\Console\Input\InputInterface;

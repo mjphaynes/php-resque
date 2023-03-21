@@ -19,7 +19,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  * @package Resque
  * @author Michael Haynes
  */
-class CatchOutput extends \Symfony\Component\Console\Output\Output
+final class CatchOutput extends \Symfony\Component\Console\Output\Output
 {
     /**
      * @var string Stored output string

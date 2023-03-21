@@ -11,7 +11,6 @@
 
 namespace Resque\Console\Command\Socket;
 
-use Resque\Resque;
 use Resque\Console\Command\Command;
 use Resque\Socket\Server;
 use Symfony\Component\Console\Input\InputArgument;

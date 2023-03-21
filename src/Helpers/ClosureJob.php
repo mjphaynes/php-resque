@@ -17,7 +17,7 @@ namespace Resque\Helpers;
  * @package Resque
  * @author Michael Haynes
  */
-class ClosureJob
+final class ClosureJob
 {
     /**
      * Fire the Closure based queue job.

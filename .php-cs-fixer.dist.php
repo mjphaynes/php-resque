@@ -32,6 +32,7 @@ return (new PhpCsFixer\Config())->setRules([
         'phpdoc_types' => true,
         'phpdoc_scalar' => true,
         'phpdoc_align' => true,
+        'no_unused_imports' => true,
         'array_syntax' => ['syntax' => 'short'],
         'header_comment' => ['header' => $header],
     ])

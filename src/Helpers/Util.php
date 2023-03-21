@@ -17,7 +17,7 @@ namespace Resque\Helpers;
  * @package Resque
  * @author Michael Haynes
  */
-class Util
+final class Util
 {
     /**
      * Returns human readable sizes. Based on original functions written by
