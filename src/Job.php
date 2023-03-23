@@ -11,6 +11,7 @@
 
 namespace Resque;
 
+use Resque\Helpers\ClosureJob;
 use Resque\Helpers\Stats;
 
 /**
@@ -209,7 +210,7 @@ final class Job
         $this->data  = $data;
 
         if ($class instanceof \Closure) {
-            $this->class = 'Resque\Helpers\ClosureJob';
+            $this->class = ClosureJob::class;
             $this->data  = $class;
         } else {
             $this->class = $class;
@@ -326,13 +327,13 @@ final class Job
             ob_start();
 
             if (method_exists($instance, 'setUp')) {
-                $instance->setUp();
+                $instance->setUp($this);
             }
 
             call_user_func_array([$instance, $this->method], [$this->data, $this]);
 
             if (method_exists($instance, 'tearDown')) {
-                $instance->tearDown();
+                $instance->tearDown($this);
             }
 
             $this->complete();
