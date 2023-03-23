@@ -29,12 +29,15 @@
         "symfony/console": "^5.4|^6.0"
     },
     "suggest": {
-        "ext-phpiredis": "Native PHP extension for Redis connectivity. Predis will automatically utilize when available.",
-        "symfony/process": "To run the speed test command.",
-        "symfony/yaml": "To use the YAML config file."
+        "ext-mongodb": "For using the MongoDB logger.",
+        "ext-phpiredis": "For using native Redis connectivity.",
+        "mongodb/mongodb": "For using the MongoDB logger.",
+        "symfony/process": "For using the speed test command.",
+        "symfony/yaml": "For using the YAML configuration file."
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
+        "mongodb/mongodb": "^1.0",
         "symfony/process": "^5.4|^6.0",
         "symfony/yaml": "^5.4|^6.0"
     },

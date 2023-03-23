@@ -11,6 +11,7 @@
 
 namespace Resque\Logger\Handler\Connector;
 
+use MongoDB\Client;
 use Monolog\Handler\MongoDBHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,10 +31,8 @@ class MongoDBConnector extends AbstractConnector
         $dsn     = strtr('mongodb://host:port', $args);
         $options = [];
 
-        if (class_exists('MongoClient')) {
-            $mongodb = new \MongoClient($dsn, $options);
-        } elseif (class_exists('Mongo')) {
-            $mongodb = new \Mongo($dsn, $options);
+        if (class_exists(Client::class)) {
+            $mongodb = new Client($dsn, $options);
         }
 
         return new MongoDBHandler($mongodb, $this->replacePlaceholders($args['dbname']), $this->replacePlaceholders($args['collection']));

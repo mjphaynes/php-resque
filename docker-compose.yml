@@ -1,26 +1,26 @@
 version: "3.9"
 
 services:
-    resque:
-        container_name: resque
-        image: resque:latest
-        restart: unless-stopped
-        stdin_open: true
-        tty: true
-        build:
-            context: .
-            args:
-                - PHP_VERSION=7
-        ports:
-            - 8000:80
-        volumes:
-            - ./:/var/www/resque:rw
+  resque:
+    container_name: resque
+    image: resque:latest
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      args:
+        - PHP_VERSION=7
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www/resque:rw
 
-    redis:
-        container_name: resque-redis
-        image: redis:7.0-alpine
-        volumes:
-            - redis:/data:rw
+  redis:
+    container_name: resque-redis
+    image: redis:7.0-alpine
+    volumes:
+      - redis:/data:rw
 
 volumes:
-    redis:
+  redis:

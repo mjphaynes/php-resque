@@ -18,23 +18,22 @@ RUN apk add --no-cache -t .production-deps \
     hiredis libzip
 
 RUN set -xe \
-    && apk add --no-cache -t .build-deps $PHPIZE_DEPS git \
+    && apk add --no-cache -t .build-deps $PHPIZE_DEPS \
     hiredis-dev libzip-dev \
-    && pecl install -f apcu-5.1.22 redis-5.3.7 \
-    && git clone https://github.com/nrk/phpiredis.git \
+    && pecl install -f apcu-5.1.22 redis-5.3.7 mongodb-1.15.1 \
+    && wget -qO- https://github.com/nrk/phpiredis/archive/v1.1.zip | busybox unzip - \
     && ( \
-        cd phpiredis \
-        && git checkout v1.1 \
+        cd phpiredis-1.1 \
         && phpize \
         && ./configure --enable-phpiredis \
         && make \
         && make install \
     ) \
-    && rm -r phpiredis \
+    && rm -r phpiredis-1.1 \
     && docker-php-source extract \
     && docker-php-ext-configure pcntl --enable-pcntl \
     && docker-php-ext-install -j$(nproc) pcntl zip \
-    && docker-php-ext-enable apcu redis phpiredis \
+    && docker-php-ext-enable apcu redis mongodb phpiredis \
     && docker-php-source delete \
     && pecl clear-cache \
     && rm -rf /tmp/* \
