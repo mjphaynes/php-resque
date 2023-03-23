@@ -16,6 +16,15 @@ namespace Resque;
  *
  * @package Resque
  * @author Michael Haynes
+ *
+ * @method static string            redisKey(?string $queue = null, ?string $suffix = null)          Get the Queue key.
+ * @method static \Resque\Job       job(string $id)                                                  Get a job by id.
+ * @method static \Resque\Job       push($job, ?array $data = null, ?string $queue = null)           Push a new job onto the queue.
+ * @method static \Resque\Job       later($job, ?array $data = null, ?string $queue = null)          Queue a job for later retrieval.
+ * @method static \Resque\Job|false pop(array $queues, int $timeout = 10, bool $blocking = true)     Pop the next job off of the queue.
+ * @method static int               size(string $queue) Get the size (number of pending jobs)        of the specified queue.
+ * @method static int               sizeDelayed(string $queue) Get the size (number of delayed jobs) of the specified queue.
+ * @method static string            getQueue(?string $queue)                                         Get the queue or return the default.
  */
 class Resque
 {

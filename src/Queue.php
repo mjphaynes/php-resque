@@ -30,7 +30,19 @@ final class Queue
     protected string $default;
 
     /**
-     * Get the Queue key
+     * Create a new queue instance
+     *
+     * @param string $default Name of default queue to add job to
+     */
+    public function __construct(?string $default = null)
+    {
+        $this->redis = Redis::instance();
+
+        $this->default = $default ?: Config::read('default.jobs.queue', 'default');
+    }
+
+    /**
+     * Get the Queue key.
      *
      * @param string|null $queue  the worker to get the key for
      * @param string|null $suffix to be appended to key
@@ -47,19 +59,7 @@ final class Queue
     }
 
     /**
-     * Create a new queue instance
-     *
-     * @param string $default Name of default queue to add job to
-     */
-    public function __construct(?string $default = null)
-    {
-        $this->redis = Redis::instance();
-
-        $this->default = $default ?: Config::read('default.jobs.queue', 'default');
-    }
-
-    /**
-     * Get a job by id
+     * Get a job by id.
      *
      * @param string $id Job id
      *
@@ -71,7 +71,7 @@ final class Queue
     }
 
     /**
-     * Push a new job onto the queue
+     * Push a new job onto the queue.
      *
      * @param string|callable $job   The job class
      * @param array           $data  The job data
@@ -89,7 +89,8 @@ final class Queue
     }
 
     /**
-     * Queue a job for later retrieval. Jobs are unique per queue and
+     * Queue a job for later retrieval.
+     * Jobs are unique per queue and
      * are deleted upon retrieval. If a given job (payload) already exists,
      * it is updated with the new delay.
      *
@@ -100,7 +101,7 @@ final class Queue
      *
      * @return Job job instance
      */
-    public function later($delay, $job, array $data = [], ?string $queue = null)
+    public function later($delay, $job, array $data = [], ?string $queue = null): Job
     {
         // If it's a datetime object conver to unix time
         if ($delay instanceof \DateTime) {
@@ -160,7 +161,7 @@ final class Queue
     }
 
     /**
-     * Return the size (number of pending jobs) of the specified queue.
+     * Get the size (number of pending jobs) of the specified queue.
      *
      * @param  string $queue name of the queue to be checked for pending jobs
      * @return int    The size of the queue.
@@ -171,7 +172,7 @@ final class Queue
     }
 
     /**
-     * Return the size (number of delayed jobs) of the specified queue.
+     * Get the size (number of delayed jobs) of the specified queue.
      *
      * @param  string $queue name of the queue to be checked for delayed jobs
      * @return int    The size of the delayed queue.
