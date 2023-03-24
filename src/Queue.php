@@ -15,7 +15,7 @@ namespace Resque;
  * Resque queue class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Queue
 {

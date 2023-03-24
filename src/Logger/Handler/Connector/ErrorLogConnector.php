@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Error log monolog connector class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class ErrorLogConnector extends AbstractConnector
 {

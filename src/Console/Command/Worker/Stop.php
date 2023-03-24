@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Worker stop command class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Stop extends Command
 {

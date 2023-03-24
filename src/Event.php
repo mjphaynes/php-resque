@@ -15,7 +15,7 @@ namespace Resque;
  * Resque event/hook system class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Event
 {

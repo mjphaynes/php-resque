@@ -15,7 +15,7 @@ namespace Resque\Exception;
  * Resque zombie job exception
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Zombie extends \Exception
 {

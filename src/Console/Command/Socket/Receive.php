@@ -28,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * TCP receive command class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Receive extends Command
 {

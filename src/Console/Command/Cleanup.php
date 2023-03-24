@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Clean up hosts and workers from Redis
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Cleanup extends Command
 {

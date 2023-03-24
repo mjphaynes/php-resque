@@ -17,7 +17,7 @@ use Resque\Redis;
  * Stats recording
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Stats
 {

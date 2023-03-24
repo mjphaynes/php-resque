@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Worker start command class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Start extends Command
 {

@@ -18,7 +18,7 @@ use Symfony\Component\Console\Helper\TableStyle;
  * Wrapper for Symfony table helper
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Table
 {

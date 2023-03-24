@@ -17,7 +17,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  * Catch output and store
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class CatchOutput extends \Symfony\Component\Console\Output\Output
 {

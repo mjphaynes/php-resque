@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Abstract monolog connector class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 abstract class AbstractConnector implements ConnectorInterface
 {

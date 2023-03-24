@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
  * Monolog console handler
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class ConsoleHandler extends AbstractProcessingHandler
 {

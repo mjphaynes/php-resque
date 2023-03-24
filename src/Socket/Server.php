@@ -17,7 +17,7 @@ use Resque\Logger;
  * Socket server management
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class Server
 {

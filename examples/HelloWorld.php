@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -12,7 +13,7 @@
  * This job prints out some text
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class HelloWorld
 {

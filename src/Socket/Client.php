@@ -15,7 +15,7 @@ namespace Resque\Socket;
  * Socket client connection
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class Client
 {

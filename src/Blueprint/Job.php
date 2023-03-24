@@ -17,7 +17,7 @@ namespace Resque\Blueprint;
  * Blueprint for all jobs to extend.
  *
  * @package Resque
- * @author Paul Litovka
+ * @author Paul Litovka <paxanddos@gmail.com>
  */
 abstract class Job
 {

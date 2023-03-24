@@ -20,7 +20,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
  * Deletes all resque data from redis
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Clear extends Command
 {

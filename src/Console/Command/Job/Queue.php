@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Job command class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Queue extends Command
 {

@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Console monolog connector class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class ConsoleConnector extends AbstractConnector
 {

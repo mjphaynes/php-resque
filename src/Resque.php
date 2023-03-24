@@ -15,7 +15,7 @@ namespace Resque;
  * Main Resque class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  *
  * @method static string            redisKey(?string $queue = null, ?string $suffix = null)          Get the Queue key.
  * @method static \Resque\Job       job(string $id)                                                  Get a job by id.

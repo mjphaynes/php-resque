@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Monolog connector class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class Connector
 {

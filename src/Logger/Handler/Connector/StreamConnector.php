@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Stream monolog connector class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class StreamConnector extends AbstractConnector
 {

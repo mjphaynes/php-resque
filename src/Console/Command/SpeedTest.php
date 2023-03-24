@@ -21,7 +21,7 @@ use Symfony\Component\Process\Process;
  * Performs a raw speed test
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class SpeedTest extends Command
 {

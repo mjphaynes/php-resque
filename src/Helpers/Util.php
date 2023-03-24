@@ -15,7 +15,7 @@ namespace Resque\Helpers;
  * Resque Utilities
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Util
 {

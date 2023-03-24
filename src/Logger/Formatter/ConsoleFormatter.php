@@ -17,7 +17,7 @@ use Monolog\Formatter\LineFormatter;
  * Formatter for console output
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class ConsoleFormatter extends LineFormatter
 {

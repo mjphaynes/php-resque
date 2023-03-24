@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * MongoDB monolog connector class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class MongoDBConnector extends AbstractConnector
 {

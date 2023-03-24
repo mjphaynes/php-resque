@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Process output for console display
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class ConsoleProcessor
 {

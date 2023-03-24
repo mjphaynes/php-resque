@@ -15,7 +15,7 @@ namespace Resque\Exception;
  * Resque shutdown worker job exception
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Shutdown extends \RuntimeException
 {

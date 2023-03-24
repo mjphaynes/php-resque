@@ -24,7 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Main Command class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class Command extends \Symfony\Component\Console\Command\Command
 {

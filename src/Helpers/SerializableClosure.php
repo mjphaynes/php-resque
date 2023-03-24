@@ -15,7 +15,7 @@ namespace Resque\Helpers;
  * Serializes job closure
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class SerializableClosure implements \Serializable
 {

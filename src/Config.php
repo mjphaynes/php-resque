@@ -21,7 +21,7 @@ use Symfony\Component\Yaml\Yaml;
  * Resque configuration class.
  *
  * @package Resque
- * @author Paul Litovka
+ * @author Paul Litovka <paxanddos@gmail.com>
  */
 final class Config
 {

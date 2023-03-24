@@ -15,7 +15,7 @@ namespace Resque\Exception;
  * Resque dirty job fail exception
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 final class Dirty extends \RuntimeException
 {

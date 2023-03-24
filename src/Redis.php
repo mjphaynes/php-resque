@@ -17,7 +17,7 @@ use Predis\Client;
  * Resque redis class
  *
  * @package Resque
- * @author Michael Haynes
+ * @author Michael Haynes <mike@mjphaynes.com>
  */
 class Redis
 {

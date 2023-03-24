@@ -31,6 +31,12 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Resque console application.
+ *
+ * @package Resque
+ * @author Paul Litovka <paxanddos@gmail.com>
+ */
 class ResqueApplication extends Application
 {
     /**
@@ -65,8 +71,7 @@ class ResqueApplication extends Application
      */
     public function doRun(InputInterface $input, OutputInterface $output): int
     {
-        // always show the version information except when the user invokes the help
-        // command as that already does it
+        // Always show the version information except when the user invokes the help
         if ($input->hasParameterOption('--no-info') === false) {
             if ($input->hasParameterOption(['--help', '-h']) || ($input->getFirstArgument() && $input->getFirstArgument() !== 'list')) {
                 $output->writeln($this->getLongVersion());
