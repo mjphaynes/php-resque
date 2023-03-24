@@ -17,7 +17,7 @@ namespace Resque\Helpers;
  * @package Resque
  * @author Michael Haynes
  */
-final class SerializableClosure
+final class SerializableClosure implements \Serializable
 {
     /**
      * The Closure instance.
@@ -50,6 +50,16 @@ final class SerializableClosure
         $this->closure = $closure;
 
         $this->reflection = new \ReflectionFunction($closure);
+    }
+
+    /**
+     * Get the unserialized Closure instance.
+     *
+     * @return \Closure
+     */
+    public function getClosure(): \Closure
+    {
+        return $this->closure;
     }
 
     /**
@@ -181,13 +191,35 @@ final class SerializableClosure
     }
 
     /**
-     * Get the unserialized Closure instance.
+     * Serialize the Closure instance. (PHP <=7.3)
      *
-     * @return \Closure
+     * @return string|null
      */
-    public function getClosure(): \Closure
+    public function serialize(): ?string
     {
-        return $this->closure;
+        return serialize([
+            'code' => $this->getCode(), 'variables' => $this->getVariables()
+        ]);
+    }
+
+    /**
+     * Unserialize the Closure instance. (PHP >=7.4)
+     *
+     * @param  string $payload
+     * @return void
+     */
+    public function unserialize($payload): void
+    {
+        $payload = unserialize($payload);
+
+        // We will extract the variables into the current scope so that as the Closure
+        // is built it will inherit the scope it had before it was serialized which
+        // will emulate the Closures existing in that scope instead of right now.
+        extract($payload['variables']);
+
+        eval('$this->closure = '.$payload['code'].';');
+
+        $this->reflection = new \ReflectionFunction($this->closure);
     }
 
     /**
