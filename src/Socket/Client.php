@@ -27,21 +27,21 @@ class Client
     /**
      * @var string The client's IP address, as seen by the server
      */
-    protected string $ip;
+    protected $ip;
 
     /**
      * @var int If given, this will hold the port associated to address
      */
-    protected int $port;
+    protected $port;
 
     /**
      * The client's hostname, as seen by the server. This
      * variable is only set after calling lookup_hostname,
      * as hostname lookups can take up a decent amount of time.
      *
-     * @var string
+     * @var string|null
      */
-    protected ?string $hostname = null;
+    protected $hostname = null;
 
     /**
      * Creates the client

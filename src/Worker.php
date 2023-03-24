@@ -39,7 +39,7 @@ final class Worker
     /**
      * Worker status constants as text
      */
-    public static array $statusText = [
+    public static $statusText = [
         self::STATUS_NEW     => 'Not started',
         self::STATUS_RUNNING => 'Running',
         self::STATUS_PAUSED  => 'Paused',
@@ -50,77 +50,77 @@ final class Worker
      *
      * @var Redis
      */
-    protected Redis $redis;
+    protected $redis;
 
     /**
      * @var array Array of all associated queues for this worker.
      */
-    protected array $queues = [];
+    protected $queues = [];
 
     /**
      * @var Host The host of this worker.
      */
-    protected Host $host;
+    protected $host;
 
     /**
      * @var bool True if on the next iteration, the worker should shutdown.
      */
-    protected bool $shutdown = false;
+    protected $shutdown = false;
 
     /**
      * @var int Status of the worker.
      */
-    protected int $status = self::STATUS_NEW;
+    protected $status = self::STATUS_NEW;
 
     /**
      * @var string String identifying this worker.
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @var int Process id of this worker
      */
-    protected int $pid;
+    protected $pid;
 
     /**
-     * @var string File to store process id in
+     * @var string|null File to store process id in
      */
-    protected ?string $pidFile = null;
+    protected $pidFile = null;
 
     /**
-     * @var Job Current job, if any, being processed by this worker.
+     * @var Job|null Current job, if any, being processed by this worker.
      */
-    protected ?Job $job = null;
+    protected $job = null;
 
     /**
-     * @var int Process ID of child worker processes.
+     * @var int|null Process ID of child worker processes.
      */
-    protected ?int $child = null;
+    protected $child = null;
 
     /**
      * @var bool True if uses Redis pop blocking
      */
-    protected bool $blocking = true;
+    protected $blocking = true;
 
     /**
      * @var int Clock speed
      */
-    protected int $interval = 10;
+    protected $interval = 10;
 
     /**
      * @var int Max execution time of job
      */
-    protected int $timeout = 60;
+    protected $timeout = 60;
 
     /**
      * @var int Memory limit of worker, if exceeded worker will stop
      */
-    protected int $memoryLimit = 128;
+    protected $memoryLimit = 128;
 
     /**
      * @var array Signal handler method name mapping
      */
-    protected array $signalHandlerMapping = [
+    protected $signalHandlerMapping = [
         \SIGTERM => 'sigForceShutdown',
         \SIGINT  => 'sigForceShutdown',
         \SIGQUIT => 'sigShutdown',
@@ -133,7 +133,7 @@ final class Worker
     /**
      * @var array List of shutdown errors to catch
      */
-    protected array $shutdownErrors = [
+    protected $shutdownErrors = [
         \E_PARSE,
         \E_ERROR,
         \E_USER_ERROR,
@@ -144,9 +144,9 @@ final class Worker
     ];
 
     /**
-     * @var Logger logger instance
+     * @var Logger|null logger instance
      */
-    protected ?Logger $logger = null;
+    protected $logger = null;
 
     /**
      * Get the Redis key
@@ -840,7 +840,9 @@ final class Worker
         }
 
         $workerIds = array_map(
-            fn ($w) => (string)$w,
+            function ($w) {
+                return (string)$w;
+            },
             $workers
         );
         $keys = (array)$this->redis->keys('worker:'.$this->host.':*');

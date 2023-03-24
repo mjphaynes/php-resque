@@ -11,7 +11,6 @@
 
 namespace Resque\Logger\Handler\Connector;
 
-use Resque\Resque;
 use Monolog\Handler\RedisHandler;
 use Resque\Config;
 use Resque\Redis;

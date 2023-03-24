@@ -11,7 +11,7 @@
 
 namespace Resque\Logger\Handler\Connector;
 
-use Monolog\Handler\HandlerInterface;
+use Monolog\Handler\AbstractProcessingHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,9 +32,9 @@ interface ConnectorInterface
      * @param OutputInterface $output
      * @param array           $args
      *
-     * @return HandlerInterface
+     * @return AbstractProcessingHandler|\Monolog\Handler\NullHandler
      */
-    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): HandlerInterface;
+    public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args);
 
     /**
      * Returns the processor for this handler

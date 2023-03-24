@@ -22,12 +22,12 @@ final class Queue
     /**
      * @var Redis The Redis instance
      */
-    protected Redis $redis;
+    protected $redis;
 
     /**
      * @var string The name of the default queue
      */
-    protected string $default;
+    protected $default;
 
     /**
      * Create a new queue instance

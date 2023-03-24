@@ -165,8 +165,6 @@ final class Receive extends Command
                 case 'worker:resume':
                 case 'worker:stop':
                 case 'worker:cancel':
-                    $valid_id = false;
-
                     $id = preg_replace('/[^a-z0-9\*:,\.;-]/i', '', $data['id']);
 
                     if (!empty($id)) {
@@ -235,7 +233,9 @@ final class Receive extends Command
                         }
                     }
 
-                    $server->send($client, $data['json'] ? json_encode($response) : implode(PHP_EOL, array_map(fn ($d) => $d['message'], $response['data'])));
+                    $server->send($client, $data['json'] ? json_encode($response) : implode(PHP_EOL, array_map(function ($d) {
+                        return $d['message'];
+                    }, $response['data'])));
 
                     break;
                 case 'job:queue':

@@ -19,7 +19,7 @@ use Predis\Client;
  * @package Resque
  * @author Michael Haynes
  */
-final class Redis
+class Redis
 {
     /**
      * Default Redis connection scheme
@@ -59,7 +59,7 @@ final class Redis
     /**
      * @var array Default configuration
      */
-    protected static array $config = [
+    protected static $config = [
         'scheme'     => self::DEFAULT_SCHEME,
         'host'       => self::DEFAULT_HOST,
         'port'       => self::DEFAULT_PORT,
@@ -72,47 +72,23 @@ final class Redis
     /**
      * @var Redis Redis instance
      */
-    protected static ?Redis $instance = null;
-
-    /**
-     * Establish a Redis connection
-     *
-     * @return Redis
-     */
-    public static function instance(): Redis
-    {
-        if (!static::$instance) {
-            static::$instance = new static(static::$config);
-        }
-
-        return static::$instance;
-    }
-
-    /**
-     * Set the Redis config
-     *
-     * @param array $config Array of configuration settings
-     */
-    public static function setConfig(array $config): void
-    {
-        static::$config = array_merge(static::$config, $config);
-    }
+    protected static $instance = null;
 
     /**
      * @var Client The Predis instance
      */
-    protected Client $redis;
+    protected $redis;
 
     /**
      * @var string Redis namespace
      */
-    protected string $namespace;
+    protected $namespace;
 
     /**
      * @var array List of all commands in Redis that supply a key as their
      *            first argument. Used to prefix keys with the Resque namespace.
      */
-    protected array $keyCommands = [
+    protected $keyCommands = [
         'exists',
         'del',
         'type',
@@ -244,6 +220,30 @@ final class Redis
 
         // Do this to test connection is working now rather than later
         $this->redis->connect();
+    }
+
+    /**
+     * Establish a Redis connection
+     *
+     * @return Redis
+     */
+    public static function instance(): Redis
+    {
+        if (!static::$instance) {
+            static::$instance = new static(static::$config);
+        }
+
+        return static::$instance;
+    }
+
+    /**
+     * Set the Redis config
+     *
+     * @param array $config Array of configuration settings
+     */
+    public static function setConfig(array $config): void
+    {
+        static::$config = array_merge(static::$config, $config);
     }
 
     /**

@@ -27,13 +27,14 @@ class MongoDBConnector extends AbstractConnector
 {
     public function resolve(Command $command, InputInterface $input, OutputInterface $output, array $args): MongoDBHandler
     {
-        $mongodb = null;
         $dsn     = strtr('mongodb://host:port', $args);
         $options = [];
 
-        if (class_exists(Client::class)) {
-            $mongodb = new Client($dsn, $options);
+        if (!class_exists(Client::class)) {
+            throw new \RuntimeException('The MongoDB PHP extension is not installed. Please install mongodb/mongodb and ext-mongodb.');
         }
+
+        $mongodb = new Client($dsn, $options);
 
         return new MongoDBHandler($mongodb, $this->replacePlaceholders($args['dbname']), $this->replacePlaceholders($args['collection']));
     }

@@ -22,17 +22,17 @@ final class Host
     /**
      * @var Redis The Redis instance
      */
-    protected Redis $redis;
+    protected $redis;
 
     /**
      * @var string The hostname
      */
-    protected string $hostname;
+    protected $hostname;
 
     /**
      * @var int Host key timeout
      */
-    protected int $timeout = 120;
+    protected $timeout = 120;
 
     /**
      * Get the Redis key

@@ -38,12 +38,12 @@ final class Job
     /**
      * @var Redis The Redis instance
      */
-    protected Redis $redis;
+    protected $redis;
 
     /**
      * @var string The name of the queue that this job belongs to
      */
-    protected string $queue;
+    protected $queue;
 
     /**
      * @var array|string The payload sent through for this job
@@ -53,17 +53,17 @@ final class Job
     /**
      * @var string The ID of this job
      */
-    protected string $id;
+    protected $id;
 
     /**
      * @var string The classname this job
      */
-    protected string $class;
+    protected $class;
 
     /**
      * @var string The method name for this job
      */
-    protected string $method = 'perform';
+    protected $method = 'perform';
 
     /**
      * @var array|null|\Closure The data/arguments for the job
@@ -83,7 +83,7 @@ final class Job
     /**
      * @var array of statuses that are considered final/complete
      */
-    protected static array $completeStatuses = [
+    protected static $completeStatuses = [
         self::STATUS_FAILED,
         self::STATUS_COMPLETE,
         self::STATUS_CANCELLED,

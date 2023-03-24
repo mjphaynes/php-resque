@@ -35,17 +35,17 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * @var Logger The logger instance
      */
-    protected Logger $logger;
+    protected $logger;
 
     /**
      * @var array<string, mixed> Config array
      */
-    protected array $config = [];
+    protected $config = [];
 
     /**
      * @var array Config to options mapping
      */
-    protected array $configOptionMap = [
+    protected $configOptionMap = [
         'include'        => 'include',
         'scheme'         => 'redis.scheme',
         'host'           => 'redis.host',

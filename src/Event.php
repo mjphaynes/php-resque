@@ -59,7 +59,7 @@ final class Event
     /**
      * @var array containing all registered callbacks, indexed by event name
      */
-    protected static array $events = [];
+    protected static $events = [];
 
     /**
      * Listen in on a given event to have a specified callback fired.

@@ -36,7 +36,7 @@ class Resque
     /**
      * @var Queue The queue instance.
      */
-    protected static ?Queue $queue = null;
+    protected static $queue = null;
 
     /**
      * Create a queue instance.

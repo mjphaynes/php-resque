@@ -26,22 +26,22 @@ class StripFormatProcessor
     /**
      * @var Command command instance
      */
-    protected Command $command;
+    protected $command;
 
     /**
      * @var InputInterface input instance
      */
-    protected InputInterface $input;
+    protected $input;
 
     /**
      * @var OutputInterface output instance
      */
-    protected OutputInterface $output;
+    protected $output;
 
     /**
      * @var array list of formatting tags to strip out
      */
-    private array $stripTags = [
+    private $stripTags = [
         'info',
         'notice',
         'warning',

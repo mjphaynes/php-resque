@@ -18,7 +18,10 @@ use PHPUnit\Framework\TestCase;
 
 final class RedisTest extends TestCase
 {
-    private array $legacyParameters = [
+    /**
+     * @var array $legacyParameters
+    */
+    private $legacyParameters = [
         'scheme'     => 'tcp',
         'host'       => 'redis_instance_01',
         'port'       => 6379,
@@ -27,7 +30,10 @@ final class RedisTest extends TestCase
         'phpiredis'  => true,
     ];
 
-    private array $predisNativeParameters = [
+    /**
+     * @var array $predisNativeParameters
+     * */
+    private $predisNativeParameters = [
         'config'  => [
             [
                 'tcp://10.0.0.1',
@@ -45,9 +51,15 @@ final class RedisTest extends TestCase
         ],
     ];
 
-    private ?MockObject $predisMock = null;
+    /**
+     * @var MockObject|null $predisMock Predis mock object
+     * */
+    private $predisMock = null;
 
-    private ?MockObject $redisMock = null;
+    /**
+     * @var MockObject|null $redisMock Redis mock object
+     * */
+    private $redisMock = null;
 
     protected function setUp(): void
     {

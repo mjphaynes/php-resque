@@ -44,7 +44,7 @@ final class Config
     /**
      * @var array Configuration settings array.
      */
-    protected static array $config = [];
+    protected static $config = [];
 
     /**
      * Reads and loads data from a config file

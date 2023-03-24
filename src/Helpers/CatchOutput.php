@@ -24,7 +24,7 @@ final class CatchOutput extends \Symfony\Component\Console\Output\Output
     /**
      * @var string Stored output string
      */
-    protected string $written = '';
+    protected $written = '';
 
     /**
      * {@inheritdoc}

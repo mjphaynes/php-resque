@@ -105,13 +105,13 @@ final class SpeedTest extends Command
         $progress_bar .= $progress_complete_length == $progress_length ? '' : ' '.round($progress_percent * 100).'%';
 
         $display = <<<STATS
-            <comment>%title% php-resque speed test</comment>%clr%
-            %progress%%clr%
-            Time:         <pop>%in%</pop>%clr%
-            Processed:    <pop>%jobs%</pop>%clr%
-            Speed:        <pop>%speed%</pop>%clr%
-            Avg job time: <pop>%time%</pop>%clr%
-            STATS;
+<comment>%title% php-resque speed test</comment>%clr%
+%progress%%clr%
+Time:         <pop>%in%</pop>%clr%
+Processed:    <pop>%jobs%</pop>%clr%
+Speed:        <pop>%speed%</pop>%clr%
+Avg job time: <pop>%time%</pop>%clr%
+STATS;
 
         $replace = [
             '%title%'    => $exec_time == $testTime ? 'Finished' : 'Running',

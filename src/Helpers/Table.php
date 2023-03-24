@@ -25,12 +25,12 @@ final class Table
     /**
      * @var TableHelper
      */
-    protected TableHelper $table;
+    protected $table;
 
     /**
      * @var CatchOutput
      */
-    protected CatchOutput $output;
+    protected $output;
 
     /**
      * Render the table and pass the output back.

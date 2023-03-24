@@ -27,12 +27,12 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * @var OutputInterface The console output interface
      */
-    protected OutputInterface $output;
+    protected $output;
 
     /**
      * @var array Map log levels to output verbosity
      */
-    private array $verbosityLevelMap = [
+    private $verbosityLevelMap = [
         Logger::INFO      => OutputInterface::VERBOSITY_NORMAL,
         Logger::NOTICE    => OutputInterface::VERBOSITY_VERBOSE,
         Logger::WARNING   => OutputInterface::VERBOSITY_VERY_VERBOSE,
@@ -50,7 +50,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      *
      * @var array
      */
-    private array $styleMap = [
+    private $styleMap = [
         'info'      => [],
         'notice'    => [],
         'warning'   => ['yellow'],
@@ -132,7 +132,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultFormatter(): Logger\Formatter\ConsoleFormatter
+    protected function getDefaultFormatter(): \Monolog\Formatter\FormatterInterface
     {
         $formatter = new Logger\Formatter\ConsoleFormatter();
         if (method_exists($formatter, 'allowInlineLineBreaks')) {

@@ -64,7 +64,7 @@ final class Logger
     /**
      * @var array List of valid log levels
      */
-    protected array $logTypes = [
+    protected $logTypes = [
         self::DEBUG     => 'debug',
         self::INFO      => 'info',
         self::NOTICE    => 'notice',
@@ -76,9 +76,9 @@ final class Logger
     ];
 
     /**
-     * @var Monolog The monolog instance
+     * @var Monolog|null The monolog instance
      */
-    protected ?Monolog $instance = null;
+    protected $instance = null;
 
     /**
      * Create a Monolog instance and attach a handler

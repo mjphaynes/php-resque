@@ -26,17 +26,17 @@ class ConsoleProcessor
     /**
      * @var Command command instance
      */
-    protected Command $command;
+    protected $command;
 
     /**
      * @var InputInterface input instance
      */
-    protected InputInterface $input;
+    protected $input;
 
     /**
      * @var OutputInterface output instance
      */
-    protected OutputInterface $output;
+    protected $output;
 
     /**
      * Create a new instance

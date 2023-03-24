@@ -24,14 +24,14 @@ final class SerializableClosure
      *
      * @var \Closure
      */
-    protected \Closure $closure;
+    protected $closure;
 
     /**
      * The ReflectionFunction instance of the Closure.
      *
      * @var \ReflectionFunction
      */
-    protected \ReflectionFunction $reflection;
+    protected $reflection;
 
     /**
      * The code contained by the Closure.

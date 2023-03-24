@@ -26,22 +26,22 @@ class Connector
     /**
      * @var Command command instance
      */
-    protected Command $command;
+    protected $command;
 
     /**
      * @var InputInterface input instance
      */
-    protected InputInterface $input;
+    protected $input;
 
     /**
      * @var OutputInterface output instance
      */
-    protected OutputInterface $output;
+    protected $output;
 
     /**
      * @var array output instance
      */
-    private array $connectionMap = [
+    private $connectionMap = [
         'Redis'    => 'redis://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<key>.+)',               // redis://127.0.0.1:6379/log:%worker$
         'MongoDB'  => 'mongodb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)/(?P<collection>.+)',  // mongodb://127.0.0.1:27017/dbname/log:%worker%
         'CouchDB'  => 'couchdb://(?P<host>[a-z0-9\._-]+):(?P<port>\d+)/(?P<dbname>[a-z0-9_]+)',  // couchdb://127.0.0.1:27017/dbname
@@ -72,7 +72,7 @@ class Connector
      * @param  string                   $logFormat
      * @throws InvalidArgumentException
      *
-     * @return Monolog\Handler\HandlerInterface
+     * @return \Monolog\Handler\HandlerInterface
      */
     public function resolve(string $logFormat): \Monolog\Handler\HandlerInterface
     {
@@ -95,8 +95,9 @@ class Connector
                     // Tell them the error of their ways
                     $format = str_replace(['(?:', ')?', '\)'], '', $this->connectionMap[$handler]);
 
-                    $cb = fn ($m) => ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
-                    $format = preg_replace_callback('/\(\?P<([a-z_]+)>(?:.+?)\)/', $cb, $format);
+                    $format = preg_replace_callback('/\(\?P<([a-z_]+)>(?:.+?)\)/', function ($m) {
+                        return ($m[1] == 'ignore') ? '' : '<'.$m[1].'>';
+                    }, $format);
 
                     throw new \InvalidArgumentException('Invalid format "'.$logFormat.'" for "'.$handler.'" handler. Should be of format "'.$format.'"');
                 }

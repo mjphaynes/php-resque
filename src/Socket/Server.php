@@ -54,17 +54,17 @@ class Server
     /**
      * @var array Configuration information used by the server.
      */
-    protected array $config = [];
+    protected $config = [];
 
     /**
      * @var Logger Monolog logger interface
      */
-    protected Logger $logger;
+    protected $logger;
 
     /**
      * @var array Dictionary of events and the callbacks attached to them.
      */
-    protected array $events = [];
+    protected $events = [];
 
     /**
      * @var \Socket The socket used by the server.
@@ -74,32 +74,32 @@ class Server
     /**
      * @var int The maximum number of clients allowed to connect.
      */
-    protected int $max_clients = 10;
+    protected $max_clients = 10;
 
     /**
      * @var int The maximum number of bytes to read from a socket at a single time.
      */
-    protected int $max_read = 1024;
+    protected $max_read = 1024;
 
     /**
      * @var int Connection timeout
      */
-    protected int $tv_sec = 5;
+    protected $tv_sec = 5;
 
     /**
      * @var bool if the server has started
      */
-    protected bool $started = false;
+    protected $started = false;
 
     /**
      * @var bool True if on the next iteration, the server should shutdown.
      */
-    protected bool $shutdown = false;
+    protected $shutdown = false;
 
     /**
      * @var array The connected clients.
      */
-    protected array $clients = [];
+    protected $clients = [];
 
     /**
      * Creates the socket and starts listening to it.

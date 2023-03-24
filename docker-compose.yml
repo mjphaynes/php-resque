@@ -10,7 +10,7 @@ services:
     build:
       context: .
       args:
-        - PHP_VERSION=7
+        - PHP_VERSION=7.2
     ports:
       - 8000:80
     volumes:
