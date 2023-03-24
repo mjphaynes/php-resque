@@ -31,7 +31,7 @@ final class UtilTest extends TestCase
      * @param string $format     the return string format
      * @param bool   $si         whether to use SI prefixes or IEC
      *
-     * @dataProvider getBytes
+     * @dataProvider bytesProvider
      */
     public function testBytes($expected, $bytes): void
     {
@@ -43,7 +43,7 @@ final class UtilTest extends TestCase
      *
      * @return array
      */
-    public function getBytes(): array
+    public static function bytesProvider(): array
     {
         return [
             ['1.00 B', 1],

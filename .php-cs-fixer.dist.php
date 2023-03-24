@@ -19,11 +19,10 @@ file that was distributed with this source code.
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('docker')
-    ->exclude('docs')
-    ->exclude('examples')
-    ->exclude('vendor')
-    ->in(__DIR__);
+    ->files()
+    ->in(__DIR__.'/bin')
+    ->in(__DIR__.'/src')
+    ->in(__DIR__.'/tests');
 
 return (new PhpCsFixer\Config())->setRules([
         '@PSR12' => true,

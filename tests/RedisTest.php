@@ -15,6 +15,8 @@ namespace Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Predis\Client;
+use Resque\Redis;
 
 final class RedisTest extends TestCase
 {
@@ -63,19 +65,15 @@ final class RedisTest extends TestCase
 
     protected function setUp(): void
     {
-        $predisClassName = "\\Predis\\Client";
-
-        $this->predisMock = $this->getMockBuilder($predisClassName)
+        $this->predisMock = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
-            ->setMethods(['connect'])
+            ->onlyMethods(['connect'])
             ->getMock()
         ;
 
-        $className = "\\Resque\\Redis";
-
-        $this->redisMock = $this->getMockBuilder($className)
+        $this->redisMock = $this->getMockBuilder(Redis::class)
             ->disableOriginalConstructor()
-            ->setMethods(['initializePredisClient'])
+            ->onlyMethods(['initializePredisClient'])
             ->getMock()
         ;
     }
@@ -113,11 +111,9 @@ final class RedisTest extends TestCase
 
     public function testConstructorShouldAcceptPredisOverride(): void
     {
-        $className = "\\Resque\\Redis";
-
-        $this->redisMock = $this->getMockBuilder($className)
+        $this->redisMock = $this->getMockBuilder(Redis::class)
             ->disableOriginalConstructor()
-            ->setMethods(['initializePredisClient'])
+            ->onlyMethods(['initializePredisClient'])
             ->getMock()
         ;
 
