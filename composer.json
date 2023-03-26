@@ -24,8 +24,8 @@
     "require": {
         "php": "^7.2|^8.0",
         "ext-pcntl": "*",
-        "predis/predis": "^1.1.0",
         "monolog/monolog": "^2.5",
+        "predis/predis": "^2.1",
         "symfony/console": "^5.4|^6.0"
     },
     "suggest": {
