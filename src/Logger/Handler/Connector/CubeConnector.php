@@ -21,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @package Resque
  * @author Michael Haynes <mike@mjphaynes.com>
+ * @deprecated Since 4.0.0, Cube appears abandoned and thus support for its connector will be dropped in the future
  */
 class CubeConnector extends AbstractConnector
 {

@@ -53,6 +53,7 @@ class Redis
 
     /**
      * Default Redis option for using phpiredis or not
+     * @deprecated Since 4.0.0, ext-phpiredis is abandoned and will be removed in the future
      */
     public const DEFAULT_PHPIREDIS = false;
 
