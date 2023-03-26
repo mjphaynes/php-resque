@@ -52,9 +52,9 @@ final class Clear extends Command
 
             $output->writeln('<pop>Done.</pop>');
 
-            return self::SUCCESS;
+            return Command::SUCCESS;
         }
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

@@ -39,7 +39,7 @@ final class Workers extends Command
 
         if (empty($workers)) {
             $this->log('<warn>There are no workers on this host.</warn>');
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         $table = new \Resque\Helpers\Table($this);
@@ -65,6 +65,6 @@ final class Workers extends Command
 
         $this->log((string)$table);
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

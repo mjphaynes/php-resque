@@ -69,7 +69,7 @@ final class Start extends Command
 
         $worker->work();
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 
     public function pollingConsoleOutput(): bool

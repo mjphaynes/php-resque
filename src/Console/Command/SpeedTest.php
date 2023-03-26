@@ -85,7 +85,7 @@ final class SpeedTest extends Command
             $redis->del($key);
         }
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 
     // http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html

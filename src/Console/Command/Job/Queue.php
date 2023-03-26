@@ -70,23 +70,23 @@ final class Queue extends Command
             $delay = (int)$delay;
         } else {
             $this->log('Delay option "'.$delay.'" is invalid type "'.gettype($delay).'", value must be an integer.', Logger::ERROR);
-            return self::INVALID;
+            return Command::INVALID;
         }
 
         if ($delay) {
             if ($job = Resque::later($delay, $job, $args, $queue)) {
                 $this->log('Job <pop>'.$job.'</pop> will be queued at <pop>'.date('r', $job->getDelayedTime()).'</pop> on <pop>'.$job->getQueue().'</pop> queue.');
-                return self::SUCCESS;
+                return Command::SUCCESS;
             }
         } else {
             if ($job = Resque::push($job, $args, $queue)) {
                 $this->log('Job <pop>'.$job.'</pop> added to <pop>'.$job->getQueue().'</pop> queue.');
-                return self::SUCCESS;
+                return Command::SUCCESS;
             }
         }
 
         $this->log('Error, job was not queued. Please try again.', Logger::ERROR);
 
-        return self::FAILURE;
+        return Command::FAILURE;
     }
 }

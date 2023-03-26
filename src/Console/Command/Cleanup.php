@@ -46,6 +46,6 @@ final class Cleanup extends Command
         $this->log('Cleaned <pop>'.$cleaned_jobs['zombie'].'</pop> zombie job'.($cleaned_jobs['zombie'] == 1 ? '' : 's'));
         $this->log('Cleared <pop>'.$cleaned_jobs['processed'].'</pop> processed job'.($cleaned_jobs['processed'] == 1 ? '' : 's'));
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

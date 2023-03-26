@@ -46,7 +46,7 @@ final class Restart extends Command
         if ($id) {
             if (false === ($worker = Worker::hostWorker($id))) {
                 $this->log('There is no worker with id "'.$id.'".', \Resque\Logger::ERROR);
-                return self::FAILURE;
+                return Command::FAILURE;
             }
 
             $workers = [$worker];
@@ -87,6 +87,6 @@ final class Restart extends Command
             }
         }
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

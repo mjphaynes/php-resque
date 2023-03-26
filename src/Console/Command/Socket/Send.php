@@ -51,7 +51,7 @@ final class Send extends Command
 
         if (!($fh = @fsockopen('tcp://'.$host, $port, $errno, $errstr, $timeout))) {
             $this->log('['.$errno.'] '.$errstr.' host '.$host.':'.$port, \Resque\Logger::ERROR);
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         stream_set_timeout($fh, 0, 500 * 1000);
@@ -74,6 +74,6 @@ final class Send extends Command
 
         fclose($fh);
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

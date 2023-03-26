@@ -50,7 +50,7 @@ final class Connect extends Command
 
         if (!($fh = @fsockopen('tcp://'.$host, $port, $errno, $errstr, $timeout))) {
             $output->writeln('<error>['.$errno.'] '.$errstr.' host '.$conn.'</error>');
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         // Set socket timeout to 200ms
@@ -111,6 +111,6 @@ final class Connect extends Command
 
         fclose($fh);
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

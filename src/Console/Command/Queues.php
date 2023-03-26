@@ -38,7 +38,7 @@ final class Queues extends Command
 
         if (empty($queues)) {
             $this->log('<warn>There are no queues.</warn>');
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         $table = new \Resque\Helpers\Table($this);
@@ -60,6 +60,6 @@ final class Queues extends Command
 
         $this->log((string)$table);
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }
