@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Suggestions for `ext-mongodb` extension and `mongodb/mongodb` package
 
+-   Suggestion for `symfony/yaml` package, it's now optional
+
 ### Changed
 
 -   Minimum PHP version is now `7.2`. Supported PHP versions are `^7.2 || ^8.0`
@@ -39,7 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Improved code intelligence by adding PHP DocBlocks comments to the main `Resque` class
 
--   `symfony/yaml` dependency is now optional. Added to suggestions
+-   Worker will log on a DEBUG level when no queues found (instead of INFO)
 
 -   Bumped `monolog/monolog` dependency to `^2.5`
 

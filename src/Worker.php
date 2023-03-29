@@ -275,7 +275,7 @@ final class Worker
             Event::fire(Event::WORKER_WORK, $this);
 
             if (!count($this->resolveQueues())) {
-                $this->log('No queues found, waiting for '.$this->interval_string(), Logger::INFO);
+                $this->log('No queues found, waiting for '.$this->interval_string(), Logger::DEBUG);
                 sleep($this->interval);
                 continue;
             }
