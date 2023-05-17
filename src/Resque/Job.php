@@ -104,14 +104,14 @@ class Job
     /**
      * Create a new job and save it to the specified queue.
      *
-     * @param string          $queue  The name of the queue to place the job in
-     * @param string|callable $class  The name of the class that contains the code to execute the job
-     * @param array           $data   Any optional arguments that should be passed when the job is executed
-     * @param int             $run_at Unix timestamp of when to run the job to delay execution
+     * @param string            $queue  The name of the queue to place the job in
+     * @param string|callable   $class  The name of the class that contains the code to execute the job
+     * @param array|null        $data   Any optional arguments that should be passed when the job is executed
+     * @param int               $run_at Unix timestamp of when to run the job to delay execution
      *
-     * @return Job
+     * @return Job|bool
      */
-    public static function create(string $queue, $class, ?array $data = null, int $run_at = 0): Job
+    public static function create(string $queue, $class, ?array $data = null, int $run_at = 0)
     {
         $id = static::createId($queue, $class, $data, $run_at);
 
@@ -155,9 +155,9 @@ class Job
      *
      * @param string $id The job id
      *
-     * @return static
+     * @return static|null
      */
-    public static function load(string $id): self
+    public static function load(string $id): ?self
     {
         $packet = Redis::instance()->hgetall(self::redisKey($id));
 

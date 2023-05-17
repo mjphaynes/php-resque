@@ -172,9 +172,9 @@ class Worker
      * @param string $id     Worker id
      * @param Logger $logger Logger for the worker to use
      *
-     * @return Worker
+     * @return Worker|bool
      */
-    public static function fromId(string $id, ?Logger $logger = null): Worker
+    public static function fromId(string $id, ?Logger $logger = null)
     {
         if (!$id or !count($packet = Redis::instance()->hgetall(self::redisKey($id)))) {
             return false;
@@ -970,9 +970,9 @@ class Worker
     /**
      * Set the worker queues
      *
-     * @param string $queues Queues for worker to watch
+     * @param array $queues Queues for worker to watch
      */
-    public function setQueues(string $queues): void
+    public function setQueues(array $queues): void
     {
         if ($this->status != self::STATUS_NEW) {
             throw new \RuntimeException('Cannot set worker queues after worker has started working');

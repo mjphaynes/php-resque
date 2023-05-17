@@ -61,6 +61,11 @@ class Resque
         return static::$queue;
     }
 
+    public static function setQueue(Queue $queue): void
+    {
+        static::$queue = $queue;
+    }
+
     /**
      * Dynamically pass calls to the default connection.
      *
