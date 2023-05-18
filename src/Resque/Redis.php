@@ -69,7 +69,7 @@ class Redis
     ];
 
     /**
-     * @var Redis Redis instance
+     * @var Redis|null Redis instance
      */
     protected static ?Redis $instance = null;
 

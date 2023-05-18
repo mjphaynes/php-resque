@@ -23,10 +23,10 @@ class Util
      * [Aidan Lister](http://aidanlister.com/repos/v/function.size_readable.php)
      * and [Quentin Zervaas](http://www.phpriot.com/d/code/strings/filesize-format/).
      *
-     * @param int    $bytes      size in bytes
-     * @param string $force_unit a definitive unit
-     * @param string $format     the return string format
-     * @param bool   $si         whether to use SI prefixes or IEC
+     * @param int           $bytes      size in bytes
+     * @param string|null   $force_unit a definitive unit
+     * @param string|null   $format     the return string format
+     * @param bool          $si         whether to use SI prefixes or IEC
      *
      * @return string
      */
@@ -67,8 +67,8 @@ class Util
      * The difference is returned in a human readable format such as "1 hour",
      * "5 mins", "2 days".
      *
-     * @param int $from Unix timestamp from which the difference begins.
-     * @param int $to   Optional. Unix timestamp to end the time difference. Default becomes time() if not set.
+     * @param int       $from   Unix timestamp from which the difference begins.
+     * @param int|null  $to     Optional. Unix timestamp to end the time difference. Default becomes time() if not set.
      *
      * @return string Human readable time difference.
      */

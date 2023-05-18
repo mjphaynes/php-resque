@@ -36,8 +36,8 @@ class Host
     /**
      * Get the Redis key
      *
-     * @param  Host   $host   The host to get the key for
-     * @param  string $suffix To be appended to key
+     * @param Host|null     $host   The host to get the key for
+     * @param string|null   $suffix To be appended to key
      * @return string
      */
     public static function redisKey(?Host $host = null, ?string $suffix = null): string

@@ -11,6 +11,8 @@
 
 namespace Resque\Logger\Handler;
 
+use Monolog\Handler\HandlerInterface;
+use ReflectionException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -68,10 +70,9 @@ class Connector
     /**
      * Resolve a Monolog handler from string input
      *
-     * @param  string                   $logFormat
-     * @throws InvalidArgumentException
-     *
-     * @return Monolog\Handler\HandlerInterface
+     * @param string $logFormat
+     * @return HandlerInterface
+     * @throws ReflectionException
      */
     public function resolve(string $logFormat): \Monolog\Handler\HandlerInterface
     {
@@ -103,9 +104,7 @@ class Connector
 
             if ($args = $this->matches('~^'.$match.'$~i', $logFormat)) {
                 $connectorClass = new \ReflectionClass('Resque\Logger\Handler\Connector\\'.$connection.'Connector');
-                /** @var ConnectorInterface */
                 $connectorClass = $connectorClass->newInstance();
-
                 $handler = $connectorClass->resolve($this->command, $this->input, $this->output, $args);
                 $handler->pushProcessor($connectorClass->processor($this->command, $this->input, $this->output, $args));
 

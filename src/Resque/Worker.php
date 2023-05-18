@@ -82,17 +82,17 @@ class Worker
     protected int $pid;
 
     /**
-     * @var string File to store process id in
+     * @var string|null File to store process id in
      */
     protected ?string $pidFile = null;
 
     /**
-     * @var Job Current job, if any, being processed by this worker.
+     * @var Job|null Current job, if any, being processed by this worker.
      */
     protected ?Job $job = null;
 
     /**
-     * @var int Process ID of child worker processes.
+     * @var int|null Process ID of child worker processes.
      */
     protected ?int $child = null;
 
@@ -143,7 +143,7 @@ class Worker
     ];
 
     /**
-     * @var Logger logger instance
+     * @var Logger|null logger instance
      */
     protected ?Logger $logger = null;
 
@@ -151,7 +151,7 @@ class Worker
      * Get the Redis key
      *
      * @param Worker|int|null $worker the worker to get the key for
-     * @param string          $suffix to be appended to key
+     * @param string|null $suffix to be appended to key
      *
      * @return string
      */
@@ -169,8 +169,8 @@ class Worker
     /**
      * Return a worker from it's ID
      *
-     * @param string $id     Worker id
-     * @param Logger $logger Logger for the worker to use
+     * @param string $id Worker id
+     * @param Logger|null $logger Logger for the worker to use
      *
      * @return Worker|bool
      */
@@ -774,7 +774,7 @@ class Worker
     /**
      * Find any delayed jobs and add them to the queue if found
      *
-     * @param int $endTime   optional end time for range
+     * @param int|null $endTime optional end time for range
      * @param int $startTime optional start time for range
      */
     public function queueDelayed(?int $endTime = null, int $startTime = 0): void
@@ -865,6 +865,7 @@ class Worker
     /**
      * Return all known workers
      *
+     * @param Logger|null $logger
      * @return array
      */
     public static function allWorkers(?Logger $logger = null): array
@@ -886,8 +887,8 @@ class Worker
     /**
      * Return host worker by id
      *
-     * @param string $id   Worker id
-     * @param string $host Hostname
+     * @param string $id Worker id
+     * @param string|null $host Hostname
      *
      * @return Worker|false
      */
@@ -907,10 +908,10 @@ class Worker
     /**
      * Return all known workers
      *
-     * @param string $host   Hostname
-     * @param Logger $logger Logger
+     * @param string|null $host Hostname
+     * @param Logger|null $logger Logger
      *
-     * @return Worker[]
+     * @return Worker
      */
     public static function hostWorkers(?string $host = null, ?Logger $logger = null): array
     {
@@ -1087,7 +1088,7 @@ class Worker
     /**
      * Set the logger instance
      *
-     * @param Logger $logger The logger for this worker
+     * @param Logger|null $logger The logger for this worker
      */
     public function setLogger(?Logger $logger = null): void
     {

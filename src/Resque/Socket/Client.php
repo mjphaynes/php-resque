@@ -19,7 +19,7 @@ namespace Resque\Socket;
 class Client
 {
     /**
-     * @var \Socket The client's socket resource, for sending and receiving data with
+     * @var \Socket|null The client's socket resource, for sending and receiving data with
      */
     protected ?\Socket $socket = null;
 
@@ -38,7 +38,7 @@ class Client
      * variable is only set after calling lookup_hostname,
      * as hostname lookups can take up a decent amount of time.
      *
-     * @var string
+     * @var string|null
      */
     protected ?string $hostname = null;
 
@@ -46,6 +46,7 @@ class Client
      * Creates the client
      *
      * @param \Socket $socket The resource of the socket the client is connecting by, generally the master socket.
+     * @throws SocketException
      */
     public function __construct(\Socket &$socket)
     {

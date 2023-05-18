@@ -43,7 +43,7 @@ class Resque
     protected static array $config = [];
 
     /**
-     * @var Queue The queue instance.
+     * @var Queue|null The queue instance.
      */
     protected static ?Queue $queue = null;
 
@@ -87,6 +87,7 @@ class Resque
      * @param string $file The config file path
      *
      * @return bool
+     * @throws Exception
      */
     public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): bool
     {
@@ -112,6 +113,7 @@ class Resque
      * @param string $file The config file path
      *
      * @return array
+     * @throws Exception
      */
     public static function readConfigFile(string $file = self::DEFAULT_CONFIG_FILE): array
     {
@@ -160,8 +162,8 @@ class Resque
     /**
      * Gets Resque config variable
      *
-     * @param string $key     The key to search for (optional)
-     * @param mixed  $default If key not found returns this (optional)
+     * @param string|null   $key     The key to search for (optional)
+     * @param mixed         $default If key not found returns this (optional)
      *
      * @return mixed
      */

@@ -11,6 +11,9 @@
 
 namespace Resque\Helpers;
 
+use Closure;
+use ReflectionException;
+
 /**
  * Serializes job closure
  *
@@ -21,9 +24,9 @@ class SerializableClosure
     /**
      * The Closure instance.
      *
-     * @var \Closure
+     * @var Closure
      */
-    protected \Closure $closure;
+    protected Closure $closure;
 
     /**
      * The ReflectionFunction instance of the Closure.
@@ -37,14 +40,15 @@ class SerializableClosure
      *
      * @var string
      */
-    protected $code;
+    protected string $code;
 
     /**
      * Create a new serializable Closure instance.
      *
-     * @param \Closure $closure
+     * @param Closure $closure
+     * @throws ReflectionException
      */
-    public function __construct(\Closure $closure)
+    public function __construct(Closure $closure)
     {
         $this->closure = $closure;
 
@@ -166,6 +170,7 @@ class SerializableClosure
      *
      * @param  array $payload
      * @return void
+     * @throws ReflectionException
      */
     public function __unserialize(array $payload): void
     {
@@ -182,9 +187,9 @@ class SerializableClosure
     /**
      * Get the unserialized Closure instance.
      *
-     * @return \Closure
+     * @return Closure
      */
-    public function getClosure(): \Closure
+    public function getClosure(): Closure
     {
         return $this->closure;
     }

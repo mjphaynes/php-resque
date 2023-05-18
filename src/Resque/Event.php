@@ -63,7 +63,7 @@ class Event
     /**
      * Listen in on a given event to have a specified callback fired.
      *
-     * @param  string|array $event    Name of event to listen on.
+     * @param  array|int $event    Name of event to listen on.
      * @param  callable     $callback Any callback callable by call_user_func_array
      * @return void
      */
@@ -90,11 +90,11 @@ class Event
     /**
      * Raise a given event with the supplied data.
      *
-     * @param  string $event Name of event to be raised
+     * @param  int $event Name of event to be raised
      * @param  mixed  $data  Data that should be passed to each callback (optional)
      * @return bool
      */
-    public static function fire(string $event, $data = null): bool
+    public static function fire(int $event, $data = null): bool
     {
         if (!is_array($data)) {
             $data = [$data];
@@ -125,11 +125,11 @@ class Event
     /**
      * Stop a given callback from listening on a specific event.
      *
-     * @param  string   $event    Name of event
-     * @param  callable $callback The callback as defined when listen() was called
+     * @param  string|int   $event    Name of event
+     * @param  callable     $callback The callback as defined when listen() was called
      * @return true
      */
-    public static function forget(string $event, callable $callback)
+    public static function forget(int $event, callable $callback): bool
     {
         if (!isset(self::$events[$event])) {
             return true;
