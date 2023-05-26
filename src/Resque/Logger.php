@@ -77,7 +77,7 @@ class Logger
     /**
      * @var Monolog The monolog instance
      */
-    protected ?Monolog $instance = null;
+    protected Monolog $instance;
 
     /**
      * Create a Monolog instance and attach a handler
@@ -107,13 +107,13 @@ class Logger
     /**
      * Send log message to output interface
      *
-     * @param string $message Message to output
-     * @param mixed  $context Some context around the log
-     * @param int    $logType The log type
+     * @param string    $message Message to output
+     * @param mixed     $context Some context around the log
+     * @param int|null  $logType The log type
      *
      * @return mixed
      */
-    public function log(string $message, $context = null, int $logType = Monolog::INFO)
+    public function log(string $message, $context = null, ?int $logType = null)
     {
         if (is_int($context) and is_null($logType)) {
             $logType = $context;
@@ -122,6 +122,10 @@ class Logger
 
         if (!is_array($context)) {
             $context = is_null($context) ? [] : [$context];
+        }
+
+        if (!in_array($logType, $this->instance->getLevels())) {
+            $logType = Monolog::INFO;
         }
 
         return call_user_func([$this->instance, $this->logTypes[$logType]], $message, $context);
