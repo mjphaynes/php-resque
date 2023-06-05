@@ -25,6 +25,8 @@ namespace Resque;
  * @method static int               size(string $queue) Get the size (number of pending jobs)        of the specified queue.
  * @method static int               sizeDelayed(string $queue) Get the size (number of delayed jobs) of the specified queue.
  * @method static string            getQueue(?string $queue)                                         Get the queue or return the default.
+ * @method static void              loadConfig(string $file = self::DEFAULT_CONFIG_FILE)             Read and load data from a config file
+ * @method static void              setConfig(array $config)                                         Set the configuration array
  */
 class Resque
 {
@@ -62,9 +64,12 @@ class Resque
      */
     public static function __callStatic(string $method, array $parameters)
     {
-        $callable = [static::queue(), $method];
+        // Simplify the call to setConfig and loadConfig
+        if (in_array($method, ['setConfig', 'loadConfig'])) {
+            return call_user_func_array([Config::class, $method], $parameters);
+        }
 
-        return call_user_func_array($callable, $parameters);
+        return call_user_func_array([static::queue(), $method], $parameters);
     }
 
     /**

@@ -47,13 +47,45 @@ final class Config
     protected static $config = [];
 
     /**
-     * Reads and loads data from a config file
+     * Read and load data from a config file
      *
      * @param string $file The config file path
+     *
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): void
     {
-        static::$config = static::parseConfig($file);
+        [$path, $ext] = static::getConfigDetails($file);
+
+        $config = [];
+
+        switch ($ext) {
+            case 'php':
+                $config = static::fromPhp($path);
+                break;
+            case 'json':
+                $config = static::fromJson($path);
+                break;
+            case 'yaml':
+            case 'yml':
+                $config = static::fromYaml($path);
+                break;
+            default:
+                throw new RuntimeException("Could not load config file $file");
+        }
+
+        static::setConfig($config);
+    }
+
+    /**
+     * Set the configuration array
+     *
+     * @param array<string, mixed> $config The configuration array
+     */
+    public static function setConfig(array $config): void
+    {
+        static::$config = $config;
 
         Redis::setConfig([
             'scheme'     => static::read('redis.scheme', Redis::DEFAULT_SCHEME),
@@ -65,28 +97,6 @@ final class Config
             'phpiredis'  => static::read('redis.phpiredis', Redis::DEFAULT_PHPIREDIS),
             'predis'     => static::read('predis'),
         ]);
-    }
-
-    /**
-     * Parse a PHP config file and return the config array.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function parseConfig(string $file = self::DEFAULT_CONFIG_FILE): array
-    {
-        [$path, $ext] = static::getConfigDetails($file);
-
-        switch ($ext) {
-            case 'php':
-                return static::fromPhp($path);
-            case 'json':
-                return static::fromJson($path);
-            case 'yaml':
-            case 'yml':
-                return static::fromYaml($path);
-        }
-
-        return [];
     }
 
     /**
@@ -103,7 +113,12 @@ final class Config
             throw new InvalidArgumentException("The config file $file is not supported. Supported extensions are: ".implode(', ', self::SUPPORTED_CONFIG_EXT));
         }
 
-        $baseDir = realpath(dirname($file));
+        // Check if provided file is a valid path to a readable file
+        if (realpath($file) && is_readable($file)) {
+            return [realpath($file), $ext];
+        }
+
+        $baseDir = getcwd();
         $searchDirs = [
             $baseDir.'/',
             $baseDir.'/../',
@@ -114,6 +129,7 @@ final class Config
         ];
 
         $configFile = null;
+
         // Search for config file with any supported extension
         foreach ($searchDirs as $dir) {
             foreach (self::SUPPORTED_CONFIG_EXT as $supportedExt) {
@@ -125,7 +141,6 @@ final class Config
                 }
             }
         }
-
 
         // If the config is not found, throw an exception
         if (!$configFile) {
@@ -192,7 +207,7 @@ final class Config
     {
         if (!function_exists('json_decode')) {
             // @codeCoverageIgnoreStart
-            throw new RuntimeException('Need to install JSON PHP extension to use JSON config');
+            throw new RuntimeException('Missing JSON parser, JSON extension is not installed.');
             // @codeCoverageIgnoreEnd
         }
 

@@ -167,7 +167,7 @@ class Redis
      *
      * @param array $config Array of configuration settings
      */
-    final public function __construct(array $config = [])
+    public function __construct(array $config = [])
     {
         $predisParams  = [];
         $predisOptions = [];

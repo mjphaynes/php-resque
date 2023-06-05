@@ -17,7 +17,7 @@ namespace Resque;
  * @package Resque
  * @author Michael Haynes <mike@mjphaynes.com>
  */
-final class Queue
+class Queue
 {
     /**
      * @var Redis The Redis instance
