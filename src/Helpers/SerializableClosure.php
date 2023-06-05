@@ -224,8 +224,6 @@ final class SerializableClosure implements \Serializable
 
     /**
      * Invoke the contained Closure.
-     *
-     * @return mixed
      */
     public function __invoke()
     {

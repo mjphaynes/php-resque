@@ -55,12 +55,22 @@ class Resque
     }
 
     /**
+     * Set the queue instance.
+     *
+     * @param Queue $queue The queue instance
+     *
+     * @return void
+     */
+    public static function setQueue(Queue $queue): void
+    {
+        static::$queue = $queue;
+    }
+
+    /**
      * Dynamically pass calls to the default connection.
      *
      * @param string $method     The method to call
      * @param array  $parameters The parameters to pass
-     *
-     * @return mixed
      */
     public static function __callStatic(string $method, array $parameters)
     {

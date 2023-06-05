@@ -108,10 +108,10 @@ final class Job
      *
      * @param string          $queue  The name of the queue to place the job in
      * @param string|callable $class  The name of the class that contains the code to execute the job
-     * @param array           $data   Any optional arguments that should be passed when the job is executed
+     * @param array|null      $data   Any optional arguments that should be passed when the job is executed
      * @param int             $run_at Unix timestamp of when to run the job to delay execution
      *
-     * @return Job
+     * @return Job|null
      */
     public static function create(string $queue, $class, ?array $data = null, int $run_at = 0): ?self
     {
@@ -157,7 +157,7 @@ final class Job
      *
      * @param string $id The job id
      *
-     * @return static
+     * @return static|null
      */
     public static function load(string $id): ?self
     {

@@ -191,8 +191,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Helper function that passes through to logger instance
      *
-     * @see Logger::log
-     * @return mixed
+     * @see Logger::log for more information
      */
     public function log()
     {

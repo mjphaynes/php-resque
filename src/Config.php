@@ -155,8 +155,6 @@ final class Config
      *
      * @param string $key     The key to search for (optional)
      * @param mixed  $default If key not found returns this (optional)
-     *
-     * @return mixed
      */
     public static function read(?string $key = null, $default = null)
     {

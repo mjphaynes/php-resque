@@ -33,7 +33,7 @@ abstract class AbstractConnector implements ConnectorInterface
      * @param OutputInterface $output
      * @param array           $args
      *
-     * @return StripProcessor
+     * @return StripFormatProcessor
      */
     public function processor(Command $command, InputInterface $input, OutputInterface $output, array $args)
     {

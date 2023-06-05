@@ -70,8 +70,6 @@ final class Table
      *
      * @param string $method
      * @param array  $parameters
-     *
-     * @return mixed
      */
     public function __call(string $method, array $parameters)
     {
