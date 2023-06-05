@@ -27,9 +27,9 @@ You can set the configuration file path when running any command:
 When adding jobs to the queue, you just can add the config file location as a parameter:
 
 ```php
-use Resque\Config;
+use Resque\Resque;
 
-Config::loadConfig('my-custom-config.yml');
+Resque::loadConfig('/path/to/my-custom-config.yml');
 
 $payload = [
     'some' => 'data',
@@ -40,6 +40,14 @@ $job = Resque::push(
     $payload,
     'default'
 );
+```
+
+Or, if you prefer, you can set the configuration array directly:
+
+```php
+use Resque\Resque;
+
+Resque::setConfig([ ... ]);
 ```
 
 ---

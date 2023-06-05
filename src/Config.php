@@ -53,8 +53,10 @@ final class Config
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
+     *
+     * @return array<string, mixed> The configuration array
      */
-    public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): void
+    public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): array
     {
         [$path, $ext] = static::getConfigDetails($file);
 
@@ -76,6 +78,8 @@ final class Config
         }
 
         static::setConfig($config);
+
+        return $config;
     }
 
     /**

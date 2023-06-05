@@ -209,7 +209,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     protected function parseConfig(array $config, array $defaults): bool
     {
         if (array_key_exists('config', $config)) {
-            $configFileData = Config::parseConfig($config['config']);
+            $configFileData = Config::loadConfig($config['config']);
 
             foreach ($config as $key => &$value) {
                 // If the config value is equal to the default value set in the command then
