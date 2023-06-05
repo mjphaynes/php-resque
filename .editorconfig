@@ -13,9 +13,3 @@ indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
-
-[*.{js,json,rb,erb,scss,css}]
-indent_size = 2
-
-[*.{php,twig,yml}]
-indent_size = 4

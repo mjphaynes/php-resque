@@ -9,43 +9,34 @@
  * file that was distributed with this source code.
  */
 
-use Resque\Redis;
-use Resque\Queue;
-use Resque\Helpers\Util;
-use Symfony\Component\Yaml;
+namespace Resque;
 
 /**
  * Main Resque class
  *
+ * @package Resque
  * @author Michael Haynes <mike@mjphaynes.com>
+ *
+ * @method static string            redisKey(?string $queue = null, ?string $suffix = null)          Get the Queue key.
+ * @method static \Resque\Job       job(string $id)                                                  Get a job by id.
+ * @method static \Resque\Job       push($job, ?array $data = null, ?string $queue = null)           Push a new job onto the queue.
+ * @method static \Resque\Job       later($job, ?array $data = null, ?string $queue = null)          Queue a job for later retrieval.
+ * @method static \Resque\Job|false pop(array $queues, int $timeout = 10, bool $blocking = true)     Pop the next job off of the queue.
+ * @method static int               size(string $queue) Get the size (number of pending jobs)        of the specified queue.
+ * @method static int               sizeDelayed(string $queue) Get the size (number of delayed jobs) of the specified queue.
+ * @method static string            getQueue(?string $queue)                                         Get the queue or return the default.
  */
 class Resque
 {
     /**
      * php-resque version
      */
-    public const VERSION = '3.2.0';
-
-    /**
-     * How long the job and worker data will remain in Redis for
-     * after completion/shutdown in seconds. Default is one week.
-     */
-    public const DEFAULT_EXPIRY_TIME = 604800;
-
-    /**
-     * Default config file name
-     */
-    public const DEFAULT_CONFIG_FILE = 'config.yml';
-
-    /**
-     * @var array Configuration settings array.
-     */
-    protected static array $config = [];
+    public const VERSION = '4.0.0';
 
     /**
      * @var Queue The queue instance.
      */
-    protected static ?Queue $queue = null;
+    protected static $queue = null;
 
     /**
      * Create a queue instance.
@@ -74,103 +65,6 @@ class Resque
         $callable = [static::queue(), $method];
 
         return call_user_func_array($callable, $parameters);
-    }
-
-    /**
-     * Reads and loads data from a config file
-     *
-     * @param string $file The config file path
-     *
-     * @return bool
-     */
-    public static function loadConfig(string $file = self::DEFAULT_CONFIG_FILE): bool
-    {
-        self::readConfigFile($file);
-
-        Redis::setConfig([
-            'scheme'     => static::getConfig('redis.scheme', Redis::DEFAULT_SCHEME),
-            'host'       => static::getConfig('redis.host', Redis::DEFAULT_HOST),
-            'port'       => static::getConfig('redis.port', Redis::DEFAULT_PORT),
-            'namespace'  => static::getConfig('redis.namespace', Redis::DEFAULT_NS),
-            'password'   => static::getConfig('redis.password', Redis::DEFAULT_PASSWORD),
-            'rw_timeout' => static::getConfig('redis.rw_timeout', Redis::DEFAULT_RW_TIMEOUT),
-            'phpiredis'  => static::getConfig('redis.phpiredis', Redis::DEFAULT_PHPIREDIS),
-            'predis'     => static::getConfig('predis'),
-        ]);
-
-        return true;
-    }
-
-    /**
-     * Reads data from a config file
-     *
-     * @param string $file The config file path
-     *
-     * @return array
-     */
-    public static function readConfigFile(string $file = self::DEFAULT_CONFIG_FILE): array
-    {
-        if (!is_string($file)) {
-            throw new InvalidArgumentException('The config file path must be a string, type passed "'.gettype($file).'".');
-        }
-
-        $baseDir = realpath(dirname($file));
-        $searchDirs = [
-            $baseDir.'/',
-            $baseDir.'/../',
-            $baseDir.'/../../',
-            $baseDir.'/config/',
-            $baseDir.'/../config/',
-            $baseDir.'/../../config/',
-        ];
-
-        $filename = basename($file);
-
-        $configFile = null;
-        foreach ($searchDirs as $dir) {
-            if (realpath($dir.$filename) and is_readable($dir.$filename)) {
-                $configFile = realpath($dir.$filename);
-                break;
-            }
-        }
-
-        if (is_null($configFile) and $file !== self::DEFAULT_CONFIG_FILE) {
-            throw new InvalidArgumentException('The config file "'.$file.'" cannot be found or read.');
-        }
-
-        if (!$configFile) {
-            return static::$config;
-        }
-
-        // Try to parse the contents
-        try {
-            $yaml = Yaml\Yaml::parse(file_get_contents($configFile));
-        } catch (Yaml\Exception\ParseException $e) {
-            throw new Exception('Unable to parse the config file: '.$e->getMessage());
-        }
-
-        return static::$config = $yaml;
-    }
-
-    /**
-     * Gets Resque config variable
-     *
-     * @param string $key     The key to search for (optional)
-     * @param mixed  $default If key not found returns this (optional)
-     *
-     * @return mixed
-     */
-    public static function getConfig(?string $key = null, $default = null)
-    {
-        if (!is_null($key)) {
-            if (false !== Util::path(static::$config, $key, $found)) {
-                return $found;
-            } else {
-                return $default;
-            }
-        }
-
-        return static::$config;
     }
 
     /**

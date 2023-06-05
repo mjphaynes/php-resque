@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of the php-resque package.
  *
  * (c) Michael Haynes <mike@mjphaynes.com>
@@ -11,6 +12,7 @@
 /**
  * This job waits for 30 seconds
  *
+ * @package Resque
  * @author Michael Haynes <mike@mjphaynes.com>
  */
 class LongRunning

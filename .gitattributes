@@ -1,11 +1,23 @@
 * text=auto
 * eol=lf
+*.php diff=php
 
-# do not deploy docker testing stuff
-/docker export-ignore
-docker-compose.yml export-ignore
-
-# do not deploy git stuff
-.gitattributes
-.gitignore
-.git
+# Exclude files from dist
+/docs                   export-ignore
+/examples               export-ignore
+/tests                  export-ignore
+/tools                  export-ignore
+/tools/*                binary
+/.editorconfig          export-ignore
+/.gitattributes         export-ignore
+/.gitignore             export-ignore
+/.dockerignore          export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.travis.yml            export-ignore
+/resque.php             export-ignore
+/resque.yml             export-ignore
+/resque.yaml            export-ignore
+/resque.json            export-ignore
+/docker-compose.yml     export-ignore
+/Dockerfile             export-ignore
+/phpunit.xml            export-ignore

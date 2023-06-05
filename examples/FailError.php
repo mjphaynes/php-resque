@@ -11,6 +11,7 @@
 /**
  * This job fails because of fatal error in script
  *
+ * @package Resque
  * @author Michael Haynes <mike@mjphaynes.com>
  */
 class FailError
