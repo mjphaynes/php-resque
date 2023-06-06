@@ -79,7 +79,7 @@ class Queue
      *
      * @return Job job instance
      */
-    public function push($job, ?array $data = null, ?string $queue = null): Job
+    public function push($job, ?array $data = [], ?string $queue = null): Job
     {
         if (false !== ($delay = Config::read('default.jobs.delay', false))) {
             return $this->later($delay, $job, $data, $queue);
