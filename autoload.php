@@ -13,6 +13,7 @@
  * Autoload file for php-resque speedtest feature.
  */
 
+use Monolog\Handler\StreamHandler;
 use Resque\Event;
 use Resque\Logger;
 use Resque\Resque;
@@ -25,6 +26,8 @@ class TestJob
         // Don't do anything
     }
 }
+
+$logger = new Logger([new StreamHandler('php://stdout')]);
 
 // Lets record the forking time
 Event::listen([Event::WORKER_FORK, Event::WORKER_FORK_CHILD], function ($event, $job) use ($logger): void {

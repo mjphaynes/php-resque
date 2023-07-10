@@ -16,6 +16,8 @@ use Predis\Client;
 /**
  * Resque redis class
  *
+ * @see https://redis.io/commands
+ *
  * @package Resque
  * @author Michael Haynes <mike@mjphaynes.com>
  */
@@ -167,7 +169,7 @@ class Redis
      *
      * @param array $config Array of configuration settings
      */
-    final public function __construct(array $config = [])
+    public function __construct(array $config = [])
     {
         $predisParams  = [];
         $predisOptions = [];
@@ -327,9 +329,8 @@ class Redis
     /**
      * Dynamically pass calls to the Predis.
      *
-     * @param  string $method     Method to call
-     * @param  array  $parameters Arguments to send to method
-     * @return mixed
+     * @param string $method     Method to call
+     * @param array  $parameters Arguments to send to method
      */
     public function __call(string $method, array $parameters)
     {

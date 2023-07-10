@@ -191,8 +191,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     /**
      * Helper function that passes through to logger instance
      *
-     * @see Logger::log
-     * @return mixed
+     * @see Logger::log for more information
      */
     public function log()
     {
@@ -210,7 +209,7 @@ class Command extends \Symfony\Component\Console\Command\Command
     protected function parseConfig(array $config, array $defaults): bool
     {
         if (array_key_exists('config', $config)) {
-            $configFileData = Config::parseConfig($config['config']);
+            $configFileData = Config::loadConfig($config['config']);
 
             foreach ($config as $key => &$value) {
                 // If the config value is equal to the default value set in the command then

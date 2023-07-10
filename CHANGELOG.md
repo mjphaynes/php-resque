@@ -13,11 +13,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Support for PHP and JSON configuration files
 
+-   `setConfig` method to set the configuration array directly (as an alternative to `loadConfig`)
+
 -   Extendable console application class
 
 -   Job blueprint class as a base for all jobs
 
 -   Jobs' `setUp` and `tearDown` methods now receive the `Resque\Job` instance as an argument
+
+-   `setQueue` method to make it possible to override the queue behavior
 
 -   Docker environment for development
 
