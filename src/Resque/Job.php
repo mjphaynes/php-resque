@@ -381,6 +381,10 @@ class Job
 
         $instance = $class->newInstance();
 
+        if (!is_callable(array($instance, $this->method))) {
+            throw new \RuntimeException('Job class "'.$this->class.'" does not contain a callable "'.$this->method.'" method');
+        }
+
         return $this->instance = $instance;
     }
 
