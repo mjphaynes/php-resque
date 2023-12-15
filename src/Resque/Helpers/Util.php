@@ -25,28 +25,39 @@ class Util
      * and [Quentin Zervaas](http://www.phpriot.com/d/code/strings/filesize-format/).
      *
      * @param  int    $bytes      size in bytes
-     * @param  string $force_unit a definitive unit
-     * @param  string $format     the return string format
+     * @param  ?string $force_unit a definitive unit
+     * @param  ?string $format     the return string format
      * @param  bool   $si         whether to use SI prefixes or IEC
      * @return string
      */
-    public static function bytes($bytes, $force_unit = null, $format = null, $si = true)
+    public static function bytes(
+        int $bytes,
+        ?string $force_unit = null,
+        ?string $format = null,
+        bool $si = true
+    ): string
     {
-        $format = ($format === null) ? '%01.2f %s' : (string) $format;
+        $format = ($format === null) ? '%01.2f %s' : $format;
 
-        // IEC prefixes (binary)
-        if ($si == false or strpos($force_unit, 'i') !== false) {
-            $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
+        // SI prefixes (decimal)
+        $units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
+        $mod = 1000;
+
+        if (
+            !$si
+            || ($force_unit !== null && strpos($force_unit, 'i') !== false)
+        ) {
+            // IEC prefixes (binary)
+            $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
             $mod = 1024;
-
-            // SI prefixes (decimal)
-        } else {
-            $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
-            $mod = 1000;
         }
 
-        if (($power = array_search((string) $force_unit, $units)) === false) {
-            $power = ($bytes > 0) ? floor(log($bytes, $mod)) : 0;
+        $power = ($bytes > 0) ? floor(log($bytes, $mod)) : 0;
+        if (
+            $force_unit !== null
+            && in_array($force_unit, $units)
+        ) {
+            $power = array_search($force_unit, $units);
         }
 
         return sprintf($format, $bytes / pow($mod, $power), $units[$power]);

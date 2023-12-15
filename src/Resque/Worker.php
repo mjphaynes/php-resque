@@ -641,7 +641,6 @@ class Worker
     public function sigWakeUp()
     {
         $this->log('SIGPIPE received; attempting to wake up', Logger::DEBUG);
-        $this->redis->establishConnection();
 
         Event::fire(Event::WORKER_WAKEUP, $this);
     }

@@ -142,8 +142,10 @@ class Job
      */
     public static function createId($queue, $class, $data = null, $run_at = 0)
     {
+        $microtime = microtime(true);
+
         $id = dechex(crc32($queue)).
-            dechex((int)(microtime(true) * 1000)).
+            dechex((int) round($microtime * 10_000.0)).
             md5(json_encode($class).json_encode($data).$run_at.uniqid('', true));
 
         return substr($id, 0, self::ID_LENGTH);
@@ -378,6 +380,10 @@ class Job
         }
 
         $instance = $class->newInstance();
+
+        if (!is_callable(array($instance, $this->method))) {
+            throw new \RuntimeException('Job class "'.$this->class.'" does not contain a callable "'.$this->method.'" method');
+        }
 
         return $this->instance = $instance;
     }
