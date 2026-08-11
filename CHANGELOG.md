@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.0.1] - 2026-08-11
+
+### Fixed
+
+- Incorrect type hint for worker timeout value
+
+- Extension handling for filenames with more than one period
+
+- MongoDB dependency as suggestion instead of hard dev requirement
+
 ## [4.0.0] - 2023-03-31
 
 ### Added
