@@ -1172,9 +1172,9 @@ final class Worker
     /**
      * Set the worker queue timeout
      *
-     * @param string $timeout Worker queue timeout
+     * @param int $timeout Worker queue timeout
      */
-    public function setTimeout(string $timeout): void
+    public function setTimeout(int $timeout): void
     {
         if ($this->status != self::STATUS_NEW) {
             throw new \RuntimeException('Cannot set worker timeout after worker has started working');
