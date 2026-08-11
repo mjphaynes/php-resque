@@ -112,7 +112,8 @@ final class Config
      */
     protected static function getConfigDetails(string $file = self::DEFAULT_CONFIG_FILE): array
     {
-        [$filename, $ext] = explode('.', basename($file));
+        $filename = pathinfo($file, PATHINFO_FILENAME);
+        $ext      = pathinfo($file, PATHINFO_EXTENSION);
         if (!in_array($ext, self::SUPPORTED_CONFIG_EXT)) {
             throw new InvalidArgumentException("The config file $file is not supported. Supported extensions are: ".implode(', ', self::SUPPORTED_CONFIG_EXT));
         }
