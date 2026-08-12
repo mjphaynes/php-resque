@@ -120,15 +120,7 @@ final class Worker
     /**
      * @var array Signal handler method name mapping
      */
-    protected $signalHandlerMapping = [
-        \SIGTERM => 'sigForceShutdown',
-        \SIGINT  => 'sigForceShutdown',
-        \SIGQUIT => 'sigShutdown',
-        \SIGUSR1 => 'sigCancelJob',
-        \SIGUSR2 => 'sigPause',
-        \SIGCONT => 'sigResume',
-        \SIGPIPE => 'sigWakeUp',
-    ];
+    protected $signalHandlerMapping = [];
 
     /**
      * @var array List of shutdown errors to catch
@@ -206,11 +198,41 @@ final class Worker
         $this->queues   = array_map('trim', is_array($queues) ? $queues : explode(',', $queues));
         $this->blocking = (bool)$blocking;
 
+        $this->signalHandlerMapping = $this->createDefaultSignalHandlerMapping();
+
         $this->host = new Host();
         $this->pid  = getmypid();
         $this->id   = $this->host.':'.$this->pid;
 
         Event::fire(Event::WORKER_INSTANCE, $this);
+    }
+
+    /**
+     * Which signals a worker listens to, and what it does about them.
+     *
+     * The signal constants come with ext-pcntl, which a command line binary
+     * has and a web server does not. A worker only ever runs from the command
+     * line, but its class is read wherever the queue is looked at, so the
+     * constants are only touched where they exist: the handlers are registered
+     * behind the same condition in startup().
+     *
+     * @return array
+     */
+    protected function createDefaultSignalHandlerMapping(): array
+    {
+        if (!function_exists('pcntl_signal')) {
+            return [];
+        }
+
+        return [
+            \SIGTERM => 'sigForceShutdown',
+            \SIGINT  => 'sigForceShutdown',
+            \SIGQUIT => 'sigShutdown',
+            \SIGUSR1 => 'sigCancelJob',
+            \SIGUSR2 => 'sigPause',
+            \SIGCONT => 'sigResume',
+            \SIGPIPE => 'sigWakeUp',
+        ];
     }
 
     /**
