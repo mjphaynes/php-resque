@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.2] - 2026-08-12
+- Fix invalid constant usage on PHP 8.x non-cli environments
+
 ## [3.1.1] - 2023-01-31
 - Improve PHP8 compatibility
 
@@ -83,7 +86,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## 1.0.0 - 2013-10-09
 - First public release of php-resque
 
-[Unreleased]: https://github.com/mjphaynes/php-resque/compare/3.1.1...HEAD
+[Unreleased]: https://github.com/mjphaynes/php-resque/compare/3.1.2...HEAD
+[3.1.2]: https://github.com/mjphaynes/php-resque/compare/3.1.1...3.1.2
 [3.1.1]: https://github.com/mjphaynes/php-resque/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/mjphaynes/php-resque/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/mjphaynes/php-resque/compare/2.2.0...3.0.0
