@@ -16,6 +16,7 @@ namespace Tests;
 
 use Resque\Worker;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -62,6 +63,89 @@ final class WorkerTest extends TestCase
             'timeout' => ['setTimeout', 'getTimeout', 'int', 'timeout'],
             'interval' => ['setInterval', 'getInterval', 'int', 'interval'],
             'memory limit' => ['setMemoryLimit', 'getMemoryLimit', 'int', 'memoryLimit'],
+        ];
+    }
+
+    /**
+     * The signal constants come with ext-pcntl, which a command line binary has
+     * and a web server does not. A default of the class would be worked out as
+     * soon as a worker is made, which is what a web interface listing the
+     * workers does, and on PHP 8 an undefined constant is a fatal error.
+     */
+    public function testMakingAWorkerDoesNotNeedTheSignalConstants(): void
+    {
+        $default = (new ReflectionClass(Worker::class))->getDefaultProperties()['signalHandlerMapping'];
+
+        $this->assertSame([], $default, 'the signal handlers must not be a default of the class');
+    }
+
+    /**
+     * Where there is no process control there is nothing to listen for, so the
+     * worker starts without handlers rather than not starting at all.
+     */
+    public function testAWorkerWithoutProcessControlListensToNothing(): void
+    {
+        $script = 'require ' . var_export(dirname(__DIR__) . '/vendor/autoload.php', true) . ';'
+            . '$worker = (new ReflectionClass(' . var_export(Worker::class, true) . '))->newInstanceWithoutConstructor();'
+            . '$mapping = new ReflectionMethod($worker, "createDefaultSignalHandlerMapping");'
+            . '$mapping->setAccessible(true);'
+            . 'echo function_exists("pcntl_signal") ? "with" : "without", "|", json_encode($mapping->invoke($worker));';
+
+        $command = sprintf(
+            '%s -d disable_functions=pcntl_signal -r %s',
+            escapeshellarg(PHP_BINARY),
+            escapeshellarg($script)
+        );
+
+        $this->assertSame('without|[]', trim((string)shell_exec($command)));
+    }
+
+    /**
+     * The other way round: where the extension is there, every signal a worker
+     * is meant to answer still has its handler.
+     */
+    public function testAWorkerWithProcessControlListensToTheUsualSignals(): void
+    {
+        if (!function_exists('pcntl_signal')) {
+            $this->markTestSkipped('Process control is not available');
+        }
+
+        $worker = (new ReflectionClass(Worker::class))->newInstanceWithoutConstructor();
+
+        $mapping = new ReflectionMethod($worker, 'createDefaultSignalHandlerMapping');
+        $mapping->setAccessible(true);
+
+        $this->assertSame([
+            SIGTERM => 'sigForceShutdown',
+            SIGINT  => 'sigForceShutdown',
+            SIGQUIT => 'sigShutdown',
+            SIGUSR1 => 'sigCancelJob',
+            SIGUSR2 => 'sigPause',
+            SIGCONT => 'sigResume',
+            SIGPIPE => 'sigWakeUp',
+        ], $mapping->invoke($worker));
+    }
+
+    /**
+     * @dataProvider signalHandlerProvider
+     */
+    public function testEveryHandlerItNamesIsThere(string $handler): void
+    {
+        $this->assertTrue(
+            method_exists(Worker::class, $handler),
+            sprintf('the worker names %s() as a signal handler but does not have it', $handler)
+        );
+    }
+
+    public function signalHandlerProvider(): array
+    {
+        return [
+            'force shutdown' => ['sigForceShutdown'],
+            'shutdown' => ['sigShutdown'],
+            'cancel job' => ['sigCancelJob'],
+            'pause' => ['sigPause'],
+            'resume' => ['sigResume'],
+            'wake up' => ['sigWakeUp'],
         ];
     }
 }
