@@ -33,7 +33,7 @@ class Resque
     /**
      * php-resque version
      */
-    public const VERSION = '4.0.3';
+    public const VERSION = '4.0.4';
 
     /**
      * @var Queue The queue instance.
