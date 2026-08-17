@@ -114,7 +114,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     {
         if (
             null === $this->output or
-            OutputInterface::VERBOSITY_QUIET === ($verbosity = $this->output->getVerbosity()) or
+            ($verbosity = $this->output->getVerbosity()) <= OutputInterface::VERBOSITY_QUIET or
             $verbosity < $this->verbosityLevelMap[$record['level']]
         ) {
             return;
@@ -148,7 +148,10 @@ class ConsoleHandler extends AbstractProcessingHandler
      */
     private function updateLevel(): bool
     {
-        if (null === $this->output or OutputInterface::VERBOSITY_QUIET === ($verbosity = $this->output->getVerbosity())) {
+        // Anything below quiet is quieter still: Symfony 7.2 added a silent
+        // verbosity below it, and the constant for that is not there to name
+        // on the console versions this package also supports.
+        if (null === $this->output or $this->output->getVerbosity() <= OutputInterface::VERBOSITY_QUIET) {
             return false;
         }
 

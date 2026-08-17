@@ -40,9 +40,9 @@ final class CatchOutput extends \Symfony\Component\Console\Output\Output
     /**
      * {@inheritdoc}
      */
-    public function write($messages, bool $newline = false, $type = self::OUTPUT_RAW): void
+    public function write($messages, bool $newline = false, $options = self::OUTPUT_RAW): void
     {
-        parent::write($messages, $newline, $type);
+        parent::write($messages, $newline, $options);
     }
 
     /**
