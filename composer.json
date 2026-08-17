@@ -26,7 +26,7 @@
         "ext-pcntl": "*",
         "monolog/monolog": "^2.5",
         "predis/predis": "^2.1",
-        "symfony/console": "^5.4|^6.0"
+        "symfony/console": "^5.4|^6.0|^7.0|^8.0"
     },
     "suggest": {
         "ext-mongodb": "For using the MongoDB logger.",
@@ -37,8 +37,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0|^9.0",
-        "symfony/process": "^5.4|^6.0",
-        "symfony/yaml": "^5.4|^6.0"
+        "symfony/process": "^5.4|^6.0|^7.0|^8.0",
+        "symfony/yaml": "^5.4|^6.0|^7.0|^8.0"
     },
     "autoload": {
         "psr-4": {
