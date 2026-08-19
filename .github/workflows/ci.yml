@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - v2
+      - v3
+      - v4
+      - 'feature/**'
+      - 'bugfix/**'
+  pull_request:
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }} / Symfony ${{ matrix.symfony }}${{ matrix.dependencies == 'lowest' && ' (lowest)' || '' }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Symfony 6 needs PHP 8.1, Symfony 7 needs PHP 8.2 and Symfony 8 needs
+          # PHP 8.4, so every supported runtime is paired with what it can install.
+          - { php: '7.2', symfony: '^5.4', dependencies: 'lowest' }
+          - { php: '7.2', symfony: '^5.4' }
+          - { php: '7.3', symfony: '^5.4' }
+          - { php: '7.4', symfony: '^5.4' }
+          - { php: '8.0', symfony: '^5.4' }
+          - { php: '8.1', symfony: '^6.0' }
+          - { php: '8.2', symfony: '^5.4' }
+          - { php: '8.2', symfony: '^7.0' }
+          - { php: '8.3', symfony: '^7.0' }
+          - { php: '8.4', symfony: '^7.0' }
+          - { php: '8.4', symfony: '^8.0' }
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pcntl
+          coverage: none
+
+      - name: Pin the Symfony version under test
+        run: |
+          composer require --no-update --no-interaction \
+            symfony/console:"${{ matrix.symfony }}"
+          composer require --no-update --no-interaction --dev \
+            symfony/process:"${{ matrix.symfony }}" \
+            symfony/yaml:"${{ matrix.symfony }}"
+
+      - name: Install dependencies
+        run: composer update --no-interaction --prefer-dist ${{ matrix.dependencies == 'lowest' && '--prefer-lowest' || '' }}
+
+      - name: Show what got installed
+        run: composer show --direct
+
+      - name: Run the test suite
+        run: vendor/bin/phpunit
+
+      - name: Smoke test the console application
+        run: |
+          php bin/resque --version
+          php bin/resque list
+          php bin/resque worker:start --help
+
+  validate:
+    name: composer validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # Validated in its own job because the test jobs rewrite composer.json to
+      # pin the Symfony version they run against.
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pcntl
+          coverage: none
+
+      - run: composer validate --strict
+
+  coding-standards:
+    name: Coding standards
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # The php-cs-fixer phar shipped in tools/ refuses to run on PHP > 8.2.
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - run: php tools/php-cs-fixer fix --dry-run --diff --verbose

@@ -64,6 +64,10 @@ You must have the following installed to run php-resque:
 -   [PCNTL PHP extension](http://php.net/manual/en/book.pcntl.php)
 -   [Composer](http://getcomposer.org/)
 
+The console commands run on Symfony 5.4, 6, 7 and 8. You do not choose: Composer
+installs the newest one your PHP version supports, so php-resque drops into an
+application on any of them.
+
 Optional:
 
 -   [Phpiredis](https://github.com/nrk/phpiredis)

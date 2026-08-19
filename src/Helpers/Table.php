@@ -60,7 +60,7 @@ final class Table
      */
     public function __toString(): string
     {
-        $this->table->render($this->output);
+        $this->table->render();
 
         return rtrim($this->output->written()); // Remove trailing \n
     }
