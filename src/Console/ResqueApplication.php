@@ -28,7 +28,9 @@ use Resque\Console\Command\Worker\Start;
 use Resque\Console\Command\Worker\Stop;
 use Resque\Console\Command\Workers;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -80,5 +82,25 @@ class ResqueApplication extends Application
         }
 
         return parent::doRun($input, $output);
+    }
+
+    /**
+     * The options every command understands, with the one that turns the version
+     * information off.
+     *
+     * doRun() reads --no-info off the command line before anything is bound to a
+     * definition, so the version information does go away, but the input is then
+     * validated against the definition and an option that is nowhere declared ends
+     * the call with "The --no-info option does not exist".
+     */
+    protected function getDefaultInputDefinition(): InputDefinition
+    {
+        $definition = parent::getDefaultInputDefinition();
+
+        $definition->addOption(
+            new InputOption('no-info', null, InputOption::VALUE_NONE, 'Do not output the version information')
+        );
+
+        return $definition;
     }
 }
