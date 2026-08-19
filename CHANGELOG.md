@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.1.1] - 2026-08-19
+
+### Fixed
+
+- Handle the `--no-info` option correctly
+
 ## [4.1.0] - 2026-08-19
 
 ### Added
@@ -227,7 +233,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   First public release of php-resque
 
-[unreleased]: https://github.com/mjphaynes/php-resque/compare/4.1.0...HEAD
+[unreleased]: https://github.com/mjphaynes/php-resque/compare/4.1.1...HEAD
+[4.1.1]: https://github.com/mjphaynes/php-resque/compare/4.1.0...4.1.1
 [4.1.0]: https://github.com/mjphaynes/php-resque/compare/4.0.4...4.1.0
 [4.0.4]: https://github.com/mjphaynes/php-resque/compare/4.0.3...4.0.4
 [4.0.3]: https://github.com/mjphaynes/php-resque/compare/4.0.2...4.0.3
