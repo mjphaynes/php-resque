@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.1.0] - 2026-08-19
+
+### Added
+
+- Support for the Symfony 7 and Symfony 8 components (`symfony/console`, and
+  `symfony/process` and `symfony/yaml` where they are used). Composer picks the
+  Symfony version your PHP version can run, so PHP 7.2 keeps installing
+  Symfony 5.4 as before
+
+- Continuous integration on GitHub Actions, covering every supported PHP and
+  Symfony combination
+
+### Removed
+
+- Travis CI configuration
+
 ## [4.0.4] - 2026-08-12
 
 - Maintenance-only release
@@ -211,7 +227,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   First public release of php-resque
 
-[unreleased]: https://github.com/mjphaynes/php-resque/compare/4.0.4...HEAD
+[unreleased]: https://github.com/mjphaynes/php-resque/compare/4.1.0...HEAD
+[4.1.0]: https://github.com/mjphaynes/php-resque/compare/4.0.4...4.1.0
 [4.0.4]: https://github.com/mjphaynes/php-resque/compare/4.0.3...4.0.4
 [4.0.3]: https://github.com/mjphaynes/php-resque/compare/4.0.2...4.0.3
 [4.0.2]: https://github.com/mjphaynes/php-resque/compare/4.0.1...4.0.2
