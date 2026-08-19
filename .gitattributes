@@ -13,7 +13,7 @@
 /.gitignore             export-ignore
 /.dockerignore          export-ignore
 /.php-cs-fixer.dist.php export-ignore
-/.travis.yml            export-ignore
+/.github                export-ignore
 /resque.php             export-ignore
 /resque.yml             export-ignore
 /resque.yaml            export-ignore
