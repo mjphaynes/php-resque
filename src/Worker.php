@@ -841,6 +841,13 @@ final class Worker
      */
     public function cleanup(): array
     {
+        /**
+         * Listed before the workers are snapshotted, not after. register() adds the id to the set
+         * before it writes the hash, so every hash listed here already has its id in the set, and
+         * therefore in the snapshot below. The other order expires the hash of any worker that
+         * registers between the two reads.
+         */
+        $keys    = (array)$this->redis->keys('worker:'.$this->host.':*');
         $workers = self::allWorkers();
         $hosts   = $this->redis->smembers(Host::redisKey());
         $cleaned = [];
@@ -867,7 +874,6 @@ final class Worker
             },
             $workers
         );
-        $keys = (array)$this->redis->keys('worker:'.$this->host.':*');
 
         foreach ($keys as $key) {
             $key = $this->redis->removeNamespace($key);
